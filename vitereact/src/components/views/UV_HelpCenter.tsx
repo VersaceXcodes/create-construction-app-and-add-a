@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { useAppStore } from '@/store/main';
 import { 
   Search, 
   BookOpen, 

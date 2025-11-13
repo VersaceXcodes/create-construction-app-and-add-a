@@ -18,7 +18,8 @@ import {
   DollarSign,
   Clock,
   Star,
-  Phone
+  Phone,
+  MapPin
 } from 'lucide-react';
 import axios from 'axios';
 

@@ -90,6 +90,7 @@ const UV_HowItWorks: React.FC = () => {
   const [videoPlaying, setVideoPlaying] = useState(false);
   const [expandedFaqIds, setExpandedFaqIds] = useState<string[]>([]);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState(0);
   
   // Refs for smooth scrolling
   const videoRef = useRef<HTMLVideoElement>(null);

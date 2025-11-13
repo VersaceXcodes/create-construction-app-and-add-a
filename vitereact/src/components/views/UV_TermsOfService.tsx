@@ -43,15 +43,15 @@ const UV_TermsOfService: React.FC = () => {
   // Global State Access - CRITICAL: Individual selectors
   // ========================================================================
   
-  const currentUser = useAppStore(state => state.authentication_state.current_user);
-  const authToken = useAppStore(state => state.authentication_state.auth_token);
+  // const currentUser = useAppStore(state => state.authentication_state.current_user); // unused
+  // const authToken = useAppStore(state => state.authentication_state.auth_token); // unused
   
   // ========================================================================
   // Local State
   // ========================================================================
   
   const [activeSection, setActiveSection] = useState<string | null>(null);
-  const [scrollPosition, setScrollPosition] = useState<number>(0);
+  // const [scrollPosition, setScrollPosition] = useState<number>(0); // unused
   const [showBackToTop, setShowBackToTop] = useState<boolean>(false);
   const [mobileTocOpen, setMobileTocOpen] = useState<boolean>(false);
   

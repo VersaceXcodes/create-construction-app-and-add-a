@@ -155,7 +155,7 @@ const UV_CategoryBrowse: React.FC = () => {
     while (current) {
       path.unshift(current);
       if (current.parent_category_id) {
-        current = allCategories.find(c => c.category_id === current.parent_category_id) || null;
+        current = allCategories.find(c => c.category_id === current?.parent_category_id) || null;
       } else {
         break;
       }

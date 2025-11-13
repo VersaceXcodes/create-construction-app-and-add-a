@@ -25,60 +25,61 @@ import {
 // Type Definitions (matching Zod schemas exactly)
 // ============================================================================
 
-interface ProductType {
-  product_id: string;
-  supplier_id: string;
-  product_name: string;
-  product_slug: string;
-  category_id: string;
-  subcategory_id: string | null;
-  brand: string | null;
-  sku: string;
-  manufacturer: string | null;
-  model_number: string | null;
-  description: string | null;
-  specifications: Record<string, any> | null;
-  dimensions: Record<string, any> | null;
-  weight: number | null;
-  unit_of_measure: string;
-  price: number;
-  compare_at_price: number | null;
-  cost_per_item: number | null;
-  has_variants: boolean;
-  bulk_pricing: any[] | null;
-  trade_price: number | null;
-  track_inventory: boolean;
-  quantity_on_hand: number;
-  low_stock_threshold: number;
-  continue_selling_when_out_of_stock: boolean;
-  barcode: string | null;
-  requires_special_handling: boolean;
-  tags: string[] | null;
-  is_eco_friendly: boolean;
-  sustainability_info: Record<string, any> | null;
-  safety_information: string | null;
-  certifications: string[] | null;
-  technical_datasheet_url: string | null;
-  installation_guide_url: string | null;
-  warranty_info_url: string | null;
-  meta_title: string | null;
-  meta_description: string | null;
-  rating_average: number;
-  rating_count: number;
-  view_count: number;
-  order_count: number;
-  status: string;
-  is_featured: boolean;
-  last_inventory_update: string | null;
-  created_at: string;
-  updated_at: string;
-  // Joined fields from API response
-  shop_name?: string;
-  shop_slug?: string;
-  supplier_rating?: number;
-  supplier_verified?: boolean;
-  availability?: 'in_stock' | 'low_stock' | 'out_of_stock';
-}
+// ProductType interface - unused but kept for reference
+// interface ProductType {
+//   product_id: string;
+//   supplier_id: string;
+//   product_name: string;
+//   product_slug: string;
+//   category_id: string;
+//   subcategory_id: string | null;
+//   brand: string | null;
+//   sku: string;
+//   manufacturer: string | null;
+//   model_number: string | null;
+//   description: string | null;
+//   specifications: Record<string, any> | null;
+//   dimensions: Record<string, any> | null;
+//   weight: number | null;
+//   unit_of_measure: string;
+//   price: number;
+//   compare_at_price: number | null;
+//   cost_per_item: number | null;
+//   has_variants: boolean;
+//   bulk_pricing: any[] | null;
+//   trade_price: number | null;
+//   track_inventory: boolean;
+//   quantity_on_hand: number;
+//   low_stock_threshold: number;
+//   continue_selling_when_out_of_stock: boolean;
+//   barcode: string | null;
+//   requires_special_handling: boolean;
+//   tags: string[] | null;
+//   is_eco_friendly: boolean;
+//   sustainability_info: Record<string, any> | null;
+//   safety_information: string | null;
+//   certifications: string[] | null;
+//   technical_datasheet_url: string | null;
+//   installation_guide_url: string | null;
+//   warranty_info_url: string | null;
+//   meta_title: string | null;
+//   meta_description: string | null;
+//   rating_average: number;
+//   rating_count: number;
+//   view_count: number;
+//   order_count: number;
+//   status: string;
+//   is_featured: boolean;
+//   last_inventory_update: string | null;
+//   created_at: string;
+//   updated_at: string;
+//   // Joined fields from API response
+//   shop_name?: string;
+//   shop_slug?: string;
+//   supplier_rating?: number;
+//   supplier_verified?: boolean;
+//   availability?: 'in_stock' | 'low_stock' | 'out_of_stock';
+// }
 
 interface ProductVariant {
   variant_id: string;
@@ -96,15 +97,16 @@ interface ProductVariant {
   created_at: string;
 }
 
-interface ProductImageType {
-  image_id: string;
-  product_id: string;
-  image_url: string;
-  is_primary: boolean;
-  display_order: number;
-  alt_text: string | null;
-  created_at: string;
-}
+// ProductImageType interface - unused but kept for reference
+// interface ProductImageType {
+//   image_id: string;
+//   product_id: string;
+//   image_url: string;
+//   is_primary: boolean;
+//   display_order: number;
+//   alt_text: string | null;
+//   created_at: string;
+// }
 
 interface ProductReview {
   review_id: string;

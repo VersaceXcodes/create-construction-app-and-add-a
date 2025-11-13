@@ -91,7 +91,7 @@ const UV_Registration: React.FC = () => {
     const hasMinLength = password.length >= 8;
     const hasLetters = /[a-zA-Z]/.test(password);
     const hasNumbers = /[0-9]/.test(password);
-    const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    // const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(password); // unused
     
     if (!hasMinLength) return 'weak';
     if (hasMinLength && (hasLetters || hasNumbers)) return 'fair';

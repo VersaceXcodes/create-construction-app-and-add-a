@@ -1,70 +1,16 @@
-VALIDATION FAILURE - Frontend TypeScript Compilation (Attempt 2/100)
+VALIDATION FAILURE - Frontend TypeScript Compilation (Attempt 3/100)
 
 The project validation failed at the "Frontend TypeScript Compilation" step. You need to analyze the error and fix it.
 
 ## Error Details:
-src/components/views/UV_BecomeSupplier.tsx(22,3): error TS6133: 'Mail' is declared but its value is never read.
-src/components/views/UV_CategoryBrowse.tsx(1,49): error TS6133: 'useEffect' is declared but its value is never read.
-src/components/views/UV_CategoryBrowse.tsx(65,7): error TS6133: 'fetchCategoryById' is declared but its value is never read.
-src/components/views/UV_CategoryBrowse.tsx(108,9): error TS6133: 'userLocation' is declared but its value is never read.
-src/components/views/UV_CategoryBrowse.tsx(142,28): error TS6133: 'slugToIdMap' is declared but its value is never read.
-src/components/views/UV_CategoryBrowse.tsx(165,9): error TS2322: Type 'Category | null' is not assignable to type 'Category'.
-  Type 'null' is not assignable to type 'Category'.
-src/components/views/UV_CookiePolicy.tsx(4,1): error TS6133: 'axios' is declared but its value is never read.
-src/components/views/UV_CookiePolicy.tsx(189,9): error TS6133: 'authToken' is declared but its value is never read.
-src/components/views/UV_CookiePolicy.tsx(294,19): error TS2339: Property 'gtag' does not exist on type 'Window & typeof globalThis'.
-src/components/views/UV_Dashboard.tsx(60,61): error TS2339: Property 'id' does not exist on type 'User'.
-src/components/views/UV_HelpCenter.tsx(1,38): error TS6133: 'useMemo' is declared but its value is never read.
-src/components/views/UV_HelpCenter.tsx(25,3): error TS6133: 'Info' is declared but its value is never read.
-src/components/views/UV_HelpCenter.tsx(597,9): error TS6133: 'currentUser' is declared but its value is never read.
-src/components/views/UV_Homepage.tsx(17,3): error TS6133: 'MapPin' is declared but its value is never read.
-src/components/views/UV_Homepage.tsx(19,3): error TS6133: 'Clock' is declared but its value is never read.
-src/components/views/UV_Homepage.tsx(243,17): error TS6133: 'data' is declared but its value is never read.
-src/components/views/UV_HowItWorks.tsx(23,3): error TS6133: 'Pause' is declared but its value is never read.
-src/components/views/UV_HowItWorks.tsx(93,10): error TS6133: 'scrollPosition' is declared but its value is never read.
-src/components/views/UV_PasswordReset.tsx(59,9): error TS6133: 'currentUser' is declared but its value is never read.
-src/components/views/UV_PasswordReset.tsx(77,33): error TS6133: 'setVerificationAttempts' is declared but its value is never read.
-src/components/views/UV_PrivacyPolicy.tsx(341,13): error TS6133: 'response' is declared but its value is never read.
-src/components/views/UV_ProductDetail.tsx(10,3): error TS6133: 'MapPin' is declared but its value is never read.
-src/components/views/UV_ProductDetail.tsx(29,11): error TS6196: 'Product' is declared but never used.
-src/components/views/UV_ProductDetail.tsx(100,11): error TS6196: 'ProductImage' is declared but never used.
-src/components/views/UV_ProductDetail.tsx(189,9): error TS6133: 'currentUser' is declared but its value is never read.
-src/components/views/UV_ProductDetail.tsx(193,9): error TS6133: 'addToCartGlobal' is declared but its value is never read.
-src/components/views/UV_ProductDetail.tsx(266,5): error TS2769: No overload matches this call.
-  Overload 1 of 3, '(options: DefinedInitialDataOptions<unknown, Error, unknown, (string | number | undefined)[]>, queryClient?: QueryClient | undefined): DefinedUseQueryResult<...>', gave the following error.
-    Object literal may only specify known properties, and 'keepPreviousData' does not exist in type 'DefinedInitialDataOptions<unknown, Error, unknown, (string | number | undefined)[]>'.
-  Overload 2 of 3, '(options: UndefinedInitialDataOptions<any, Error, any, (string | number | undefined)[]>, queryClient?: QueryClient | undefined): UseQueryResult<...>', gave the following error.
-    Object literal may only specify known properties, and 'keepPreviousData' does not exist in type 'UndefinedInitialDataOptions<any, Error, any, (string | number | undefined)[]>'.
-  Overload 3 of 3, '(options: UseQueryOptions<any, Error, any, (string | number | undefined)[]>, queryClient?: QueryClient | undefined): UseQueryResult<any, Error>', gave the following error.
-    Object literal may only specify known properties, and 'keepPreviousData' does not exist in type 'UseQueryOptions<any, Error, any, (string | number | undefined)[]>'.
-src/components/views/UV_ProductDetail.tsx(269,39): error TS2339: Property 'reviews' does not exist on type '{}'.
-src/components/views/UV_ProductDetail.tsx(270,42): error TS2339: Property 'pagination' does not exist on type '{}'.
-src/components/views/UV_ProductDetail.tsx(278,13): error TS6133: 'wishlistsResponse' is declared but its value is never read.
-src/components/views/UV_ProductDetail.tsx(404,37): error TS2559: Type '(string | undefined)[]' has no properties in common with type 'InvalidateQueryFilters<readonly unknown[]>'.
-src/components/views/UV_ProductDetail.tsx(884,88): error TS2339: Property 'isLoading' does not exist on type 'UseMutationResult<void, AxiosError<{ error?: string | undefined; }, any>, void, unknown>'.
-  Property 'isLoading' does not exist on type 'Override<MutationObserverIdleResult<void, AxiosError<{ error?: string | undefined; }, any>, void, unknown>, { mutate: UseMutateFunction<void, AxiosError<{ error?: string | undefined; }, any>, void, unknown>; }> & { ...; }'.
-src/components/views/UV_ProductDetail.tsx(887,38): error TS2339: Property 'isLoading' does not exist on type 'UseMutationResult<void, AxiosError<{ error?: string | undefined; }, any>, void, unknown>'.
-  Property 'isLoading' does not exist on type 'Override<MutationObserverIdleResult<void, AxiosError<{ error?: string | undefined; }, any>, void, unknown>, { mutate: UseMutateFunction<void, AxiosError<{ error?: string | undefined; }, any>, void, unknown>; }> & { ...; }'.
-src/components/views/UV_ProductDetail.tsx(906,53): error TS2339: Property 'isLoading' does not exist on type 'UseMutationResult<void, AxiosError<{ error?: string | undefined; }, any>, void, unknown>'.
-  Property 'isLoading' does not exist on type 'Override<MutationObserverIdleResult<void, AxiosError<{ error?: string | undefined; }, any>, void, unknown>, { mutate: UseMutateFunction<void, AxiosError<{ error?: string | undefined; }, any>, void, unknown>; }> & { ...; }'.
-src/components/views/UV_ProductDetail.tsx(1340,84): error TS2339: Property 'isLoading' does not exist on type 'UseMutationResult<void, AxiosError<{ error?: string | undefined; }, any>, void, unknown>'.
-  Property 'isLoading' does not exist on type 'Override<MutationObserverIdleResult<void, AxiosError<{ error?: string | undefined; }, any>, void, unknown>, { mutate: UseMutateFunction<void, AxiosError<{ error?: string | undefined; }, any>, void, unknown>; }> & { ...; }'.
+src/components/views/UV_BecomeSupplier.tsx(731,24): error TS2304: Cannot find name 'MapPin'.
+src/components/views/UV_CategoryBrowse.tsx(158,61): error TS18047: 'current' is possibly 'null'.
+src/components/views/UV_HelpCenter.tsx(3,1): error TS6133: 'useAppStore' is declared but its value is never read.
+src/components/views/UV_HowItWorks.tsx(104,7): error TS2304: Cannot find name 'setScrollPosition'.
+src/components/views/UV_PasswordReset.tsx(3,1): error TS6133: 'useAppStore' is declared but its value is never read.
+src/components/views/UV_ProductDetail.tsx(28,11): error TS6196: 'ProductType' is declared but never used.
+src/components/views/UV_ProductDetail.tsx(99,11): error TS6196: 'ProductImageType' is declared but never used.
 src/components/views/UV_Registration.tsx(94,11): error TS6133: 'hasSpecialChars' is declared but its value is never read.
-src/components/views/UV_SearchResults.tsx(59,9): error TS6133: 'currentUser' is declared but its value is never read.
-src/components/views/UV_SearchResults.tsx(61,9): error TS6133: 'userLocation' is declared but its value is never read.
-src/components/views/UV_SearchResults.tsx(118,5): error TS2769: No overload matches this call.
-  Overload 1 of 3, '(options: DefinedInitialDataOptions<SearchResponse, Error, SearchResponse, readonly unknown[]>, queryClient?: QueryClient | undefined): DefinedUseQueryResult<...>', gave the following error.
-    Object literal may only specify known properties, and 'keepPreviousData' does not exist in type 'DefinedInitialDataOptions<SearchResponse, Error, SearchResponse, readonly unknown[]>'.
-  Overload 2 of 3, '(options: UndefinedInitialDataOptions<SearchResponse, Error, SearchResponse, readonly unknown[]>, queryClient?: QueryClient | undefined): UseQueryResult<...>', gave the following error.
-    Object literal may only specify known properties, and 'keepPreviousData' does not exist in type 'UndefinedInitialDataOptions<SearchResponse, Error, SearchResponse, readonly unknown[]>'.
-  Overload 3 of 3, '(options: UseQueryOptions<SearchResponse, Error, SearchResponse, readonly unknown[]>, queryClient?: QueryClient | undefined): UseQueryResult<...>', gave the following error.
-    Object literal may only specify known properties, and 'keepPreviousData' does not exist in type 'UseQueryOptions<SearchResponse, Error, SearchResponse, readonly unknown[]>'.
-src/components/views/UV_SearchResults.tsx(214,26): error TS2339: Property 'products' does not exist on type 'NonNullable<NoInfer<TQueryFnData>>'.
-src/components/views/UV_SearchResults.tsx(215,28): error TS2339: Property 'pagination' does not exist on type 'NonNullable<NoInfer<TQueryFnData>>'.
-src/components/views/UV_SearchResults.tsx(809,102): error TS2339: Property 'isLoading' does not exist on type 'UseMutationResult<void, Error, Product, unknown>'.
-  Property 'isLoading' does not exist on type 'Override<MutationObserverIdleResult<void, Error, Product, unknown>, { mutate: UseMutateFunction<void, Error, Product, unknown>; }> & { ...; }'.
-src/components/views/UV_SearchResults.tsx(817,50): error TS2339: Property 'isLoading' does not exist on type 'UseMutationResult<void, Error, Product, unknown>'.
-  Property 'isLoading' does not exist on type 'Override<MutationObserverIdleResult<void, Error, Product, unknown>, { mutate: UseMutateFunction<void, Error, Product, unknown>; }> & { ...; }'.
 src/components/views/UV_TermsOfService.tsx(46,9): error TS6133: 'currentUser' is declared but its value is never read.
 src/components/views/UV_TermsOfService.tsx(47,9): error TS6133: 'authToken' is declared but its value is never read.
 src/components/views/UV_TermsOfService.tsx(54,10): error TS6133: 'scrollPosition' is declared but its value is never read.
@@ -95,11 +41,11 @@ src/store/main.tsx(1288,3): error TS2484: Export declaration conflicts with expo
 ## Validation Context:
 - Step: Frontend TypeScript Compilation
 - Working Directory: /app/vitereact
-- Attempt: 2/100
+- Attempt: 3/100
 - Previous failures for this step: 2
 
 ## Project Memory Summary:
-- Total validation attempts: 7
+- Total validation attempts: 8
 - Common issues encountered: None
 - Known dependencies: @hookform/resolvers, @radix-ui/react-accordion, @radix-ui/react-alert-dialog, @radix-ui/react-aspect-ratio, @radix-ui/react-avatar, @radix-ui/react-checkbox, @radix-ui/react-collapsible, @radix-ui/react-context-menu, @radix-ui/react-dialog, @radix-ui/react-dropdown-menu
 - Missing dependencies: None
@@ -218,8 +164,8 @@ PROTECTED DIRECTORIES (DO NOT MODIFY):
 
 
 ## Previous Validation Failures for Frontend TypeScript Compilation:
-- 4:32:14 PM: 
 - 4:37:19 PM: 
+- 4:43:04 PM: 
 
 ## Your Task:
 1. **Analyze the Error**: Understand what specifically went wrong in the Frontend TypeScript Compilation step

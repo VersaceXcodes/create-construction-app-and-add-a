@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { useAppStore } from '@/store/main';
 import axios, { AxiosError } from 'axios';
 
 // ============================================================================

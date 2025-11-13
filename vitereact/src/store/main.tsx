@@ -818,7 +818,7 @@ export const useAppStore = create<AppState>()(
             throw new Error('No active cart found');
           }
 
-          const cart_id = activeCart.cart_id;
+          // const cart_id = activeCart.cart_id; // unused for now
 
           // Apply promo code (endpoint inferred from requirements)
           const response = await axios.post(
@@ -1208,7 +1208,7 @@ export const useAppStore = create<AppState>()(
             });
           });
 
-          socket.on('cart:updated', async (data: any) => {
+          socket.on('cart:updated', async () => {
             // Cart updated from another device, reload
             await get().load_cart();
           });
@@ -1273,17 +1273,5 @@ export const useAppStore = create<AppState>()(
   )
 );
 
-// Export types for components to use
-export type { 
-  User, 
-  CartItem, 
-  Notification, 
-  Conversation,
-  AuthenticationState,
-  ShoppingCartState,
-  NotificationState,
-  MessagingState,
-  UserLocationState,
-  UIState,
-  WebSocketConnection,
-};
+// Types are already exported via export interface above
+// No need to re-export them here
