@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { useAppStore } from '@/store/main';
 import { Printer, ChevronUp, FileText } from 'lucide-react';
 
 // ============================================================================
@@ -51,7 +50,6 @@ const UV_TermsOfService: React.FC = () => {
   // ========================================================================
   
   const [activeSection, setActiveSection] = useState<string | null>(null);
-  // const [scrollPosition, setScrollPosition] = useState<number>(0); // unused
   const [showBackToTop, setShowBackToTop] = useState<boolean>(false);
   const [mobileTocOpen, setMobileTocOpen] = useState<boolean>(false);
   
@@ -442,7 +440,6 @@ const UV_TermsOfService: React.FC = () => {
   useEffect(() => {
     const handleScroll = () => {
       const position = window.scrollY;
-      setScrollPosition(position);
       setShowBackToTop(position > 400);
 
       // Detect active section in viewport

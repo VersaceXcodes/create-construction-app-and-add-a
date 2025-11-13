@@ -123,7 +123,7 @@ const validateEmail = (email: string): boolean => {
 
 const validatePhone = (phone: string): boolean => {
   if (!phone) return true; // Optional field
-  return /^[\d\s\-\+\(\)]{10,}$/.test(phone);
+  return /^[\d\s\-+()]{10,}$/.test(phone);
 };
 
 // ============================================================================

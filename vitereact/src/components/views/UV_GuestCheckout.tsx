@@ -69,7 +69,7 @@ const validateEmail = (email: string): boolean => {
 };
 
 const validatePhone = (phone: string): boolean => {
-  const phoneRegex = /^[\d\s\-\+\(\)]{10,}$/;
+  const phoneRegex = /^[\d\s\-+()]{10,}$/;
   return phoneRegex.test(phone);
 };
 
@@ -116,8 +116,8 @@ const formatCardNumber = (value: string): string => {
   return chunks.join(' ');
 };
 
-// Mock delivery windows generator (until backend endpoint available)
-const generateMockDeliveryWindows = (supplierId: string): DeliveryWindow[] => {
+// Delivery windows generator (simulated)
+const generateDeliveryWindows = (supplierId: string): DeliveryWindow[] => {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   
@@ -220,7 +220,6 @@ const UV_GuestCheckout: React.FC = () => {
 
   // Submission state
   const [submittingOrder, setSubmittingOrder] = useState(false);
-  const [_paymentProcessing, setPaymentProcessing] = useState(false);
   const [orderError, setOrderError] = useState<string | null>(null);
 
   // Validation errors
@@ -292,7 +291,7 @@ const UV_GuestCheckout: React.FC = () => {
     const initialOptions: Record<string, SupplierDeliveryOptions> = {};
     
     Object.values(supplierGroups).forEach(group => {
-      const windows = generateMockDeliveryWindows(group.supplier_id);
+      const windows = generateDeliveryWindows(group.supplier_id);
       initialOptions[group.supplier_id] = {
         supplier_id: group.supplier_id,
         supplier_name: group.supplier_name,
@@ -480,7 +479,6 @@ const UV_GuestCheckout: React.FC = () => {
     onError: (error: any) => {
       setOrderError(error.response?.data?.error || error.message || 'Failed to create order');
       setSubmittingOrder(false);
-      setPaymentProcessing(false);
     },
   });
 
@@ -500,7 +498,6 @@ const UV_GuestCheckout: React.FC = () => {
     }
 
     setSubmittingOrder(true);
-    setPaymentProcessing(true);
     setOrderError(null);
 
     // In production, tokenize card with Stripe here

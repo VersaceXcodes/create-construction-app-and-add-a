@@ -59,10 +59,10 @@ interface AutocompleteSuggestion {
 }
 
 // ============================================================================
-// Mock Data (simulating backend responses)
+// Static Data (simulating backend responses)
 // ============================================================================
 
-const MOCK_CATEGORIES: HelpCategory[] = [
+const HELP_CATEGORIES: HelpCategory[] = [
   {
     category_id: 'cat_getting_started',
     category_name: 'Getting Started',
@@ -121,7 +121,7 @@ const MOCK_CATEGORIES: HelpCategory[] = [
   },
 ];
 
-const MOCK_ARTICLES: HelpArticle[] = [
+const HELP_ARTICLES: HelpArticle[] = [
   {
     article_id: 'art_track_order',
     article_title: 'How to Track Your Order',
@@ -486,35 +486,35 @@ const highlightText = (text: string, query: string): React.ReactNode => {
 };
 
 // ============================================================================
-// Mock API Functions
+// API Functions
 // ============================================================================
 
-const mockApiDelay = () => new Promise(resolve => setTimeout(resolve, 400));
+const apiDelay = () => new Promise(resolve => setTimeout(resolve, 400));
 
 const fetchHelpCategories = async (): Promise<HelpCategory[]> => {
-  await mockApiDelay();
-  return MOCK_CATEGORIES;
+  await apiDelay();
+  return HELP_CATEGORIES;
 };
 
 const fetchPopularArticles = async (limit: number = 10): Promise<HelpArticle[]> => {
-  await mockApiDelay();
-  return MOCK_ARTICLES.sort((a, b) => b.helpful_count - a.helpful_count).slice(0, limit);
+  await apiDelay();
+  return HELP_ARTICLES.sort((a, b) => b.helpful_count - a.helpful_count).slice(0, limit);
 };
 
 const fetchArticleById = async (article_id: string): Promise<HelpArticle | null> => {
-  await mockApiDelay();
-  return MOCK_ARTICLES.find(a => a.article_id === article_id) || null;
+  await apiDelay();
+  return HELP_ARTICLES.find(a => a.article_id === article_id) || null;
 };
 
 const fetchCategoryArticles = async (category_id: string): Promise<HelpArticle[]> => {
-  await mockApiDelay();
-  return MOCK_ARTICLES.filter(a => a.category_id === category_id);
+  await apiDelay();
+  return HELP_ARTICLES.filter(a => a.category_id === category_id);
 };
 
 const searchArticles = async (query: string, category?: string): Promise<HelpArticle[]> => {
-  await mockApiDelay();
+  await apiDelay();
   
-  let results = MOCK_ARTICLES;
+  let results = HELP_ARTICLES;
   
   if (category) {
     results = results.filter(a => a.category_id === category);
@@ -533,13 +533,13 @@ const searchArticles = async (query: string, category?: string): Promise<HelpArt
 };
 
 const getAutocomplete = async (query: string): Promise<AutocompleteSuggestion[]> => {
-  await mockApiDelay();
+  await apiDelay();
   
   const lowerQuery = query.toLowerCase();
   const suggestions: AutocompleteSuggestion[] = [];
   
   // Add matching articles
-  MOCK_ARTICLES.forEach(article => {
+  HELP_ARTICLES.forEach(article => {
     if (article.article_title.toLowerCase().includes(lowerQuery)) {
       suggestions.push({
         suggestion_text: article.article_title,
@@ -550,7 +550,7 @@ const getAutocomplete = async (query: string): Promise<AutocompleteSuggestion[]>
   });
   
   // Add matching categories
-  MOCK_CATEGORIES.forEach(cat => {
+  HELP_CATEGORIES.forEach(cat => {
     if (cat.category_name.toLowerCase().includes(lowerQuery)) {
       suggestions.push({
         suggestion_text: cat.category_name,
@@ -564,9 +564,9 @@ const getAutocomplete = async (query: string): Promise<AutocompleteSuggestion[]>
 };
 
 const voteArticle = async (article_id: string, is_helpful: boolean): Promise<{ helpful_votes_positive: number; helpful_votes_negative: number }> => {
-  await mockApiDelay();
+  await apiDelay();
   
-  const article = MOCK_ARTICLES.find(a => a.article_id === article_id);
+  const article = HELP_ARTICLES.find(a => a.article_id === article_id);
   if (!article) {
     throw new Error('Article not found');
   }
@@ -663,11 +663,11 @@ const UV_HelpCenter: React.FC = () => {
             
             // Load related articles
             const related = article.related_article_ids
-              .map(id => MOCK_ARTICLES.find(a => a.article_id === id))
+              .map(id => HELP_ARTICLES.find(a => a.article_id === id))
               .filter(Boolean) as HelpArticle[];
             setRelatedArticles(related);
           }
-        } catch (error) {
+        } catch {
           setArticleError('Failed to load article');
         } finally {
           setArticlesLoading(false);
@@ -692,7 +692,7 @@ const UV_HelpCenter: React.FC = () => {
         try {
           const articles = await fetchCategoryArticles(selected_category);
           setSearchResults(articles);
-        } catch (error) {
+        } catch {
           setArticleError('Failed to load articles');
         } finally {
           setArticlesLoading(false);
@@ -714,7 +714,7 @@ const UV_HelpCenter: React.FC = () => {
         try {
           const results = await searchArticles(search_query, selected_category || undefined);
           setSearchResults(results);
-        } catch (error) {
+        } catch {
           setArticleError('Search failed');
         } finally {
           setSearchLoading(false);

@@ -157,7 +157,7 @@ const UV_Login: React.FC = () => {
       // CRITICAL: Call global store login function (handles API call internally)
       await loginUser(emailOrPhone, password);
       // Success - useEffect above will handle redirect
-    } catch (error) {
+    } catch {
       // Error is set in store's error_message and displayed automatically
       setSubmitting(false);
       // Clear password for security

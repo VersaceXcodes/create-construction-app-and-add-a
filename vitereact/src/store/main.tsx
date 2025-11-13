@@ -314,7 +314,7 @@ export const useAppStore = create<AppState>()(
 
           const { user, token } = response.data;
 
-          set((state) => ({
+          set(() => ({
             authentication_state: {
               current_user: user,
               auth_token: token,
@@ -343,7 +343,7 @@ export const useAppStore = create<AppState>()(
             axiosError.message || 
             'Login failed';
 
-          set((state) => ({
+          set(() => ({
             authentication_state: {
               current_user: null,
               auth_token: null,
@@ -392,7 +392,7 @@ export const useAppStore = create<AppState>()(
 
           const { user, token } = response.data;
 
-          set((state) => ({
+          set(() => ({
             authentication_state: {
               current_user: user,
               auth_token: token,
@@ -526,7 +526,7 @@ export const useAppStore = create<AppState>()(
 
           const user = response.data;
 
-          set((state) => ({
+          set(() => ({
             authentication_state: {
               current_user: user,
               auth_token: token,
@@ -547,7 +547,7 @@ export const useAppStore = create<AppState>()(
             load_conversations(),
           ]);
           connect_websocket();
-        } catch (error) {
+        } catch {
           // Token invalid or expired, clear auth state
           set({
             authentication_state: {
@@ -628,7 +628,7 @@ export const useAppStore = create<AppState>()(
           const item_count = items.reduce((sum: number, item: any) => sum + item.quantity, 0);
           const subtotal = items.reduce((sum: number, item: any) => sum + item.subtotal, 0);
 
-          set((state) => ({
+          set(() => ({
             shopping_cart_state: {
               items: items.map((item: any) => ({
                 cart_item_id: item.cart_item_id,
@@ -776,7 +776,7 @@ export const useAppStore = create<AppState>()(
       },
 
       clear_cart: () => {
-        set((state) => ({
+        set(() => ({
           shopping_cart_state: {
             items: [],
             cart_metadata: {
@@ -869,7 +869,7 @@ export const useAppStore = create<AppState>()(
 
           const { notifications, unread_count } = response.data;
 
-          set((state) => ({
+          set(() => ({
             notification_state: {
               unread_count: unread_count || 0,
               notifications: notifications || [],
@@ -1108,7 +1108,7 @@ export const useAppStore = create<AppState>()(
 
           socket.on('connect', () => {
             console.log('WebSocket connected');
-            set((state) => ({
+            set(() => ({
               websocket_connection: {
                 socket,
                 is_connected: true,
@@ -1223,7 +1223,7 @@ export const useAppStore = create<AppState>()(
             }));
           });
 
-          set((state) => ({
+          set(() => ({
             websocket_connection: {
               socket,
               is_connected: socket.connected,

@@ -300,7 +300,7 @@ const UV_PasswordReset: React.FC = () => {
       );
 
       setResendCooldown(60); // Reset cooldown
-    } catch (error) {
+    } catch {
       setResetError('Failed to resend. Please try again.');
     } finally {
       setSubmitting(false);
