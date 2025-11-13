@@ -1,4 +1,4 @@
-VALIDATION FAILURE - Auth E2E Tests (Attempt 1/100)
+VALIDATION FAILURE - Auth E2E Tests (Attempt 2/100)
 
 The project validation failed at the "Auth E2E Tests" step. You need to analyze the error and fix it.
 
@@ -19,12 +19,12 @@ Error: Internal server error
        |                 ^
     433|         }
     434|       },
- ❯ src/__tests__/auth.e2e.test.tsx:47:7
+ ❯ src/__tests__/auth.e2e.test.tsx:52:7
 
 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
 
  FAIL  src/__tests__/auth.e2e.test.tsx > Auth E2E Flow (Real API) > Login Flow > should login successfully with registered credentials via UI
-Error: Email or phone already registered
+Error: Internal server error
  ❯ register_user src/store/main.tsx:432:17
     430|           }));
     431| 
@@ -32,12 +32,12 @@ Error: Email or phone already registered
        |                 ^
     433|         }
     434|       },
- ❯ src/__tests__/auth.e2e.test.tsx:76:7
+ ❯ src/__tests__/auth.e2e.test.tsx:83:7
 
 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
 
  FAIL  src/__tests__/auth.e2e.test.tsx > Auth E2E Flow (Real API) > Logout Flow > should logout successfully after login
-Error: Email or phone already registered
+Error: Internal server error
  ❯ register_user src/store/main.tsx:432:17
     430|           }));
     431| 
@@ -45,12 +45,12 @@ Error: Email or phone already registered
        |                 ^
     433|         }
     434|       },
- ❯ src/__tests__/auth.e2e.test.tsx:155:7
+ ❯ src/__tests__/auth.e2e.test.tsx:164:7
 
 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
 
  FAIL  src/__tests__/auth.e2e.test.tsx > Auth E2E Flow (Real API) > Complete Auth Flow: Register -> Logout -> Login > should complete full auth cycle successfully
-Error: Email or phone already registered
+Error: Internal server error
  ❯ register_user src/store/main.tsx:432:17
     430|           }));
     431| 
@@ -58,7 +58,7 @@ Error: Email or phone already registered
        |                 ^
     433|         }
     434|       },
- ❯ src/__tests__/auth.e2e.test.tsx:193:7
+ ❯ src/__tests__/auth.e2e.test.tsx:204:7
 
 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
 
@@ -191,13 +191,13 @@ true
 [31m+ Received:[39m 
 null
 
- ❯ waitFor.timeout src/__tests__/auth.e2e.test.tsx:290:60
-    288|         () => {
-    289|           const state = useAppStore.getState();
-    290|           expect(state.authentication_state.error_message).toBeTruthy(…
+ ❯ waitFor.timeout src/__tests__/auth.e2e.test.tsx:301:60
+    299|         () => {
+    300|           const state = useAppStore.getState();
+    301|           expect(state.authentication_state.error_message).toBeTruthy(…
        |                                                            ^
-    291|           expect(state.authentication_state.authentication_status.is_a…
-    292|         },
+    302|           expect(state.authentication_state.authentication_status.is_a…
+    303|           expect(state.authentication_state.authentication_status.is_l…
  ❯ runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:47:12
  ❯ checkCallback node_modules/@testing-library/dom/dist/wait-for.js:124:77
  ❯ Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:118:16
@@ -205,7 +205,7 @@ null
 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
 
  FAIL  src/__tests__/auth.e2e.test.tsx > Auth E2E Flow (Real API) > Store Persistence > should persist auth token in localStorage after registration
-Error: Email or phone already registered
+Error: Internal server error
  ❯ register_user src/store/main.tsx:432:17
     430|           }));
     431| 
@@ -213,12 +213,12 @@ Error: Email or phone already registered
        |                 ^
     433|         }
     434|       },
- ❯ src/__tests__/auth.e2e.test.tsx:310:7
+ ❯ src/__tests__/auth.e2e.test.tsx:324:7
 
 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
 
  FAIL  src/__tests__/auth.e2e.test.tsx > Auth E2E Flow (Real API) > Store Persistence > should clear localStorage after logout
-Error: Email or phone already registered
+Error: Internal server error
  ❯ register_user src/store/main.tsx:432:17
     430|           }));
     431| 
@@ -226,7 +226,7 @@ Error: Email or phone already registered
        |                 ^
     433|         }
     434|       },
- ❯ src/__tests__/auth.e2e.test.tsx:339:7
+ ❯ src/__tests__/auth.e2e.test.tsx:355:7
 
 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
 
@@ -235,11 +235,11 @@ Error: Email or phone already registered
 ## Validation Context:
 - Step: Auth E2E Tests
 - Working Directory: /app/vitereact
-- Attempt: 1/100
-- Previous failures for this step: 1
+- Attempt: 2/100
+- Previous failures for this step: 2
 
 ## Project Memory Summary:
-- Total validation attempts: 14
+- Total validation attempts: 15
 - Common issues encountered: None
 - Known dependencies: @hookform/resolvers, @radix-ui/react-accordion, @radix-ui/react-alert-dialog, @radix-ui/react-aspect-ratio, @radix-ui/react-avatar, @radix-ui/react-checkbox, @radix-ui/react-collapsible, @radix-ui/react-context-menu, @radix-ui/react-dialog, @radix-ui/react-dropdown-menu
 - Missing dependencies: None
@@ -359,6 +359,7 @@ PROTECTED DIRECTORIES (DO NOT MODIFY):
 
 ## Previous Validation Failures for Auth E2E Tests:
 - 5:02:12 PM: 
+- 5:08:18 PM: 
 
 ## Your Task:
 1. **Analyze the Error**: Understand what specifically went wrong in the Auth E2E Tests step

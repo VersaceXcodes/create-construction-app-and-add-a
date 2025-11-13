@@ -1,5 +1,5 @@
 import React from 'react';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
@@ -46,7 +46,6 @@ describe('Auth E2E Flow (Real API)', () => {
       const uniqueEmail = generateUniqueEmail();
       const uniquePhone = generateUniquePhone();
       const { register_user } = useAppStore.getState();
-      const user = userEvent.setup();
 
       // Call register API directly through Zustand store
       await register_user({

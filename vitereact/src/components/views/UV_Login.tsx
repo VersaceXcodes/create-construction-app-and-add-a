@@ -66,14 +66,14 @@ const UV_Login: React.FC = () => {
   }, [isAuthenticated, currentUser, redirectUrl, navigate]);
 
   // ============================================================================
-  // Clear Errors When User Starts Typing
+  // Clear Errors When User Starts Typing (after they've been displayed)
   // ============================================================================
   
-  useEffect(() => {
+  const handleInputChange = () => {
     if (errorMessage) {
       clearAuthError();
     }
-  }, [emailOrPhone, password]);
+  };
 
   // ============================================================================
   // Email/Phone Format Validation
@@ -160,8 +160,8 @@ const UV_Login: React.FC = () => {
     } catch {
       // Error is set in store's error_message and displayed automatically
       setSubmitting(false);
-      // Clear password for security
-      setPassword('');
+      // Note: Don't clear password here as it triggers useEffect which clears the error
+      // The error should remain visible to the user
     }
   };
 
@@ -304,6 +304,7 @@ const UV_Login: React.FC = () => {
                         if (validationErrors.email_or_phone) {
                           setValidationErrors(prev => ({ ...prev, email_or_phone: null }));
                         }
+                        handleInputChange();
                       }}
                       onBlur={handleEmailOrPhoneBlur}
                       placeholder="you@example.com or +1234567890"
@@ -359,6 +360,7 @@ const UV_Login: React.FC = () => {
                         if (validationErrors.password) {
                           setValidationErrors(prev => ({ ...prev, password: null }));
                         }
+                        handleInputChange();
                       }}
                       placeholder="Enter your password"
                       aria-invalid={validationErrors.password !== null}
