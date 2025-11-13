@@ -20,7 +20,6 @@ import {
   ChevronDown,
   ChevronUp,
   Play,
-  Pause,
   Home,
   Building2,
   Wrench,
@@ -90,7 +89,6 @@ const UV_HowItWorks: React.FC = () => {
   const [activeUserTypeTab, setActiveUserTypeTab] = useState<UserTypeTab>('diy');
   const [videoPlaying, setVideoPlaying] = useState(false);
   const [expandedFaqIds, setExpandedFaqIds] = useState<string[]>([]);
-  const [scrollPosition, setScrollPosition] = useState(0);
   const [showBackToTop, setShowBackToTop] = useState(false);
   
   // Refs for smooth scrolling

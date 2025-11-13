@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppStore } from '@/store/main';
-import axios from 'axios';
 
 // ============================================================================
 // Type Definitions
@@ -186,7 +185,6 @@ const THIRD_PARTY_PARTNERS: ThirdPartyPartner[] = [
 const UV_CookiePolicy: React.FC = () => {
   // CRITICAL: Individual selectors to avoid infinite loops
   const currentUser = useAppStore(state => state.authentication_state.current_user);
-  const authToken = useAppStore(state => state.authentication_state.auth_token);
 
   // Local component state
   const [cookiePreferences, setCookiePreferences] = useState<CookiePreferences>({
@@ -291,7 +289,7 @@ const UV_CookiePolicy: React.FC = () => {
     // Analytics cookies
     if (preferences.analytics) {
       // Load Google Analytics if not already loaded
-      if (!window.gtag) {
+      if (!(window as any).gtag) {
         const script = document.createElement('script');
         script.async = true;
         script.src = 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID';

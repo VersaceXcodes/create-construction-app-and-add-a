@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useAppStore } from '@/store/main';
 import { 
@@ -21,8 +21,7 @@ import {
   Clock,
   TrendingUp,
   CheckCircle,
-  AlertCircle,
-  Info
+  AlertCircle
 } from 'lucide-react';
 
 // ============================================================================
@@ -593,8 +592,8 @@ const voteArticle = async (article_id: string, is_helpful: boolean): Promise<{ h
 const UV_HelpCenter: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   
-  // Get current user from global state
-  const currentUser = useAppStore(state => state.authentication_state.current_user);
+  // Get current user from global state (unused for now but may be needed for user-specific help)
+  // const currentUser = useAppStore(state => state.authentication_state.current_user);
   
   // Local state matching datamap
   const [help_categories, setHelpCategories] = useState<HelpCategory[]>([]);

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { Link, useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -62,10 +62,7 @@ const fetchAllCategories = async (): Promise<Category[]> => {
   return response.data;
 };
 
-const fetchCategoryById = async (categoryId: string): Promise<Category> => {
-  const response = await axios.get(`${API_BASE_URL}/api/categories/${categoryId}`);
-  return response.data;
-};
+
 
 const fetchProducts = async (params: {
   category_id: string;
@@ -105,7 +102,6 @@ const UV_CategoryBrowse: React.FC = () => {
 
   // Global state
   const currentUser = useAppStore(state => state.authentication_state.current_user);
-  const userLocation = useAppStore(state => state.user_location_state);
   const addToCart = useAppStore(state => state.add_to_cart);
 
   // Local UI state
@@ -139,16 +135,13 @@ const UV_CategoryBrowse: React.FC = () => {
   });
 
   // Build slug→category map and find current category
-  const { currentCategory, slugToIdMap } = useMemo(() => {
-    if (!allCategories) return { currentCategory: null, slugToIdMap: new Map() };
+  const currentCategory = useMemo(() => {
+    if (!allCategories) return null;
 
     const map = new Map<string, Category>();
     allCategories.forEach(cat => map.set(cat.category_slug, cat));
 
-    return {
-      currentCategory: map.get(category_slug || '') || null,
-      slugToIdMap: map,
-    };
+    return map.get(category_slug || '') || null;
   }, [allCategories, category_slug]);
 
   // Build breadcrumb path
@@ -156,7 +149,7 @@ const UV_CategoryBrowse: React.FC = () => {
     if (!currentCategory || !allCategories) return [];
 
     const path: Category[] = [];
-    let current = currentCategory;
+    let current: Category | null = currentCategory;
 
     // Traverse up to root
     while (current) {

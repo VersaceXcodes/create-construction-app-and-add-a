@@ -7,7 +7,6 @@ import {
   Heart, 
   ShoppingCart, 
   Star, 
-  MapPin, 
   TruckIcon, 
   Shield, 
   ChevronLeft, 
@@ -26,7 +25,7 @@ import {
 // Type Definitions (matching Zod schemas exactly)
 // ============================================================================
 
-interface Product {
+interface ProductType {
   product_id: string;
   supplier_id: string;
   product_name: string;
@@ -97,7 +96,7 @@ interface ProductVariant {
   created_at: string;
 }
 
-interface ProductImage {
+interface ProductImageType {
   image_id: string;
   product_id: string;
   image_url: string;
@@ -186,11 +185,9 @@ const UV_ProductDetail: React.FC = () => {
   // Global State Access (CRITICAL: Individual selectors only!)
   // ========================================================================
   
-  const currentUser = useAppStore(state => state.authentication_state.current_user);
   const authToken = useAppStore(state => state.authentication_state.auth_token);
   const isAuthenticated = useAppStore(state => state.authentication_state.authentication_status.is_authenticated);
   const postalCode = useAppStore(state => state.user_location_state.postal_code);
-  const addToCartGlobal = useAppStore(state => state.add_to_cart);
 
   // ========================================================================
   // Local State
@@ -263,11 +260,11 @@ const UV_ProductDetail: React.FC = () => {
     queryFn: () => fetchProductReviews(product_id!, reviewsPage, reviewsFilter),
     enabled: !!product_id,
     staleTime: 60000,
-    keepPreviousData: true
+    placeholderData: (previousData) => previousData
   });
 
-  const productReviews = reviewsData?.reviews || [];
-  const reviewsPagination = reviewsData?.pagination;
+  const productReviews = (reviewsData as any)?.reviews || [];
+  const reviewsPagination = (reviewsData as any)?.pagination;
 
   // Check if product in wishlist (only if authenticated)
   const { data: wishlistStatus } = useQuery({
@@ -275,7 +272,7 @@ const UV_ProductDetail: React.FC = () => {
     queryFn: async () => {
       // Since GET /api/wishlist/contains/:product_id not in OpenAPI, 
       // we'll get all wishlists and check
-      const wishlistsResponse = await axios.get(
+      await axios.get(
         `${API_BASE_URL}/api/users/me/wishlists`,
         { headers: getAuthHeaders(authToken) }
       );
@@ -401,7 +398,7 @@ const UV_ProductDetail: React.FC = () => {
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(['wishlistStatus', product_id]);
+      queryClient.invalidateQueries({ queryKey: ['wishlistStatus', product_id] });
       alert('Added to wishlist!');
     },
     onError: (error: AxiosError<{ error?: string }>) => {
@@ -879,12 +876,12 @@ const UV_ProductDetail: React.FC = () => {
 
               {/* Action Buttons */}
               <div className="space-y-3">
-                <button
-                  onClick={handleAddToCart}
-                  disabled={availabilityStatus === 'out_of_stock' || addToCartMutation.isLoading}
-                  className="w-full flex items-center justify-center space-x-2 px-6 py-4 bg-blue-600 text-white rounded-lg font-semibold text-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl"
-                >
-                  {addToCartMutation.isLoading ? (
+              <button
+                onClick={handleAddToCart}
+                disabled={availabilityStatus === 'out_of_stock' || addToCartMutation.isPending}
+                className="w-full flex items-center justify-center space-x-2 px-6 py-4 bg-blue-600 text-white rounded-lg font-semibold text-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl"
+              >
+                {addToCartMutation.isPending ? (
                     <>
                       <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -903,7 +900,7 @@ const UV_ProductDetail: React.FC = () => {
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     onClick={handleAddToWishlist}
-                    disabled={addToWishlistMutation.isLoading}
+                    disabled={addToWishlistMutation.isPending}
                     className="flex items-center justify-center space-x-2 px-4 py-3 bg-white border-2 border-gray-300 rounded-lg font-medium text-gray-700 hover:border-gray-400 transition-all"
                   >
                     <Heart className={`w-5 h-5 ${inWishlist ? 'fill-red-500 text-red-500' : ''}`} />
@@ -1337,7 +1334,7 @@ const UV_ProductDetail: React.FC = () => {
             </div>
             <button
               onClick={handleAddToCart}
-              disabled={availabilityStatus === 'out_of_stock' || addToCartMutation.isLoading}
+              disabled={availabilityStatus === 'out_of_stock' || addToCartMutation.isPending}
               className="flex-1 flex items-center justify-center space-x-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
               <ShoppingCart className="w-5 h-5" />

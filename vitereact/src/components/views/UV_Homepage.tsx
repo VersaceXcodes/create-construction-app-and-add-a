@@ -14,9 +14,7 @@ import {
   ArrowRight,
   ChevronRight,
   Star,
-  MapPin,
   Shield,
-  Clock,
   Users,
   Sparkles
 } from 'lucide-react';
@@ -240,7 +238,7 @@ const UV_Homepage: React.FC = () => {
         throw error;
       }
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       setNewsletterSuccess(true);
       setNewsletterEmail('');
       setNewsletterError(null);

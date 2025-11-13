@@ -338,7 +338,7 @@ const UV_PrivacyPolicy: React.FC = () => {
     setDataExportError(null);
 
     try {
-      const response = await axios.post(
+      await axios.post(
         `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'}/api/users/${currentUser.user_id}/data-export`,
         {},
         {

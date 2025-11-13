@@ -55,8 +55,8 @@ const UV_PasswordReset: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   
-  // CRITICAL: Individual selectors to avoid infinite loops
-  const currentUser = useAppStore(state => state.authentication_state.current_user);
+  // CRITICAL: Individual selectors to avoid infinite loops (unused but may be needed for redirect)
+  // const currentUser = useAppStore(state => state.authentication_state.current_user);
 
   // ========================================================================
   // Local State Variables (matching datamap exactly)
@@ -74,7 +74,7 @@ const UV_PasswordReset: React.FC = () => {
   const [reset_error, setResetError] = useState<string | null>(null);
   const [reset_success, setResetSuccess] = useState(false);
   const [resend_cooldown, setResendCooldown] = useState(0);
-  const [verification_attempts, setVerificationAttempts] = useState(0);
+  const [verification_attempts] = useState(0);
   const [show_password, setShowPassword] = useState(false);
   const [show_confirm_password, setShowConfirmPassword] = useState(false);
   

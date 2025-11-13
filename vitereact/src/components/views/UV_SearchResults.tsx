@@ -56,9 +56,7 @@ const UV_SearchResults: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   // CRITICAL: Individual selectors to prevent infinite loops
-  const currentUser = useAppStore(state => state.authentication_state.current_user);
   const addToCartAction = useAppStore(state => state.add_to_cart);
-  const userLocation = useAppStore(state => state.user_location_state);
 
   // Local UI state
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -115,7 +113,7 @@ const UV_SearchResults: React.FC = () => {
     enabled: search_query.length > 0,
     staleTime: 60000,
     refetchOnWindowFocus: false,
-    keepPreviousData: true,
+    placeholderData: (previousData) => previousData,
     retry: 1,
   });
 
@@ -211,8 +209,8 @@ const UV_SearchResults: React.FC = () => {
     setSearchParams(params);
   };
 
-  const products = data?.products || [];
-  const pagination = data?.pagination;
+  const products = (data as any)?.products || [];
+  const pagination = (data as any)?.pagination;
   const total_results = pagination?.total_items || 0;
 
   // Redirect if no search query
@@ -806,7 +804,7 @@ const UV_SearchResults: React.FC = () => {
                                 e.preventDefault();
                                 await addToCartMutation.mutateAsync(product);
                               }}
-                              disabled={product.availability === 'out_of_stock' || addToCartMutation.isLoading}
+                              disabled={product.availability === 'out_of_stock' || addToCartMutation.isPending}
                               className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                                 product.availability === 'out_of_stock'
                                   ? 'bg-gray-100 text-gray-500 cursor-not-allowed border border-gray-200'
@@ -814,7 +812,7 @@ const UV_SearchResults: React.FC = () => {
                               }`}
                               aria-label={product.availability === 'out_of_stock' ? 'Out of stock' : `Add ${product.product_name} to cart`}
                             >
-                              {addToCartMutation.isLoading ? (
+                              {addToCartMutation.isPending ? (
                                 <span className="flex items-center justify-center gap-2">
                                   <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
