@@ -793,7 +793,7 @@ const UV_CategoryBrowse: React.FC = () => {
                                   {[...Array(5)].map((_, i) => (
                                     <svg
                                       key={i}
-                                      className={`h-4 w-4 ${i < Math.floor(product.rating_average) ? 'text-yellow-400' : 'text-gray-300'}`}
+                                      className={`h-4 w-4 ${i < Math.floor(parseFloat(product.rating_average)) ? 'text-yellow-400' : 'text-gray-300'}`}
                                       fill="currentColor"
                                       viewBox="0 0 20 20"
                                     >

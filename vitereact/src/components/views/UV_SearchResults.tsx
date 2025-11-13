@@ -781,7 +781,7 @@ const UV_SearchResults: React.FC = () => {
                               <div className="flex items-center">
                                 <span className="text-yellow-500 text-sm">★</span>
                                 <span className="text-sm font-medium text-gray-700 ml-1">
-                                  {product.rating_average.toFixed(1)}
+                                  {parseFloat(product.rating_average).toFixed(1)}
                                 </span>
                               </div>
                               <span className="text-xs text-gray-500">

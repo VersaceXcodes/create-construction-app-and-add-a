@@ -773,7 +773,7 @@ const UV_ProductDetail: React.FC = () => {
 
               {/* Rating */}
               <div className="flex items-center space-x-4">
-                {renderStars(product.rating_average, product.rating_count)}
+                {renderStars(parseFloat(product.rating_average), product.rating_count)}
                 {product.rating_count > 0 && (
                   <a href="#reviews" className="text-blue-600 hover:text-blue-700 text-sm font-medium underline">
                     See all reviews
@@ -1108,10 +1108,10 @@ const UV_ProductDetail: React.FC = () => {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 pb-8 border-b border-gray-200">
                     <div className="text-center">
                       <div className="text-5xl font-bold text-gray-900 mb-2">
-                        {product.rating_average.toFixed(1)}
+                        {parseFloat(product.rating_average).toFixed(1)}
                       </div>
                       <div className="flex justify-center mb-2">
-                        {renderStars(product.rating_average)}
+                        {renderStars(parseFloat(product.rating_average))}
                       </div>
                       <p className="text-sm text-gray-600">
                         Based on {product.rating_count} review{product.rating_count !== 1 ? 's' : ''}
