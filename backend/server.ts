@@ -624,7 +624,7 @@ app.get('/api/products', async (req, res) => {
     query += ` ORDER BY ${sortMap[sort_by as string] || sortMap.created_at}`;
 
     query += ` LIMIT $${paramCount++} OFFSET $${paramCount}`;
-    values.push(limitNum.toString(), offset.toString());
+    values.push(limitNum, offset);
 
     const result = await pool.query(query, values);
 

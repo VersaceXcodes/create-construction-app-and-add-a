@@ -93,12 +93,16 @@ const UV_SearchResults: React.FC = () => {
     queryKey: ['products', 'search', search_query, filters, sort_by, current_page],
     queryFn: async () => {
       const params: Record<string, string | number> = {
-        q: search_query,
         sort_by,
         page: current_page,
         limit: 24,
         status: 'active',
       };
+
+      // Only add search query if it's not empty
+      if (search_query.length > 0) {
+        params.q = search_query;
+      }
 
       if (filters.category_ids.length > 0) params.category = filters.category_ids[0];
       if (filters.min_price !== null) params.price_min = filters.min_price;
@@ -110,7 +114,7 @@ const UV_SearchResults: React.FC = () => {
       const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'}/api/products`, { params });
       return response.data;
     },
-    enabled: search_query.length > 0,
+    enabled: true, // Always fetch products, even without a search query
     staleTime: 60000,
     refetchOnWindowFocus: false,
     placeholderData: (previousData) => previousData,
@@ -231,7 +235,7 @@ const UV_SearchResults: React.FC = () => {
               <div className="flex-1">
                 <div className="flex items-center gap-2">
                   <h1 className="text-xl md:text-2xl font-bold text-gray-900 leading-tight">
-                    Search: "{search_query}"
+                    {search_query ? `Search: "${search_query}"` : 'All Products'}
                   </h1>
                   <Link
                     to="/"
@@ -623,7 +627,9 @@ const UV_SearchResults: React.FC = () => {
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">No results found</h3>
                   <p className="text-gray-600 mb-6 leading-relaxed">
-                    We couldn't find any products matching "{search_query}"
+                    {search_query 
+                      ? `We couldn't find any products matching "${search_query}"`
+                      : "We couldn't find any products with your current filters"}
                   </p>
                   <div className="max-w-md mx-auto space-y-4">
                     <div className="bg-blue-50 rounded-lg p-4">
