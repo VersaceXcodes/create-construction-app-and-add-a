@@ -1,0 +1,19 @@
+{
+  "timestamp": 1763050382933,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "UV_PasswordReset",
+      "version": "1763050195147"
+    }
+  },
+  "projectId": "create-construction-app-and-add-a",
+  "files": [
+    {
+      "path": "/mnt/data/create-construction-app-and-add-a/vitereact/src/components/views/UV_PasswordReset.tsx",
+      "type": "text",
+      "size": 43559,
+      "dependencies": false
+    }
+  ]
+}

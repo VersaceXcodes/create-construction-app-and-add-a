@@ -1,0 +1,19 @@
+{
+  "timestamp": 1763050340775,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "UV_AccessibilityStatement",
+      "version": "1763050195837"
+    }
+  },
+  "projectId": "create-construction-app-and-add-a",
+  "files": [
+    {
+      "path": "/mnt/data/create-construction-app-and-add-a/vitereact/src/components/views/UV_AccessibilityStatement.tsx",
+      "type": "text",
+      "size": 37508,
+      "dependencies": false
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "timestamp": 1763050092341,
+  "operation": {
+    "id": "settings:config:package"
+  },
+  "projectId": "create-construction-app-and-add-a",
+  "files": [
+    {
+      "path": "/mnt/data/create-construction-app-and-add-a/backend/package.json",
+      "type": "text",
+      "size": 1457,
+      "dependencies": true
+    }
+  ]
+}

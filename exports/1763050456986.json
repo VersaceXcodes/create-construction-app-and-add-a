@@ -1,0 +1,19 @@
+{
+  "timestamp": 1763050456986,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "UV_GuestCheckout",
+      "version": "1763050195227"
+    }
+  },
+  "projectId": "create-construction-app-and-add-a",
+  "files": [
+    {
+      "path": "/mnt/data/create-construction-app-and-add-a/vitereact/src/components/views/UV_GuestCheckout.tsx",
+      "type": "text",
+      "size": 70480,
+      "dependencies": false
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "timestamp": 1763047623798,
+  "operation": {
+    "id": "backend:specifications:asyncapi"
+  },
+  "projectId": "create-construction-app-and-add-a",
+  "files": [
+    {
+      "path": "/mnt/data/create-construction-app-and-add-a/backend/asyncapi.yaml",
+      "type": "text",
+      "size": 72412,
+      "dependencies": false
+    }
+  ]
+}

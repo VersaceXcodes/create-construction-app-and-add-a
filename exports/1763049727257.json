@@ -1,0 +1,19 @@
+{
+  "timestamp": 1763049727257,
+  "operation": {
+    "id": "webapp:react:store",
+    "refs": {
+      "id": "redux",
+      "version": "latest"
+    }
+  },
+  "projectId": "create-construction-app-and-add-a",
+  "files": [
+    {
+      "path": "/mnt/data/create-construction-app-and-add-a/vitereact/src/store/main.tsx",
+      "type": "text",
+      "size": 39912,
+      "dependencies": false
+    }
+  ]
+}

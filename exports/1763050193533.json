@@ -1,0 +1,19 @@
+{
+  "timestamp": 1763050193533,
+  "operation": {
+    "id": "webapp:react:root",
+    "refs": {
+      "id": "app",
+      "version": "latest"
+    }
+  },
+  "projectId": "create-construction-app-and-add-a",
+  "files": [
+    {
+      "path": "/mnt/data/create-construction-app-and-add-a/vitereact/src/App.tsx",
+      "type": "text",
+      "size": 24926,
+      "dependencies": false
+    }
+  ]
+}

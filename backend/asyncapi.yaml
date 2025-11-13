@@ -1,0 +1,2697 @@
+asyncapi: 2.0.0
+info:
+  title: BuildEasy Realtime Events API
+  version: 1.0.0
+  description: >
+    Comprehensive AsyncAPI specification for all realtime/websocket features in
+    the BuildEasy platform.
+
+    This specification covers realtime events for order tracking, delivery
+    updates, messaging, notifications,
+
+    inventory changes, cart management, and live support features.
+
+
+    **Critical Design Notes:**
+
+    - All entity IDs are strings (as defined in Zod schemas)
+
+    - All field names use snake_case convention
+
+    - Events align with frontend global state management
+
+    - WebSocket connection required for all realtime features
+servers:
+  development:
+    url: ws://localhost:3000/ws
+    protocol: ws
+    description: Local development WebSocket server
+channels:
+  orders/{order_id}/status:
+    description: Real-time order status updates for a specific order
+    parameters:
+      order_id:
+        description: Unique order identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Subscribe to order status changes
+      message:
+        oneOf:
+          - $ref: "#/components/messages/OrderStatusUpdated"
+          - $ref: "#/components/messages/OrderAccepted"
+          - $ref: "#/components/messages/OrderShipped"
+          - $ref: "#/components/messages/OrderDelivered"
+          - $ref: "#/components/messages/OrderCanceled"
+  orders/{order_id}/tracking:
+    description: Real-time delivery tracking updates including GPS location
+    parameters:
+      order_id:
+        description: Unique order identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Subscribe to delivery tracking updates
+      message:
+        oneOf:
+          - $ref: "#/components/messages/DeliveryLocationUpdated"
+          - $ref: "#/components/messages/DeliveryETAUpdated"
+          - $ref: "#/components/messages/DeliveryStatusUpdated"
+          - $ref: "#/components/messages/DeliveryDelayed"
+  user/{user_id}/orders:
+    description: Aggregated order updates for a user across all orders
+    parameters:
+      user_id:
+        description: Unique user identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Subscribe to all order updates for a user
+      message:
+        oneOf:
+          - $ref: "#/components/messages/OrderStatusUpdated"
+          - $ref: "#/components/messages/OrderAccepted"
+          - $ref: "#/components/messages/OrderShipped"
+          - $ref: "#/components/messages/OrderDelivered"
+  conversations/{conversation_id}/messages:
+    description: Real-time messages in a conversation between customer and supplier
+    parameters:
+      conversation_id:
+        description: Unique conversation identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Receive new messages in conversation
+      message:
+        $ref: "#/components/messages/MessageReceived"
+    publish:
+      summary: Send a new message in conversation
+      message:
+        $ref: "#/components/messages/MessageSent"
+  conversations/{conversation_id}/typing:
+    description: Typing indicator events in a conversation
+    parameters:
+      conversation_id:
+        description: Unique conversation identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Receive typing indicator from other participant
+      message:
+        $ref: "#/components/messages/UserTyping"
+    publish:
+      summary: Send typing indicator to other participant
+      message:
+        $ref: "#/components/messages/UserTyping"
+  conversations/{conversation_id}/read:
+    description: Message read receipt events
+    parameters:
+      conversation_id:
+        description: Unique conversation identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Receive read receipt when messages are read
+      message:
+        $ref: "#/components/messages/MessagesRead"
+    publish:
+      summary: Send read receipt for messages
+      message:
+        $ref: "#/components/messages/MessagesRead"
+  user/{user_id}/conversations:
+    description: Aggregated conversation events for a user
+    parameters:
+      user_id:
+        description: Unique user identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Subscribe to all conversation updates for a user
+      message:
+        oneOf:
+          - $ref: "#/components/messages/NewConversation"
+          - $ref: "#/components/messages/ConversationUpdated"
+          - $ref: "#/components/messages/UnreadCountUpdated"
+  user/{user_id}/notifications:
+    description: Real-time notification stream for a user
+    parameters:
+      user_id:
+        description: Unique user identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Receive real-time notifications
+      message:
+        $ref: "#/components/messages/NotificationReceived"
+    publish:
+      summary: Mark notification as read
+      message:
+        $ref: "#/components/messages/NotificationRead"
+  user/{user_id}/notifications/count:
+    description: Real-time unread notification count updates
+    parameters:
+      user_id:
+        description: Unique user identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Subscribe to unread count changes
+      message:
+        $ref: "#/components/messages/UnreadCountUpdated"
+  products/{product_id}/inventory:
+    description: Real-time inventory level updates for a product
+    parameters:
+      product_id:
+        description: Unique product identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Subscribe to inventory changes for a product
+      message:
+        oneOf:
+          - $ref: "#/components/messages/InventoryUpdated"
+          - $ref: "#/components/messages/ProductOutOfStock"
+          - $ref: "#/components/messages/ProductBackInStock"
+          - $ref: "#/components/messages/ProductLowStock"
+  supplier/{supplier_id}/inventory:
+    description: Aggregated inventory updates for a supplier's products
+    parameters:
+      supplier_id:
+        description: Unique supplier identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Subscribe to all inventory updates for supplier
+      message:
+        oneOf:
+          - $ref: "#/components/messages/InventoryUpdated"
+          - $ref: "#/components/messages/ProductOutOfStock"
+          - $ref: "#/components/messages/ProductLowStock"
+  cart/{cart_id}/updates:
+    description: Real-time cart updates including price changes and availability
+    parameters:
+      cart_id:
+        description: Unique cart identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Subscribe to cart updates
+      message:
+        oneOf:
+          - $ref: "#/components/messages/CartItemPriceChanged"
+          - $ref: "#/components/messages/CartItemAvailabilityChanged"
+          - $ref: "#/components/messages/CartReservationExpiring"
+          - $ref: "#/components/messages/CartReservationExpired"
+          - $ref: "#/components/messages/CartItemOutOfStock"
+  cart/{cart_id}/items:
+    description: Real-time cart item modifications
+    parameters:
+      cart_id:
+        description: Unique cart identifier
+        schema:
+          type: string
+    publish:
+      summary: Add, update, or remove cart items
+      message:
+        oneOf:
+          - $ref: "#/components/messages/CartItemAdded"
+          - $ref: "#/components/messages/CartItemUpdated"
+          - $ref: "#/components/messages/CartItemRemoved"
+    subscribe:
+      summary: Receive confirmation of cart modifications
+      message:
+        oneOf:
+          - $ref: "#/components/messages/CartItemAdded"
+          - $ref: "#/components/messages/CartItemUpdated"
+          - $ref: "#/components/messages/CartItemRemoved"
+  support/chat/{session_id}/messages:
+    description: Real-time live support chat messages
+    parameters:
+      session_id:
+        description: Unique support chat session identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Receive messages from support agent
+      message:
+        $ref: "#/components/messages/SupportMessageReceived"
+    publish:
+      summary: Send message to support agent
+      message:
+        $ref: "#/components/messages/SupportMessageSent"
+  support/chat/{session_id}/status:
+    description: Support chat session status updates
+    parameters:
+      session_id:
+        description: Unique support chat session identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Subscribe to chat session status changes
+      message:
+        oneOf:
+          - $ref: "#/components/messages/SupportChatQueued"
+          - $ref: "#/components/messages/SupportAgentConnected"
+          - $ref: "#/components/messages/SupportAgentTyping"
+          - $ref: "#/components/messages/SupportChatEnded"
+  supplier/{supplier_id}/presence:
+    description: Supplier online/offline status updates
+    parameters:
+      supplier_id:
+        description: Unique supplier identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Subscribe to supplier presence changes
+      message:
+        $ref: "#/components/messages/SupplierPresenceChanged"
+  support/agents/presence:
+    description: Support agent availability status
+    subscribe:
+      summary: Subscribe to support agent online status
+      message:
+        $ref: "#/components/messages/SupportAgentPresenceChanged"
+  user/{user_id}/price-alerts:
+    description: Real-time price drop alerts for wishlist items
+    parameters:
+      user_id:
+        description: Unique user identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Receive price drop notifications
+      message:
+        $ref: "#/components/messages/PriceDropAlert"
+  user/{user_id}/stock-alerts:
+    description: Real-time back-in-stock alerts for wishlist items
+    parameters:
+      user_id:
+        description: Unique user identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Receive back-in-stock notifications
+      message:
+        $ref: "#/components/messages/BackInStockAlert"
+  supplier/{supplier_id}/promotions:
+    description: Real-time promotion and flash sale updates
+    parameters:
+      supplier_id:
+        description: Unique supplier identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Subscribe to supplier promotion updates
+      message:
+        oneOf:
+          - $ref: "#/components/messages/PromotionStarted"
+          - $ref: "#/components/messages/PromotionEnding"
+          - $ref: "#/components/messages/PromotionExpired"
+  supplier/{supplier_id}/orders/new:
+    description: Real-time new order notifications for suppliers
+    parameters:
+      supplier_id:
+        description: Unique supplier identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Receive notifications for new orders
+      message:
+        $ref: "#/components/messages/NewOrderNotification"
+  supplier/{supplier_id}/reviews/new:
+    description: Real-time new review notifications for suppliers
+    parameters:
+      supplier_id:
+        description: Unique supplier identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Receive notifications for new reviews
+      message:
+        $ref: "#/components/messages/NewReviewNotification"
+  supplier/{supplier_id}/messages/new:
+    description: Real-time new message notifications for suppliers
+    parameters:
+      supplier_id:
+        description: Unique supplier identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Receive notifications for new customer messages
+      message:
+        $ref: "#/components/messages/NewMessageNotification"
+  admin/platform/activity:
+    description: Real-time platform activity feed for admins
+    subscribe:
+      summary: Subscribe to platform-wide activity updates
+      message:
+        oneOf:
+          - $ref: "#/components/messages/NewUserRegistration"
+          - $ref: "#/components/messages/NewSupplierApplication"
+          - $ref: "#/components/messages/NewOrderPlaced"
+          - $ref: "#/components/messages/NewDisputeOpened"
+  admin/alerts:
+    description: Real-time critical alerts for platform administrators
+    subscribe:
+      summary: Receive critical platform alerts
+      message:
+        oneOf:
+          - $ref: "#/components/messages/PaymentFailureAlert"
+          - $ref: "#/components/messages/FraudAlert"
+          - $ref: "#/components/messages/SystemHealthAlert"
+  disputes/{dispute_id}/updates:
+    description: Real-time updates on dispute case
+    parameters:
+      dispute_id:
+        description: Unique dispute identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Subscribe to dispute status changes
+      message:
+        oneOf:
+          - $ref: "#/components/messages/DisputeStatusUpdated"
+          - $ref: "#/components/messages/DisputeMessageReceived"
+          - $ref: "#/components/messages/DisputeResolved"
+  returns/{return_id}/updates:
+    description: Real-time updates on return request
+    parameters:
+      return_id:
+        description: Unique return identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Subscribe to return status changes
+      message:
+        oneOf:
+          - $ref: "#/components/messages/ReturnStatusUpdated"
+          - $ref: "#/components/messages/ReturnApproved"
+          - $ref: "#/components/messages/ReturnRejected"
+          - $ref: "#/components/messages/RefundProcessed"
+  projects/{project_id}/updates:
+    description: Real-time project updates for team collaboration
+    parameters:
+      project_id:
+        description: Unique project identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Subscribe to project changes
+      message:
+        oneOf:
+          - $ref: "#/components/messages/ProjectBudgetAlert"
+          - $ref: "#/components/messages/ProjectOrderPlaced"
+          - $ref: "#/components/messages/ProjectMaterialAdded"
+  business-account/{business_account_id}/approvals:
+    description: Real-time order approval workflow events
+    parameters:
+      business_account_id:
+        description: Unique business account identifier
+        schema:
+          type: string
+    subscribe:
+      summary: Subscribe to approval requests and decisions
+      message:
+        oneOf:
+          - $ref: "#/components/messages/ApprovalRequested"
+          - $ref: "#/components/messages/ApprovalGranted"
+          - $ref: "#/components/messages/ApprovalDenied"
+components:
+  messages:
+    OrderStatusUpdated:
+      name: order.status.updated
+      title: Order Status Updated
+      summary: Sent when an order status changes
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - order_id
+          - order_number
+          - previous_status
+          - current_status
+          - timestamp
+        properties:
+          order_id:
+            type: string
+            description: Unique order identifier
+          order_number:
+            type: string
+            description: Human-readable order number
+          previous_status:
+            type: string
+            enum:
+              - pending
+              - processing
+              - confirmed
+              - shipped
+              - delivered
+              - canceled
+              - refunded
+          current_status:
+            type: string
+            enum:
+              - pending
+              - processing
+              - confirmed
+              - shipped
+              - delivered
+              - canceled
+              - refunded
+          status_message:
+            type: string
+            description: Human-readable status description
+          timestamp:
+            type: string
+            format: date-time
+          estimated_delivery_date:
+            type: string
+            format: date-time
+            nullable: true
+          customer_id:
+            type: string
+          supplier_id:
+            type: string
+    OrderAccepted:
+      name: order.accepted
+      title: Order Accepted by Supplier
+      summary: Sent when supplier accepts an order
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - order_id
+          - order_number
+          - supplier_id
+          - accepted_at
+          - estimated_delivery_date
+        properties:
+          order_id:
+            type: string
+          order_number:
+            type: string
+          supplier_id:
+            type: string
+          supplier_name:
+            type: string
+          accepted_at:
+            type: string
+            format: date-time
+          estimated_delivery_date:
+            type: string
+            format: date-time
+          supplier_message:
+            type: string
+            nullable: true
+    OrderShipped:
+      name: order.shipped
+      title: Order Shipped
+      summary: Sent when order is dispatched for delivery
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - order_id
+          - order_number
+          - shipped_at
+        properties:
+          order_id:
+            type: string
+          order_number:
+            type: string
+          shipped_at:
+            type: string
+            format: date-time
+          tracking_number:
+            type: string
+            nullable: true
+          carrier_name:
+            type: string
+            nullable: true
+          tracking_url:
+            type: string
+            nullable: true
+          estimated_delivery_date:
+            type: string
+            format: date-time
+          delivery_window_start:
+            type: string
+            format: date-time
+            nullable: true
+          delivery_window_end:
+            type: string
+            format: date-time
+            nullable: true
+    OrderDelivered:
+      name: order.delivered
+      title: Order Delivered
+      summary: Sent when order is successfully delivered
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - order_id
+          - order_number
+          - delivered_at
+        properties:
+          order_id:
+            type: string
+          order_number:
+            type: string
+          delivered_at:
+            type: string
+            format: date-time
+          recipient_name:
+            type: string
+            nullable: true
+          proof_of_delivery_url:
+            type: string
+            nullable: true
+          delivery_photo_urls:
+            type: array
+            items:
+              type: string
+            nullable: true
+    OrderCanceled:
+      name: order.canceled
+      title: Order Canceled
+      summary: Sent when order is canceled
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - order_id
+          - order_number
+          - canceled_at
+          - cancellation_reason
+        properties:
+          order_id:
+            type: string
+          order_number:
+            type: string
+          canceled_at:
+            type: string
+            format: date-time
+          cancellation_reason:
+            type: string
+          canceled_by:
+            type: string
+            enum:
+              - customer
+              - supplier
+              - admin
+              - system
+          refund_amount:
+            type: number
+            nullable: true
+          refund_status:
+            type: string
+            enum:
+              - pending
+              - processing
+              - completed
+            nullable: true
+    DeliveryLocationUpdated:
+      name: delivery.location.updated
+      title: Delivery Location Updated
+      summary: GPS location update for delivery vehicle
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - order_id
+          - delivery_id
+          - current_latitude
+          - current_longitude
+          - timestamp
+        properties:
+          order_id:
+            type: string
+          delivery_id:
+            type: string
+          current_latitude:
+            type: number
+            format: float
+          current_longitude:
+            type: number
+            format: float
+          timestamp:
+            type: string
+            format: date-time
+          driver_name:
+            type: string
+            nullable: true
+          driver_phone:
+            type: string
+            nullable: true
+    DeliveryETAUpdated:
+      name: delivery.eta.updated
+      title: Delivery ETA Updated
+      summary: Estimated arrival time updated
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - order_id
+          - delivery_id
+          - estimated_arrival_time
+          - timestamp
+        properties:
+          order_id:
+            type: string
+          delivery_id:
+            type: string
+          estimated_arrival_time:
+            type: string
+            format: date-time
+          minutes_away:
+            type: integer
+            nullable: true
+          timestamp:
+            type: string
+            format: date-time
+    DeliveryStatusUpdated:
+      name: delivery.status.updated
+      title: Delivery Status Updated
+      summary: Delivery status changed
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - order_id
+          - delivery_id
+          - previous_status
+          - current_status
+          - timestamp
+        properties:
+          order_id:
+            type: string
+          delivery_id:
+            type: string
+          previous_status:
+            type: string
+            enum:
+              - pending
+              - in_transit
+              - out_for_delivery
+              - delivered
+              - failed
+              - returned
+          current_status:
+            type: string
+            enum:
+              - pending
+              - in_transit
+              - out_for_delivery
+              - delivered
+              - failed
+              - returned
+          status_message:
+            type: string
+          timestamp:
+            type: string
+            format: date-time
+          location:
+            type: string
+            nullable: true
+    DeliveryDelayed:
+      name: delivery.delayed
+      title: Delivery Delayed
+      summary: Delivery is delayed with new ETA
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - order_id
+          - delivery_id
+          - original_eta
+          - new_eta
+          - delay_reason
+          - timestamp
+        properties:
+          order_id:
+            type: string
+          delivery_id:
+            type: string
+          original_eta:
+            type: string
+            format: date-time
+          new_eta:
+            type: string
+            format: date-time
+          delay_reason:
+            type: string
+          delay_minutes:
+            type: integer
+          timestamp:
+            type: string
+            format: date-time
+    MessageReceived:
+      name: message.received
+      title: Message Received
+      summary: New message received in conversation
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - message_id
+          - conversation_id
+          - sender_id
+          - message_text
+          - sent_at
+        properties:
+          message_id:
+            type: string
+          conversation_id:
+            type: string
+          sender_id:
+            type: string
+          sender_name:
+            type: string
+          sender_type:
+            type: string
+            enum:
+              - customer
+              - supplier
+              - admin
+          message_text:
+            type: string
+          attachment_urls:
+            type: array
+            items:
+              type: string
+            nullable: true
+          sent_at:
+            type: string
+            format: date-time
+          related_order_id:
+            type: string
+            nullable: true
+          related_product_id:
+            type: string
+            nullable: true
+    MessageSent:
+      name: message.sent
+      title: Message Sent
+      summary: Confirmation that message was sent successfully
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - message_id
+          - conversation_id
+          - sender_id
+          - message_text
+          - sent_at
+        properties:
+          message_id:
+            type: string
+          conversation_id:
+            type: string
+          sender_id:
+            type: string
+          message_text:
+            type: string
+          attachment_urls:
+            type: array
+            items:
+              type: string
+            nullable: true
+          sent_at:
+            type: string
+            format: date-time
+          delivery_status:
+            type: string
+            enum:
+              - sent
+              - delivered
+              - failed
+    UserTyping:
+      name: user.typing
+      title: User Typing
+      summary: Typing indicator for conversation participant
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - conversation_id
+          - user_id
+          - is_typing
+          - timestamp
+        properties:
+          conversation_id:
+            type: string
+          user_id:
+            type: string
+          user_name:
+            type: string
+          is_typing:
+            type: boolean
+          timestamp:
+            type: string
+            format: date-time
+    MessagesRead:
+      name: messages.read
+      title: Messages Read
+      summary: Read receipt for messages
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - conversation_id
+          - user_id
+          - message_ids
+          - read_at
+        properties:
+          conversation_id:
+            type: string
+          user_id:
+            type: string
+          message_ids:
+            type: array
+            items:
+              type: string
+          read_at:
+            type: string
+            format: date-time
+    NewConversation:
+      name: conversation.new
+      title: New Conversation Started
+      summary: A new conversation has been initiated
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - conversation_id
+          - participant_1_id
+          - participant_2_id
+          - created_at
+        properties:
+          conversation_id:
+            type: string
+          participant_1_id:
+            type: string
+          participant_1_name:
+            type: string
+          participant_1_type:
+            type: string
+            enum:
+              - customer
+              - supplier
+              - admin
+          participant_2_id:
+            type: string
+          participant_2_name:
+            type: string
+          participant_2_type:
+            type: string
+            enum:
+              - customer
+              - supplier
+              - admin
+          related_order_id:
+            type: string
+            nullable: true
+          related_product_id:
+            type: string
+            nullable: true
+          created_at:
+            type: string
+            format: date-time
+    ConversationUpdated:
+      name: conversation.updated
+      title: Conversation Updated
+      summary: Conversation metadata updated
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - conversation_id
+          - updated_at
+        properties:
+          conversation_id:
+            type: string
+          last_message_at:
+            type: string
+            format: date-time
+          status:
+            type: string
+            enum:
+              - open
+              - pending_customer
+              - closed
+          updated_at:
+            type: string
+            format: date-time
+    NotificationReceived:
+      name: notification.received
+      title: Notification Received
+      summary: New notification for user
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - notification_id
+          - user_id
+          - notification_type
+          - title
+          - message
+          - created_at
+        properties:
+          notification_id:
+            type: string
+          user_id:
+            type: string
+          notification_type:
+            type: string
+            enum:
+              - order_update
+              - message
+              - promotion
+              - system
+              - price_drop
+              - back_in_stock
+          title:
+            type: string
+          message:
+            type: string
+          icon_type:
+            type: string
+            enum:
+              - success
+              - info
+              - warning
+              - error
+              - message
+              - offer
+          related_entity_type:
+            type: string
+            nullable: true
+          related_entity_id:
+            type: string
+            nullable: true
+          action_url:
+            type: string
+            nullable: true
+          created_at:
+            type: string
+            format: date-time
+          is_read:
+            type: boolean
+            default: false
+    NotificationRead:
+      name: notification.read
+      title: Notification Read
+      summary: Notification marked as read
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - notification_id
+          - user_id
+          - read_at
+        properties:
+          notification_id:
+            type: string
+          user_id:
+            type: string
+          read_at:
+            type: string
+            format: date-time
+    UnreadCountUpdated:
+      name: unread_count.updated
+      title: Unread Count Updated
+      summary: Total unread count updated for user
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - user_id
+          - unread_count
+          - timestamp
+        properties:
+          user_id:
+            type: string
+          unread_count:
+            type: integer
+          unread_by_type:
+            type: object
+            properties:
+              order_update:
+                type: integer
+              message:
+                type: integer
+              promotion:
+                type: integer
+              system:
+                type: integer
+          timestamp:
+            type: string
+            format: date-time
+    InventoryUpdated:
+      name: inventory.updated
+      title: Inventory Updated
+      summary: Product inventory level changed
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - product_id
+          - previous_quantity
+          - current_quantity
+          - timestamp
+        properties:
+          product_id:
+            type: string
+          variant_id:
+            type: string
+            nullable: true
+          product_name:
+            type: string
+          previous_quantity:
+            type: integer
+          current_quantity:
+            type: integer
+          quantity_change:
+            type: integer
+          availability_status:
+            type: string
+            enum:
+              - in_stock
+              - low_stock
+              - out_of_stock
+          timestamp:
+            type: string
+            format: date-time
+          supplier_id:
+            type: string
+    ProductOutOfStock:
+      name: product.out_of_stock
+      title: Product Out of Stock
+      summary: Product inventory depleted
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - product_id
+          - product_name
+          - timestamp
+        properties:
+          product_id:
+            type: string
+          variant_id:
+            type: string
+            nullable: true
+          product_name:
+            type: string
+          expected_restock_date:
+            type: string
+            format: date-time
+            nullable: true
+          timestamp:
+            type: string
+            format: date-time
+          supplier_id:
+            type: string
+    ProductBackInStock:
+      name: product.back_in_stock
+      title: Product Back In Stock
+      summary: Previously out-of-stock product available again
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - product_id
+          - product_name
+          - current_quantity
+          - timestamp
+        properties:
+          product_id:
+            type: string
+          variant_id:
+            type: string
+            nullable: true
+          product_name:
+            type: string
+          product_image_url:
+            type: string
+            nullable: true
+          current_quantity:
+            type: integer
+          price:
+            type: number
+          timestamp:
+            type: string
+            format: date-time
+          supplier_id:
+            type: string
+          supplier_name:
+            type: string
+    ProductLowStock:
+      name: product.low_stock
+      title: Product Low Stock
+      summary: Product inventory below threshold
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - product_id
+          - product_name
+          - current_quantity
+          - low_stock_threshold
+          - timestamp
+        properties:
+          product_id:
+            type: string
+          variant_id:
+            type: string
+            nullable: true
+          product_name:
+            type: string
+          current_quantity:
+            type: integer
+          low_stock_threshold:
+            type: integer
+          timestamp:
+            type: string
+            format: date-time
+          supplier_id:
+            type: string
+    CartItemPriceChanged:
+      name: cart.item.price_changed
+      title: Cart Item Price Changed
+      summary: Price of item in cart has changed
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - cart_id
+          - cart_item_id
+          - product_id
+          - previous_price
+          - current_price
+          - timestamp
+        properties:
+          cart_id:
+            type: string
+          cart_item_id:
+            type: string
+          product_id:
+            type: string
+          variant_id:
+            type: string
+            nullable: true
+          product_name:
+            type: string
+          previous_price:
+            type: number
+          current_price:
+            type: number
+          price_change_percentage:
+            type: number
+          quantity:
+            type: integer
+          timestamp:
+            type: string
+            format: date-time
+    CartItemAvailabilityChanged:
+      name: cart.item.availability_changed
+      title: Cart Item Availability Changed
+      summary: Availability status of cart item changed
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - cart_id
+          - cart_item_id
+          - product_id
+          - previous_status
+          - current_status
+          - timestamp
+        properties:
+          cart_id:
+            type: string
+          cart_item_id:
+            type: string
+          product_id:
+            type: string
+          variant_id:
+            type: string
+            nullable: true
+          product_name:
+            type: string
+          previous_status:
+            type: string
+            enum:
+              - in_stock
+              - low_stock
+              - out_of_stock
+          current_status:
+            type: string
+            enum:
+              - in_stock
+              - low_stock
+              - out_of_stock
+          stock_remaining:
+            type: integer
+            nullable: true
+          quantity_in_cart:
+            type: integer
+          timestamp:
+            type: string
+            format: date-time
+    CartReservationExpiring:
+      name: cart.reservation.expiring
+      title: Cart Reservation Expiring
+      summary: Cart item reservations expiring soon
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - cart_id
+          - reservation_expiry
+          - minutes_remaining
+          - timestamp
+        properties:
+          cart_id:
+            type: string
+          reservation_expiry:
+            type: string
+            format: date-time
+          minutes_remaining:
+            type: integer
+          item_count:
+            type: integer
+          timestamp:
+            type: string
+            format: date-time
+    CartReservationExpired:
+      name: cart.reservation.expired
+      title: Cart Reservation Expired
+      summary: Cart item reservations have expired
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - cart_id
+          - expired_at
+          - items_released
+        properties:
+          cart_id:
+            type: string
+          expired_at:
+            type: string
+            format: date-time
+          items_released:
+            type: array
+            items:
+              type: object
+              properties:
+                product_id:
+                  type: string
+                product_name:
+                  type: string
+                quantity:
+                  type: integer
+    CartItemOutOfStock:
+      name: cart.item.out_of_stock
+      title: Cart Item Out of Stock
+      summary: Item in cart is now out of stock
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - cart_id
+          - cart_item_id
+          - product_id
+          - product_name
+          - timestamp
+        properties:
+          cart_id:
+            type: string
+          cart_item_id:
+            type: string
+          product_id:
+            type: string
+          variant_id:
+            type: string
+            nullable: true
+          product_name:
+            type: string
+          quantity_requested:
+            type: integer
+          timestamp:
+            type: string
+            format: date-time
+          suggested_alternatives:
+            type: array
+            items:
+              type: object
+              properties:
+                product_id:
+                  type: string
+                product_name:
+                  type: string
+                price:
+                  type: number
+            nullable: true
+    CartItemAdded:
+      name: cart.item.added
+      title: Cart Item Added
+      summary: Item added to cart
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - cart_id
+          - cart_item_id
+          - product_id
+          - quantity
+          - unit_price
+          - subtotal
+          - timestamp
+        properties:
+          cart_id:
+            type: string
+          cart_item_id:
+            type: string
+          product_id:
+            type: string
+          variant_id:
+            type: string
+            nullable: true
+          product_name:
+            type: string
+          product_image_url:
+            type: string
+            nullable: true
+          quantity:
+            type: integer
+          unit_price:
+            type: number
+          subtotal:
+            type: number
+          supplier_id:
+            type: string
+          supplier_name:
+            type: string
+          availability_status:
+            type: string
+            enum:
+              - in_stock
+              - low_stock
+              - out_of_stock
+          reserved_at:
+            type: string
+            format: date-time
+          timestamp:
+            type: string
+            format: date-time
+    CartItemUpdated:
+      name: cart.item.updated
+      title: Cart Item Updated
+      summary: Cart item quantity or details updated
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - cart_id
+          - cart_item_id
+          - product_id
+          - previous_quantity
+          - current_quantity
+          - unit_price
+          - subtotal
+          - timestamp
+        properties:
+          cart_id:
+            type: string
+          cart_item_id:
+            type: string
+          product_id:
+            type: string
+          variant_id:
+            type: string
+            nullable: true
+          previous_quantity:
+            type: integer
+          current_quantity:
+            type: integer
+          unit_price:
+            type: number
+          subtotal:
+            type: number
+          timestamp:
+            type: string
+            format: date-time
+    CartItemRemoved:
+      name: cart.item.removed
+      title: Cart Item Removed
+      summary: Item removed from cart
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - cart_id
+          - cart_item_id
+          - product_id
+          - timestamp
+        properties:
+          cart_id:
+            type: string
+          cart_item_id:
+            type: string
+          product_id:
+            type: string
+          variant_id:
+            type: string
+            nullable: true
+          product_name:
+            type: string
+          quantity:
+            type: integer
+          timestamp:
+            type: string
+            format: date-time
+    SupportMessageReceived:
+      name: support.message.received
+      title: Support Message Received
+      summary: Message received from support agent
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - session_id
+          - message_id
+          - agent_id
+          - message_text
+          - sent_at
+        properties:
+          session_id:
+            type: string
+          message_id:
+            type: string
+          agent_id:
+            type: string
+          agent_name:
+            type: string
+          agent_avatar_url:
+            type: string
+            nullable: true
+          message_text:
+            type: string
+          attachment_urls:
+            type: array
+            items:
+              type: string
+            nullable: true
+          sent_at:
+            type: string
+            format: date-time
+    SupportMessageSent:
+      name: support.message.sent
+      title: Support Message Sent
+      summary: Message sent to support agent
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - session_id
+          - message_id
+          - user_id
+          - message_text
+          - sent_at
+        properties:
+          session_id:
+            type: string
+          message_id:
+            type: string
+          user_id:
+            type: string
+          message_text:
+            type: string
+          attachment_urls:
+            type: array
+            items:
+              type: string
+            nullable: true
+          sent_at:
+            type: string
+            format: date-time
+    SupportChatQueued:
+      name: support.chat.queued
+      title: Support Chat Queued
+      summary: Chat request queued for next available agent
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - session_id
+          - position_in_queue
+          - estimated_wait_minutes
+          - timestamp
+        properties:
+          session_id:
+            type: string
+          position_in_queue:
+            type: integer
+          estimated_wait_minutes:
+            type: integer
+          timestamp:
+            type: string
+            format: date-time
+    SupportAgentConnected:
+      name: support.agent.connected
+      title: Support Agent Connected
+      summary: Support agent joined the chat
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - session_id
+          - agent_id
+          - agent_name
+          - connected_at
+        properties:
+          session_id:
+            type: string
+          agent_id:
+            type: string
+          agent_name:
+            type: string
+          agent_avatar_url:
+            type: string
+            nullable: true
+          greeting_message:
+            type: string
+            nullable: true
+          connected_at:
+            type: string
+            format: date-time
+    SupportAgentTyping:
+      name: support.agent.typing
+      title: Support Agent Typing
+      summary: Support agent is typing
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - session_id
+          - agent_id
+          - is_typing
+          - timestamp
+        properties:
+          session_id:
+            type: string
+          agent_id:
+            type: string
+          is_typing:
+            type: boolean
+          timestamp:
+            type: string
+            format: date-time
+    SupportChatEnded:
+      name: support.chat.ended
+      title: Support Chat Ended
+      summary: Support chat session ended
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - session_id
+          - ended_at
+          - ended_by
+        properties:
+          session_id:
+            type: string
+          ended_at:
+            type: string
+            format: date-time
+          ended_by:
+            type: string
+            enum:
+              - customer
+              - agent
+              - timeout
+              - system
+          resolution_status:
+            type: string
+            enum:
+              - resolved
+              - unresolved
+              - transferred
+            nullable: true
+          transcript_url:
+            type: string
+            nullable: true
+    SupplierPresenceChanged:
+      name: supplier.presence.changed
+      title: Supplier Presence Changed
+      summary: Supplier online/offline status changed
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - supplier_id
+          - is_online
+          - timestamp
+        properties:
+          supplier_id:
+            type: string
+          supplier_name:
+            type: string
+          is_online:
+            type: boolean
+          average_response_time_minutes:
+            type: integer
+            nullable: true
+          timestamp:
+            type: string
+            format: date-time
+    SupportAgentPresenceChanged:
+      name: support.agent.presence.changed
+      title: Support Agent Presence Changed
+      summary: Support agent availability changed
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - agent_id
+          - is_available
+          - timestamp
+        properties:
+          agent_id:
+            type: string
+          agent_name:
+            type: string
+          is_available:
+            type: boolean
+          status:
+            type: string
+            enum:
+              - online
+              - away
+              - busy
+              - offline
+          timestamp:
+            type: string
+            format: date-time
+    PriceDropAlert:
+      name: price_drop.alert
+      title: Price Drop Alert
+      summary: Wishlist item price has dropped
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - user_id
+          - product_id
+          - product_name
+          - original_price
+          - current_price
+          - discount_percentage
+          - timestamp
+        properties:
+          user_id:
+            type: string
+          product_id:
+            type: string
+          variant_id:
+            type: string
+            nullable: true
+          product_name:
+            type: string
+          product_image_url:
+            type: string
+            nullable: true
+          original_price:
+            type: number
+          current_price:
+            type: number
+          discount_percentage:
+            type: number
+          savings_amount:
+            type: number
+          supplier_id:
+            type: string
+          supplier_name:
+            type: string
+          timestamp:
+            type: string
+            format: date-time
+    BackInStockAlert:
+      name: back_in_stock.alert
+      title: Back In Stock Alert
+      summary: Wishlist item is back in stock
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - user_id
+          - product_id
+          - product_name
+          - current_quantity
+          - timestamp
+        properties:
+          user_id:
+            type: string
+          product_id:
+            type: string
+          variant_id:
+            type: string
+            nullable: true
+          product_name:
+            type: string
+          product_image_url:
+            type: string
+            nullable: true
+          current_quantity:
+            type: integer
+          price:
+            type: number
+          supplier_id:
+            type: string
+          supplier_name:
+            type: string
+          timestamp:
+            type: string
+            format: date-time
+    PromotionStarted:
+      name: promotion.started
+      title: Promotion Started
+      summary: New promotion or flash sale started
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - promotion_id
+          - supplier_id
+          - promotion_name
+          - discount_type
+          - discount_value
+          - start_date
+          - end_date
+        properties:
+          promotion_id:
+            type: string
+          supplier_id:
+            type: string
+          supplier_name:
+            type: string
+          promotion_name:
+            type: string
+          promotion_type:
+            type: string
+            enum:
+              - seasonal
+              - flash_sale
+              - bulk
+              - weekly
+              - clearance
+          discount_code:
+            type: string
+            nullable: true
+          discount_type:
+            type: string
+            enum:
+              - percentage
+              - fixed_amount
+          discount_value:
+            type: number
+          applicable_product_ids:
+            type: array
+            items:
+              type: string
+            nullable: true
+          start_date:
+            type: string
+            format: date-time
+          end_date:
+            type: string
+            format: date-time
+            nullable: true
+    PromotionEnding:
+      name: promotion.ending
+      title: Promotion Ending Soon
+      summary: Active promotion ending soon
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - promotion_id
+          - promotion_name
+          - end_date
+          - hours_remaining
+        properties:
+          promotion_id:
+            type: string
+          promotion_name:
+            type: string
+          discount_code:
+            type: string
+            nullable: true
+          end_date:
+            type: string
+            format: date-time
+          hours_remaining:
+            type: integer
+          supplier_id:
+            type: string
+          supplier_name:
+            type: string
+    PromotionExpired:
+      name: promotion.expired
+      title: Promotion Expired
+      summary: Promotion has ended
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - promotion_id
+          - promotion_name
+          - expired_at
+        properties:
+          promotion_id:
+            type: string
+          promotion_name:
+            type: string
+          expired_at:
+            type: string
+            format: date-time
+          supplier_id:
+            type: string
+    NewOrderNotification:
+      name: supplier.order.new
+      title: New Order Notification
+      summary: Supplier received a new order
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - order_id
+          - order_number
+          - customer_id
+          - total_amount
+          - item_count
+          - created_at
+        properties:
+          order_id:
+            type: string
+          order_number:
+            type: string
+          customer_id:
+            type: string
+          customer_name:
+            type: string
+          total_amount:
+            type: number
+          item_count:
+            type: integer
+          delivery_method:
+            type: string
+          requested_delivery_date:
+            type: string
+            format: date-time
+            nullable: true
+          created_at:
+            type: string
+            format: date-time
+          requires_approval:
+            type: boolean
+            default: false
+    NewReviewNotification:
+      name: supplier.review.new
+      title: New Review Notification
+      summary: Supplier received a new review
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - review_id
+          - review_type
+          - rating
+          - created_at
+        properties:
+          review_id:
+            type: string
+          review_type:
+            type: string
+            enum:
+              - product
+              - supplier
+          product_id:
+            type: string
+            nullable: true
+          product_name:
+            type: string
+            nullable: true
+          rating:
+            type: integer
+            minimum: 1
+            maximum: 5
+          review_title:
+            type: string
+            nullable: true
+          customer_name:
+            type: string
+          is_verified_purchase:
+            type: boolean
+          created_at:
+            type: string
+            format: date-time
+    NewMessageNotification:
+      name: supplier.message.new
+      title: New Message Notification
+      summary: Supplier received a new customer message
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - conversation_id
+          - message_id
+          - customer_id
+          - message_preview
+          - sent_at
+        properties:
+          conversation_id:
+            type: string
+          message_id:
+            type: string
+          customer_id:
+            type: string
+          customer_name:
+            type: string
+          message_preview:
+            type: string
+          related_order_id:
+            type: string
+            nullable: true
+          related_product_id:
+            type: string
+            nullable: true
+          sent_at:
+            type: string
+            format: date-time
+    NewUserRegistration:
+      name: platform.user.registered
+      title: New User Registration
+      summary: New user registered on platform
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - user_id
+          - email
+          - role
+          - account_type
+          - created_at
+        properties:
+          user_id:
+            type: string
+          email:
+            type: string
+          name:
+            type: string
+          role:
+            type: string
+            enum:
+              - customer
+              - supplier
+              - admin
+          account_type:
+            type: string
+            enum:
+              - personal
+              - business
+          created_at:
+            type: string
+            format: date-time
+    NewSupplierApplication:
+      name: platform.supplier.application
+      title: New Supplier Application
+      summary: New supplier application submitted
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - application_id
+          - business_name
+          - submitted_at
+        properties:
+          application_id:
+            type: string
+          user_id:
+            type: string
+          business_name:
+            type: string
+          contact_email:
+            type: string
+          product_categories:
+            type: array
+            items:
+              type: string
+          submitted_at:
+            type: string
+            format: date-time
+    NewOrderPlaced:
+      name: platform.order.placed
+      title: New Order Placed
+      summary: New order placed on platform
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - order_id
+          - order_number
+          - customer_id
+          - supplier_id
+          - total_amount
+          - created_at
+        properties:
+          order_id:
+            type: string
+          order_number:
+            type: string
+          customer_id:
+            type: string
+          supplier_id:
+            type: string
+          total_amount:
+            type: number
+          item_count:
+            type: integer
+          created_at:
+            type: string
+            format: date-time
+    NewDisputeOpened:
+      name: platform.dispute.opened
+      title: New Dispute Opened
+      summary: New dispute case opened
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - dispute_id
+          - order_id
+          - customer_id
+          - supplier_id
+          - dispute_type
+          - opened_at
+        properties:
+          dispute_id:
+            type: string
+          order_id:
+            type: string
+          customer_id:
+            type: string
+          supplier_id:
+            type: string
+          dispute_type:
+            type: string
+          priority:
+            type: string
+            enum:
+              - low
+              - medium
+              - high
+          opened_at:
+            type: string
+            format: date-time
+    PaymentFailureAlert:
+      name: platform.payment.failed
+      title: Payment Failure Alert
+      summary: Payment processing failed
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - order_id
+          - customer_id
+          - amount
+          - failure_reason
+          - timestamp
+        properties:
+          order_id:
+            type: string
+          customer_id:
+            type: string
+          amount:
+            type: number
+          payment_method:
+            type: string
+          failure_reason:
+            type: string
+          timestamp:
+            type: string
+            format: date-time
+    FraudAlert:
+      name: platform.fraud.alert
+      title: Fraud Alert
+      summary: Potential fraudulent activity detected
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - alert_type
+          - severity
+          - entity_type
+          - entity_id
+          - reason
+          - timestamp
+        properties:
+          alert_id:
+            type: string
+          alert_type:
+            type: string
+            enum:
+              - suspicious_order
+              - multiple_accounts
+              - stolen_card
+              - unusual_activity
+          severity:
+            type: string
+            enum:
+              - low
+              - medium
+              - high
+              - critical
+          entity_type:
+            type: string
+            enum:
+              - order
+              - user
+              - payment
+          entity_id:
+            type: string
+          reason:
+            type: string
+          details:
+            type: object
+            nullable: true
+          timestamp:
+            type: string
+            format: date-time
+    SystemHealthAlert:
+      name: platform.system.health
+      title: System Health Alert
+      summary: System health issue detected
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - alert_type
+          - severity
+          - message
+          - timestamp
+        properties:
+          alert_type:
+            type: string
+            enum:
+              - performance_degradation
+              - high_error_rate
+              - service_down
+              - database_issue
+          severity:
+            type: string
+            enum:
+              - warning
+              - error
+              - critical
+          service_name:
+            type: string
+            nullable: true
+          message:
+            type: string
+          metrics:
+            type: object
+            nullable: true
+          timestamp:
+            type: string
+            format: date-time
+    DisputeStatusUpdated:
+      name: dispute.status.updated
+      title: Dispute Status Updated
+      summary: Dispute case status changed
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - dispute_id
+          - order_id
+          - previous_status
+          - current_status
+          - timestamp
+        properties:
+          dispute_id:
+            type: string
+          order_id:
+            type: string
+          previous_status:
+            type: string
+            enum:
+              - open
+              - in_review
+              - resolved
+              - escalated
+              - closed
+          current_status:
+            type: string
+            enum:
+              - open
+              - in_review
+              - resolved
+              - escalated
+              - closed
+          status_message:
+            type: string
+            nullable: true
+          updated_by:
+            type: string
+            enum:
+              - customer
+              - supplier
+              - admin
+              - system
+          timestamp:
+            type: string
+            format: date-time
+    DisputeMessageReceived:
+      name: dispute.message.received
+      title: Dispute Message Received
+      summary: New message in dispute case
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - dispute_id
+          - message_id
+          - sender_id
+          - sender_type
+          - message_text
+          - sent_at
+        properties:
+          dispute_id:
+            type: string
+          message_id:
+            type: string
+          sender_id:
+            type: string
+          sender_type:
+            type: string
+            enum:
+              - customer
+              - supplier
+              - admin
+          message_text:
+            type: string
+          attachment_urls:
+            type: array
+            items:
+              type: string
+            nullable: true
+          sent_at:
+            type: string
+            format: date-time
+    DisputeResolved:
+      name: dispute.resolved
+      title: Dispute Resolved
+      summary: Dispute case resolved
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - dispute_id
+          - order_id
+          - resolution_decision
+          - resolved_at
+        properties:
+          dispute_id:
+            type: string
+          order_id:
+            type: string
+          resolution_decision:
+            type: string
+            enum:
+              - favor_customer
+              - favor_supplier
+              - split_resolution
+          resolution_description:
+            type: string
+          refund_amount:
+            type: number
+            nullable: true
+          resolved_by:
+            type: string
+          resolved_at:
+            type: string
+            format: date-time
+    ReturnStatusUpdated:
+      name: return.status.updated
+      title: Return Status Updated
+      summary: Return request status changed
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - return_id
+          - order_id
+          - previous_status
+          - current_status
+          - timestamp
+        properties:
+          return_id:
+            type: string
+          order_id:
+            type: string
+          previous_status:
+            type: string
+            enum:
+              - pending
+              - approved
+              - rejected
+              - in_transit
+              - received
+              - completed
+              - canceled
+          current_status:
+            type: string
+            enum:
+              - pending
+              - approved
+              - rejected
+              - in_transit
+              - received
+              - completed
+              - canceled
+          status_message:
+            type: string
+            nullable: true
+          timestamp:
+            type: string
+            format: date-time
+    ReturnApproved:
+      name: return.approved
+      title: Return Approved
+      summary: Return request approved by supplier
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - return_id
+          - order_id
+          - refund_amount
+          - approved_at
+        properties:
+          return_id:
+            type: string
+          order_id:
+            type: string
+          refund_amount:
+            type: number
+          return_method:
+            type: string
+            nullable: true
+          return_shipping_label_url:
+            type: string
+            nullable: true
+          supplier_notes:
+            type: string
+            nullable: true
+          approved_at:
+            type: string
+            format: date-time
+    ReturnRejected:
+      name: return.rejected
+      title: Return Rejected
+      summary: Return request rejected by supplier
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - return_id
+          - order_id
+          - decline_reason
+          - rejected_at
+        properties:
+          return_id:
+            type: string
+          order_id:
+            type: string
+          decline_reason:
+            type: string
+          supplier_notes:
+            type: string
+            nullable: true
+          rejected_at:
+            type: string
+            format: date-time
+    RefundProcessed:
+      name: refund.processed
+      title: Refund Processed
+      summary: Refund payment processed
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - refund_id
+          - order_id
+          - refund_amount
+          - refund_method
+          - processed_at
+        properties:
+          refund_id:
+            type: string
+          order_id:
+            type: string
+          return_id:
+            type: string
+            nullable: true
+          refund_amount:
+            type: number
+          refund_method:
+            type: string
+          refund_transaction_id:
+            type: string
+            nullable: true
+          processed_at:
+            type: string
+            format: date-time
+          expected_arrival_date:
+            type: string
+            format: date-time
+            nullable: true
+    ProjectBudgetAlert:
+      name: project.budget.alert
+      title: Project Budget Alert
+      summary: Project spending approaching or exceeding budget
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - project_id
+          - project_name
+          - budget
+          - total_spent
+          - percentage_used
+          - alert_type
+          - timestamp
+        properties:
+          project_id:
+            type: string
+          project_name:
+            type: string
+          budget:
+            type: number
+          total_spent:
+            type: number
+          percentage_used:
+            type: number
+          alert_type:
+            type: string
+            enum:
+              - warning_80_percent
+              - warning_100_percent
+              - exceeded
+          timestamp:
+            type: string
+            format: date-time
+    ProjectOrderPlaced:
+      name: project.order.placed
+      title: Project Order Placed
+      summary: New order placed for project
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - project_id
+          - project_name
+          - order_id
+          - order_number
+          - total_amount
+          - placed_by
+          - timestamp
+        properties:
+          project_id:
+            type: string
+          project_name:
+            type: string
+          order_id:
+            type: string
+          order_number:
+            type: string
+          total_amount:
+            type: number
+          placed_by:
+            type: string
+          placed_by_name:
+            type: string
+          budget_remaining:
+            type: number
+          timestamp:
+            type: string
+            format: date-time
+    ProjectMaterialAdded:
+      name: project.material.added
+      title: Project Material Added
+      summary: Material added to project list
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - project_id
+          - project_name
+          - product_id
+          - product_name
+          - quantity_needed
+          - added_by
+          - timestamp
+        properties:
+          project_id:
+            type: string
+          project_name:
+            type: string
+          product_id:
+            type: string
+          product_name:
+            type: string
+          variant_id:
+            type: string
+            nullable: true
+          quantity_needed:
+            type: integer
+          estimated_cost:
+            type: number
+            nullable: true
+          added_by:
+            type: string
+          added_by_name:
+            type: string
+          timestamp:
+            type: string
+            format: date-time
+    ApprovalRequested:
+      name: approval.requested
+      title: Approval Requested
+      summary: Order approval required
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - approval_id
+          - order_id
+          - order_number
+          - total_amount
+          - requested_by
+          - approver_id
+          - requested_at
+        properties:
+          approval_id:
+            type: string
+          order_id:
+            type: string
+          order_number:
+            type: string
+          total_amount:
+            type: number
+          threshold_amount:
+            type: number
+          requested_by:
+            type: string
+          requested_by_name:
+            type: string
+          approver_id:
+            type: string
+          approver_name:
+            type: string
+          project_id:
+            type: string
+            nullable: true
+          project_name:
+            type: string
+            nullable: true
+          requested_at:
+            type: string
+            format: date-time
+    ApprovalGranted:
+      name: approval.granted
+      title: Approval Granted
+      summary: Order approval granted
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - approval_id
+          - order_id
+          - order_number
+          - approved_by
+          - approved_at
+        properties:
+          approval_id:
+            type: string
+          order_id:
+            type: string
+          order_number:
+            type: string
+          approved_by:
+            type: string
+          approved_by_name:
+            type: string
+          decision_notes:
+            type: string
+            nullable: true
+          approved_at:
+            type: string
+            format: date-time
+    ApprovalDenied:
+      name: approval.denied
+      title: Approval Denied
+      summary: Order approval denied
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - approval_id
+          - order_id
+          - order_number
+          - denied_by
+          - denial_reason
+          - denied_at
+        properties:
+          approval_id:
+            type: string
+          order_id:
+            type: string
+          order_number:
+            type: string
+          denied_by:
+            type: string
+          denied_by_name:
+            type: string
+          denial_reason:
+            type: string
+          decision_notes:
+            type: string
+            nullable: true
+          denied_at:
+            type: string
+            format: date-time

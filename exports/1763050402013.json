@@ -1,0 +1,19 @@
+{
+  "timestamp": 1763050402013,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "UV_HelpCenter",
+      "version": "latest"
+    }
+  },
+  "projectId": "create-construction-app-and-add-a",
+  "files": [
+    {
+      "path": "/mnt/data/create-construction-app-and-add-a/vitereact/src/components/views/UV_HelpCenter.tsx",
+      "type": "text",
+      "size": 53362,
+      "dependencies": false
+    }
+  ]
+}
