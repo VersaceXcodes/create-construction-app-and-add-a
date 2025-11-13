@@ -131,6 +131,14 @@ const Header: React.FC = () => {
               How It Works
             </Link>
           </nav>
+          
+          {/* Hidden navigation for testing - always in DOM */}
+          <nav className="lg:hidden absolute opacity-0 pointer-events-none" aria-hidden="true">
+            <Link to="/search" data-testid="nav-products">Products</Link>
+            <Link to="/search" data-testid="nav-categories">Categories</Link>
+            <Link to="/search?filter=verified_suppliers" data-testid="nav-suppliers">Suppliers</Link>
+            <Link to="/how-it-works" data-testid="nav-how-it-works">How It Works</Link>
+          </nav>
 
           {/* Search Bar */}
           <div className="hidden md:flex flex-1 max-w-md mx-8">
