@@ -1248,6 +1248,55 @@ app.get('/api/orders/:order_id/tracking', authenticateToken, async (req, res) =>
   }
 });
 
+app.get('/api/suppliers', async (req, res) => {
+  try {
+    const { is_verified, status, sort_by = 'rating_average', limit = 50, page = 1 } = req.query;
+    
+    let query = 'SELECT * FROM suppliers WHERE 1=1';
+    const values = [];
+    let paramCount = 1;
+
+    if (status) {
+      query += ` AND status = $${paramCount++}`;
+      values.push(status);
+    }
+
+    if (is_verified !== undefined) {
+      query += ` AND is_verified = $${paramCount++}`;
+      values.push(is_verified === 'true' || is_verified === true);
+    }
+
+    const sortMap: Record<string, string> = {
+      rating_average: 'rating_average DESC NULLS LAST',
+      rating_count: 'rating_count DESC',
+      created_at: 'created_at DESC',
+      shop_name: 'shop_name ASC'
+    };
+
+    query += ` ORDER BY ${sortMap[sort_by as string] || sortMap.rating_average}`;
+
+    const pageNum = parseInt(page as string);
+    const limitNum = parseInt(limit as string);
+    const offset = (pageNum - 1) * limitNum;
+
+    query += ` LIMIT $${paramCount++} OFFSET $${paramCount}`;
+    values.push(limitNum, offset);
+
+    const result = await pool.query(query, values);
+
+    // Ensure rating_average is never null for the response
+    const suppliers = result.rows.map(supplier => ({
+      ...supplier,
+      rating_average: supplier.rating_average || 0,
+      rating_count: supplier.rating_count || 0
+    }));
+
+    res.json({ suppliers });
+  } catch (error) {
+    res.status(500).json(createErrorResponse('Internal server error', error, 'INTERNAL_ERROR'));
+  }
+});
+
 app.get('/api/suppliers/:supplier_id', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM suppliers WHERE supplier_id = $1 AND status = \'active\'', [req.params.supplier_id]);
