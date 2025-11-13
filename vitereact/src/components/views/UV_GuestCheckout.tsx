@@ -220,7 +220,7 @@ const UV_GuestCheckout: React.FC = () => {
 
   // Submission state
   const [submittingOrder, setSubmittingOrder] = useState(false);
-  const [paymentProcessing, setPaymentProcessing] = useState(false);
+  const [_paymentProcessing, setPaymentProcessing] = useState(false);
   const [orderError, setOrderError] = useState<string | null>(null);
 
   // Validation errors
@@ -746,232 +746,234 @@ const UV_GuestCheckout: React.FC = () => {
         </div>
 
         {(currentSection === 2 || !isCompleted) && (
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="guest-name" className="block text-sm font-medium text-gray-700 mb-1">
-                Full Name <span className="text-red-500">*</span>
-              </label>
-              <input
-                id="guest-name"
-                type="text"
-                value={guestName}
-                onChange={(e) => {
-                  setGuestName(e.target.value);
-                  setValidationErrors(prev => ({ ...prev, guest_name: null }));
-                }}
-                placeholder="John Doe"
-                className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-4 transition-all ${
-                  validationErrors.guest_name
-                    ? 'border-red-300 focus:border-red-500 focus:ring-red-100'
-                    : 'border-gray-200 focus:border-blue-500 focus:ring-blue-100'
-                }`}
-              />
-              {validationErrors.guest_name && (
-                <p className="mt-1 text-sm text-red-600" role="alert">
-                  {validationErrors.guest_name}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="address-line-1" className="block text-sm font-medium text-gray-700 mb-1">
-                Street Address <span className="text-red-500">*</span>
-              </label>
-              <input
-                id="address-line-1"
-                type="text"
-                value={deliveryAddress.address_line_1}
-                onChange={(e) => {
-                  setDeliveryAddress(prev => ({ ...prev, address_line_1: e.target.value }));
-                  setValidationErrors(prev => ({ ...prev, delivery_address: null }));
-                }}
-                placeholder="123 Main Street"
-                autoComplete="address-line1"
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="address-line-2" className="block text-sm font-medium text-gray-700 mb-1">
-                Apartment, Suite, etc. (Optional)
-              </label>
-              <input
-                id="address-line-2"
-                type="text"
-                value={deliveryAddress.address_line_2}
-                onChange={(e) => setDeliveryAddress(prev => ({ ...prev, address_line_2: e.target.value }))}
-                placeholder="Apt 4B"
-                autoComplete="address-line2"
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-              />
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <>
+            <div className="space-y-4">
               <div>
-                <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-1">
-                  City <span className="text-red-500">*</span>
+                <label htmlFor="guest-name" className="block text-sm font-medium text-gray-700 mb-1">
+                  Full Name <span className="text-red-500">*</span>
                 </label>
                 <input
-                  id="city"
+                  id="guest-name"
                   type="text"
-                  value={deliveryAddress.city}
+                  value={guestName}
                   onChange={(e) => {
-                    setDeliveryAddress(prev => ({ ...prev, city: e.target.value }));
+                    setGuestName(e.target.value);
+                    setValidationErrors(prev => ({ ...prev, guest_name: null }));
+                  }}
+                  placeholder="John Doe"
+                  className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-4 transition-all ${
+                    validationErrors.guest_name
+                      ? 'border-red-300 focus:border-red-500 focus:ring-red-100'
+                      : 'border-gray-200 focus:border-blue-500 focus:ring-blue-100'
+                  }`}
+                />
+                {validationErrors.guest_name && (
+                  <p className="mt-1 text-sm text-red-600" role="alert">
+                    {validationErrors.guest_name}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="address-line-1" className="block text-sm font-medium text-gray-700 mb-1">
+                  Street Address <span className="text-red-500">*</span>
+                </label>
+                <input
+                  id="address-line-1"
+                  type="text"
+                  value={deliveryAddress.address_line_1}
+                  onChange={(e) => {
+                    setDeliveryAddress(prev => ({ ...prev, address_line_1: e.target.value }));
                     setValidationErrors(prev => ({ ...prev, delivery_address: null }));
                   }}
-                  placeholder="New York"
-                  autoComplete="address-level2"
+                  placeholder="123 Main Street"
+                  autoComplete="address-line1"
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
                 />
               </div>
 
               <div>
-                <label htmlFor="state" className="block text-sm font-medium text-gray-700 mb-1">
-                  State <span className="text-red-500">*</span>
-                </label>
-                <select
-                  id="state"
-                  value={deliveryAddress.state}
-                  onChange={(e) => {
-                    setDeliveryAddress(prev => ({ ...prev, state: e.target.value }));
-                    setValidationErrors(prev => ({ ...prev, delivery_address: null }));
-                  }}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                >
-                  <option value="">Select State</option>
-                  <option value="NY">New York</option>
-                  <option value="CA">California</option>
-                  <option value="TX">Texas</option>
-                  <option value="FL">Florida</option>
-                  {/* Add more states as needed */}
-                </select>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="postal-code" className="block text-sm font-medium text-gray-700 mb-1">
-                  ZIP Code <span className="text-red-500">*</span>
+                <label htmlFor="address-line-2" className="block text-sm font-medium text-gray-700 mb-1">
+                  Apartment, Suite, etc. (Optional)
                 </label>
                 <input
-                  id="postal-code"
+                  id="address-line-2"
                   type="text"
-                  value={deliveryAddress.postal_code}
-                  onChange={(e) => {
-                    setDeliveryAddress(prev => ({ ...prev, postal_code: e.target.value }));
-                    setValidationErrors(prev => ({ ...prev, delivery_address: null }));
-                  }}
-                  onBlur={() => {
-                    if (deliveryAddress.postal_code && !validatePostalCode(deliveryAddress.postal_code)) {
-                      setValidationErrors(prev => ({ 
-                        ...prev, 
-                        delivery_address: 'Invalid ZIP code format' 
-                      }));
-                    }
-                  }}
-                  placeholder="12345"
-                  autoComplete="postal-code"
+                  value={deliveryAddress.address_line_2}
+                  onChange={(e) => setDeliveryAddress(prev => ({ ...prev, address_line_2: e.target.value }))}
+                  placeholder="Apt 4B"
+                  autoComplete="address-line2"
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
                 />
               </div>
 
-              <div>
-                <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
-                  Country <span className="text-red-500">*</span>
-                </label>
-                <select
-                  id="country"
-                  value={deliveryAddress.country}
-                  onChange={(e) => setDeliveryAddress(prev => ({ ...prev, country: e.target.value }))}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                >
-                  <option value="USA">United States</option>
-                  <option value="CAN">Canada</option>
-                </select>
-              </div>
-            </div>
-
-            {validationErrors.delivery_address && (
-              <p className="text-sm text-red-600" role="alert">
-                {validationErrors.delivery_address}
-              </p>
-            )}
-
-            <div>
-              <label htmlFor="delivery-instructions" className="block text-sm font-medium text-gray-700 mb-1">
-                Delivery Instructions (Optional)
-              </label>
-              <textarea
-                id="delivery-instructions"
-                value={deliveryInstructions}
-                onChange={(e) => setDeliveryInstructions(e.target.value.slice(0, 200))}
-                placeholder="Gate code, parking instructions, etc."
-                rows={3}
-                maxLength={200}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-              />
-              <p className="mt-1 text-xs text-gray-500">
-                {deliveryInstructions.length}/200 characters
-              </p>
-            </div>
-
-            <div className="border-t pt-4">
-              <p className="text-sm font-medium text-gray-700 mb-3">On-site Contact (Optional)</p>
-              <p className="text-xs text-gray-500 mb-3">
-                Useful for deliveries to job sites or offices
-              </p>
-              
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="contact-name" className="block text-sm font-medium text-gray-700 mb-1">
-                    Contact Name
+                  <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-1">
+                    City <span className="text-red-500">*</span>
                   </label>
                   <input
-                    id="contact-name"
+                    id="city"
                     type="text"
-                    value={deliveryContactName}
-                    onChange={(e) => setDeliveryContactName(e.target.value)}
-                    placeholder="Site Manager Name"
+                    value={deliveryAddress.city}
+                    onChange={(e) => {
+                      setDeliveryAddress(prev => ({ ...prev, city: e.target.value }));
+                      setValidationErrors(prev => ({ ...prev, delivery_address: null }));
+                    }}
+                    placeholder="New York"
+                    autoComplete="address-level2"
                     className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="contact-phone" className="block text-sm font-medium text-gray-700 mb-1">
-                    Contact Phone
+                  <label htmlFor="state" className="block text-sm font-medium text-gray-700 mb-1">
+                    State <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    id="state"
+                    value={deliveryAddress.state}
+                    onChange={(e) => {
+                      setDeliveryAddress(prev => ({ ...prev, state: e.target.value }));
+                      setValidationErrors(prev => ({ ...prev, delivery_address: null }));
+                    }}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                  >
+                    <option value="">Select State</option>
+                    <option value="NY">New York</option>
+                    <option value="CA">California</option>
+                    <option value="TX">Texas</option>
+                    <option value="FL">Florida</option>
+                    {/* Add more states as needed */}
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="postal-code" className="block text-sm font-medium text-gray-700 mb-1">
+                    ZIP Code <span className="text-red-500">*</span>
                   </label>
                   <input
-                    id="contact-phone"
-                    type="tel"
-                    value={deliveryContactPhone}
-                    onChange={(e) => setDeliveryContactPhone(e.target.value)}
-                    placeholder="+1 (555) 987-6543"
+                    id="postal-code"
+                    type="text"
+                    value={deliveryAddress.postal_code}
+                    onChange={(e) => {
+                      setDeliveryAddress(prev => ({ ...prev, postal_code: e.target.value }));
+                      setValidationErrors(prev => ({ ...prev, delivery_address: null }));
+                    }}
+                    onBlur={() => {
+                      if (deliveryAddress.postal_code && !validatePostalCode(deliveryAddress.postal_code)) {
+                        setValidationErrors(prev => ({ 
+                          ...prev, 
+                          delivery_address: 'Invalid ZIP code format' 
+                        }));
+                      }
+                    }}
+                    placeholder="12345"
+                    autoComplete="postal-code"
                     className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
                   />
                 </div>
+
+                <div>
+                  <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
+                    Country <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    id="country"
+                    value={deliveryAddress.country}
+                    onChange={(e) => setDeliveryAddress(prev => ({ ...prev, country: e.target.value }))}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                  >
+                    <option value="USA">United States</option>
+                    <option value="CAN">Canada</option>
+                  </select>
+                </div>
+              </div>
+
+              {validationErrors.delivery_address && (
+                <p className="text-sm text-red-600" role="alert">
+                  {validationErrors.delivery_address}
+                </p>
+              )}
+
+              <div>
+                <label htmlFor="delivery-instructions" className="block text-sm font-medium text-gray-700 mb-1">
+                  Delivery Instructions (Optional)
+                </label>
+                <textarea
+                  id="delivery-instructions"
+                  value={deliveryInstructions}
+                  onChange={(e) => setDeliveryInstructions(e.target.value.slice(0, 200))}
+                  placeholder="Gate code, parking instructions, etc."
+                  rows={3}
+                  maxLength={200}
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                />
+                <p className="mt-1 text-xs text-gray-500">
+                  {deliveryInstructions.length}/200 characters
+                </p>
+              </div>
+
+              <div className="border-t pt-4">
+                <p className="text-sm font-medium text-gray-700 mb-3">On-site Contact (Optional)</p>
+                <p className="text-xs text-gray-500 mb-3">
+                  Useful for deliveries to job sites or offices
+                </p>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="contact-name" className="block text-sm font-medium text-gray-700 mb-1">
+                      Contact Name
+                    </label>
+                    <input
+                      id="contact-name"
+                      type="text"
+                      value={deliveryContactName}
+                      onChange={(e) => setDeliveryContactName(e.target.value)}
+                      placeholder="Site Manager Name"
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="contact-phone" className="block text-sm font-medium text-gray-700 mb-1">
+                      Contact Phone
+                    </label>
+                    <input
+                      id="contact-phone"
+                      type="tel"
+                      value={deliveryContactPhone}
+                      onChange={(e) => setDeliveryContactPhone(e.target.value)}
+                      placeholder="+1 (555) 987-6543"
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-start">
+                <input
+                  id="save-address"
+                  type="checkbox"
+                  checked={saveAddress}
+                  onChange={(e) => setSaveAddress(e.target.checked)}
+                  className="mt-1 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                />
+                <label htmlFor="save-address" className="ml-2 block text-sm text-gray-700">
+                  Save this address to my account (if I create one later)
+                </label>
               </div>
             </div>
 
-            <div className="flex items-start">
-              <input
-                id="save-address"
-                type="checkbox"
-                checked={saveAddress}
-                onChange={(e) => setSaveAddress(e.target.checked)}
-                className="mt-1 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-              />
-              <label htmlFor="save-address" className="ml-2 block text-sm text-gray-700">
-                Save this address to my account (if I create one later)
-              </label>
-            </div>
-          </div>
-
-          <button
-            onClick={handleSection2Continue}
-            className="mt-6 w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-4 focus:ring-blue-100"
-          >
-            Continue to Delivery Options
-          </button>
+            <button
+              onClick={handleSection2Continue}
+              className="mt-6 w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-4 focus:ring-blue-100"
+            >
+              Continue to Delivery Options
+            </button>
+          </>
         )}
 
         {isCompleted && currentSection !== 2 && (
@@ -1022,125 +1024,127 @@ const UV_GuestCheckout: React.FC = () => {
         </div>
 
         {(currentSection === 3 || !isCompleted) && (
-          <div className="space-y-6">
-            {Object.values(supplierDeliveryOptions).map((supplier) => (
-              <div key={supplier.supplier_id} className="border border-gray-200 rounded-lg p-4">
-                <div className="flex items-center mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900">{supplier.supplier_name}</h3>
-                </div>
+          <>
+            <div className="space-y-6">
+              {Object.values(supplierDeliveryOptions).map((supplier) => (
+                <div key={supplier.supplier_id} className="border border-gray-200 rounded-lg p-4">
+                  <div className="flex items-center mb-4">
+                    <h3 className="text-lg font-semibold text-gray-900">{supplier.supplier_name}</h3>
+                  </div>
 
-                <div className="mb-4">
-                  <p className="text-sm text-gray-600 mb-2">
-                    {supplier.items.length} {supplier.items.length === 1 ? 'item' : 'items'} from this supplier
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {supplier.items.slice(0, 3).map((item) => (
-                      <div key={item.cart_item_id} className="flex items-center space-x-2 bg-gray-50 rounded px-2 py-1">
-                        {item.product_image && (
-                          <img src={item.product_image} alt="" className="w-8 h-8 object-cover rounded" />
-                        )}
-                        <span className="text-xs text-gray-700">{item.product_name}</span>
-                      </div>
+                  <div className="mb-4">
+                    <p className="text-sm text-gray-600 mb-2">
+                      {supplier.items.length} {supplier.items.length === 1 ? 'item' : 'items'} from this supplier
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {supplier.items.slice(0, 3).map((item) => (
+                        <div key={item.cart_item_id} className="flex items-center space-x-2 bg-gray-50 rounded px-2 py-1">
+                          {item.product_image && (
+                            <img src={item.product_image} alt="" className="w-8 h-8 object-cover rounded" />
+                          )}
+                          <span className="text-xs text-gray-700">{item.product_name}</span>
+                        </div>
+                      ))}
+                      {supplier.items.length > 3 && (
+                        <span className="text-xs text-gray-500">+{supplier.items.length - 3} more</span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    {supplier.available_windows.map((window) => (
+                      <label
+                        key={window.window_id}
+                        className={`flex items-start p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                          supplier.selected_window?.window_id === window.window_id
+                            ? 'border-blue-500 bg-blue-50'
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name={`delivery-${supplier.supplier_id}`}
+                          checked={supplier.selected_window?.window_id === window.window_id}
+                          onChange={() => {
+                            setSupplierDeliveryOptions(prev => ({
+                              ...prev,
+                              [supplier.supplier_id]: {
+                                ...prev[supplier.supplier_id],
+                                selected_window: window,
+                                delivery_method: 'delivery',
+                              },
+                            }));
+                          }}
+                          className="mt-1 h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                        />
+                        <div className="ml-3 flex-1">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="font-medium text-gray-900">
+                                {window.type === 'same_day' && 'Same-Day Delivery'}
+                                {window.type === 'next_day' && 'Next-Day Delivery'}
+                                {window.type === 'standard' && 'Standard Delivery'}
+                              </p>
+                              <p className="text-sm text-gray-600">
+                                {window.date} • {window.start_time} - {window.end_time}
+                              </p>
+                            </div>
+                            <p className="font-semibold text-gray-900">
+                              {window.cost === 0 ? 'FREE' : `$${window.cost.toFixed(2)}`}
+                            </p>
+                          </div>
+                        </div>
+                      </label>
                     ))}
-                    {supplier.items.length > 3 && (
-                      <span className="text-xs text-gray-500">+{supplier.items.length - 3} more</span>
+
+                    {supplier.pickup_available && (
+                      <label
+                        className={`flex items-start p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                          supplier.delivery_method === 'pickup'
+                            ? 'border-blue-500 bg-blue-50'
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name={`delivery-${supplier.supplier_id}`}
+                          checked={supplier.delivery_method === 'pickup'}
+                          onChange={() => {
+                            setSupplierDeliveryOptions(prev => ({
+                              ...prev,
+                              [supplier.supplier_id]: {
+                                ...prev[supplier.supplier_id],
+                                selected_window: null,
+                                delivery_method: 'pickup',
+                              },
+                            }));
+                          }}
+                          className="mt-1 h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                        />
+                        <div className="ml-3 flex-1">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="font-medium text-gray-900">Pickup at Store</p>
+                              <p className="text-sm text-gray-600">{supplier.pickup_address}</p>
+                              <p className="text-xs text-blue-600 mt-1">Ready in 2 hours</p>
+                            </div>
+                            <p className="font-semibold text-gray-900">FREE</p>
+                          </div>
+                        </div>
+                      </label>
                     )}
                   </div>
                 </div>
+              ))}
+            </div>
 
-                <div className="space-y-3">
-                  {supplier.available_windows.map((window) => (
-                    <label
-                      key={window.window_id}
-                      className={`flex items-start p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                        supplier.selected_window?.window_id === window.window_id
-                          ? 'border-blue-500 bg-blue-50'
-                          : 'border-gray-200 hover:border-gray-300'
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name={`delivery-${supplier.supplier_id}`}
-                        checked={supplier.selected_window?.window_id === window.window_id}
-                        onChange={() => {
-                          setSupplierDeliveryOptions(prev => ({
-                            ...prev,
-                            [supplier.supplier_id]: {
-                              ...prev[supplier.supplier_id],
-                              selected_window: window,
-                              delivery_method: 'delivery',
-                            },
-                          }));
-                        }}
-                        className="mt-1 h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                      />
-                      <div className="ml-3 flex-1">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="font-medium text-gray-900">
-                              {window.type === 'same_day' && 'Same-Day Delivery'}
-                              {window.type === 'next_day' && 'Next-Day Delivery'}
-                              {window.type === 'standard' && 'Standard Delivery'}
-                            </p>
-                            <p className="text-sm text-gray-600">
-                              {window.date} • {window.start_time} - {window.end_time}
-                            </p>
-                          </div>
-                          <p className="font-semibold text-gray-900">
-                            {window.cost === 0 ? 'FREE' : `$${window.cost.toFixed(2)}`}
-                          </p>
-                        </div>
-                      </div>
-                    </label>
-                  ))}
-
-                  {supplier.pickup_available && (
-                    <label
-                      className={`flex items-start p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                        supplier.delivery_method === 'pickup'
-                          ? 'border-blue-500 bg-blue-50'
-                          : 'border-gray-200 hover:border-gray-300'
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name={`delivery-${supplier.supplier_id}`}
-                        checked={supplier.delivery_method === 'pickup'}
-                        onChange={() => {
-                          setSupplierDeliveryOptions(prev => ({
-                            ...prev,
-                            [supplier.supplier_id]: {
-                              ...prev[supplier.supplier_id],
-                              selected_window: null,
-                              delivery_method: 'pickup',
-                            },
-                          }));
-                        }}
-                        className="mt-1 h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                      />
-                      <div className="ml-3 flex-1">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="font-medium text-gray-900">Pickup at Store</p>
-                            <p className="text-sm text-gray-600">{supplier.pickup_address}</p>
-                            <p className="text-xs text-blue-600 mt-1">Ready in 2 hours</p>
-                          </div>
-                          <p className="font-semibold text-gray-900">FREE</p>
-                        </div>
-                      </div>
-                    </label>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <button
-            onClick={handleSection3Continue}
-            className="mt-6 w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-4 focus:ring-blue-100"
-          >
-            Continue to Payment
-          </button>
+            <button
+              onClick={handleSection3Continue}
+              className="mt-6 w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-4 focus:ring-blue-100"
+            >
+              Continue to Payment
+            </button>
+          </>
         )}
       </div>
     );
@@ -1178,227 +1182,229 @@ const UV_GuestCheckout: React.FC = () => {
         </div>
 
         {(currentSection === 4 || !isCompleted) && (
-          <div className="space-y-6">
-            {/* Payment Method Tabs */}
-            <div className="flex flex-wrap gap-2 border-b border-gray-200">
-              <button
-                onClick={() => setPaymentMethod('credit_card')}
-                className={`px-4 py-2 font-medium transition-all ${
-                  paymentMethod === 'credit_card' || paymentMethod === 'debit_card'
-                    ? 'text-blue-600 border-b-2 border-blue-600'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                Credit/Debit Card
-              </button>
-              <button
-                onClick={() => setPaymentMethod('paypal')}
-                className={`px-4 py-2 font-medium transition-all ${
-                  paymentMethod === 'paypal'
-                    ? 'text-blue-600 border-b-2 border-blue-600'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                PayPal
-              </button>
-              <button
-                onClick={() => setPaymentMethod('pay_on_delivery')}
-                className={`px-4 py-2 font-medium transition-all ${
-                  paymentMethod === 'pay_on_delivery'
-                    ? 'text-blue-600 border-b-2 border-blue-600'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                Pay on Delivery
-              </button>
-            </div>
-
-            {/* Card Payment Form */}
-            {(paymentMethod === 'credit_card' || paymentMethod === 'debit_card') && (
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="card-number" className="block text-sm font-medium text-gray-700 mb-1">
-                    Card Number <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <input
-                      id="card-number"
-                      type="text"
-                      value={cardDetails.card_number}
-                      onChange={(e) => {
-                        const formatted = formatCardNumber(e.target.value.replace(/\D/g, ''));
-                        setCardDetails(prev => ({ ...prev, card_number: formatted }));
-                        setValidationErrors(prev => ({ ...prev, card_number: null }));
-                      }}
-                      onBlur={() => {
-                        if (cardDetails.card_number && !validateCardNumber(cardDetails.card_number.replace(/\s/g, ''))) {
-                          setValidationErrors(prev => ({ 
-                            ...prev, 
-                            card_number: 'Invalid card number' 
-                          }));
-                        }
-                      }}
-                      placeholder="1234 5678 9012 3456"
-                      maxLength={19}
-                      className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-4 transition-all ${
-                        validationErrors.card_number
-                          ? 'border-red-300 focus:border-red-500 focus:ring-red-100'
-                          : 'border-gray-200 focus:border-blue-500 focus:ring-blue-100'
-                      }`}
-                    />
-                    {cardDetails.card_number && (
-                      <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                        <span className="text-xs text-gray-500 uppercase">{getCardType(cardDetails.card_number)}</span>
-                      </div>
-                    )}
-                  </div>
-                  {validationErrors.card_number && (
-                    <p className="mt-1 text-sm text-red-600" role="alert">
-                      {validationErrors.card_number}
-                    </p>
-                  )}
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="card-expiry" className="block text-sm font-medium text-gray-700 mb-1">
-                      Expiry Date <span className="text-red-500">*</span>
-                    </label>
-                    <div className="flex space-x-2">
-                      <select
-                        id="expiry-month"
-                        value={cardDetails.expiry_month}
-                        onChange={(e) => {
-                          setCardDetails(prev => ({ ...prev, expiry_month: e.target.value }));
-                          setValidationErrors(prev => ({ ...prev, card_expiry: null }));
-                        }}
-                        className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                      >
-                        <option value="">MM</option>
-                        {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
-                          <option key={month} value={month.toString().padStart(2, '0')}>
-                            {month.toString().padStart(2, '0')}
-                          </option>
-                        ))}
-                      </select>
-                      <select
-                        id="expiry-year"
-                        value={cardDetails.expiry_year}
-                        onChange={(e) => {
-                          setCardDetails(prev => ({ ...prev, expiry_year: e.target.value }));
-                          setValidationErrors(prev => ({ ...prev, card_expiry: null }));
-                        }}
-                        className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                      >
-                        <option value="">YYYY</option>
-                        {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() + i).map(year => (
-                          <option key={year} value={year}>
-                            {year}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    {validationErrors.card_expiry && (
-                      <p className="mt-1 text-sm text-red-600" role="alert">
-                        {validationErrors.card_expiry}
-                      </p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label htmlFor="card-cvv" className="block text-sm font-medium text-gray-700 mb-1">
-                      CVV <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      id="card-cvv"
-                      type="text"
-                      value={cardDetails.cvv}
-                      onChange={(e) => {
-                        const value = e.target.value.replace(/\D/g, '').slice(0, 4);
-                        setCardDetails(prev => ({ ...prev, cvv: value }));
-                        setValidationErrors(prev => ({ ...prev, card_cvv: null }));
-                      }}
-                      placeholder="123"
-                      maxLength={4}
-                      className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-4 transition-all ${
-                        validationErrors.card_cvv
-                          ? 'border-red-300 focus:border-red-500 focus:ring-red-100'
-                          : 'border-gray-200 focus:border-blue-500 focus:ring-blue-100'
-                      }`}
-                    />
-                    {validationErrors.card_cvv && (
-                      <p className="mt-1 text-sm text-red-600" role="alert">
-                        {validationErrors.card_cvv}
-                      </p>
-                    )}
-                    <p className="mt-1 text-xs text-gray-500">3-4 digit code on back of card</p>
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="cardholder-name" className="block text-sm font-medium text-gray-700 mb-1">
-                    Cardholder Name <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    id="cardholder-name"
-                    type="text"
-                    value={cardDetails.cardholder_name}
-                    onChange={(e) => {
-                      setCardDetails(prev => ({ ...prev, cardholder_name: e.target.value }));
-                      setValidationErrors(prev => ({ ...prev, payment_method: null }));
-                    }}
-                    placeholder="John Doe"
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                  />
-                </div>
-
-                <div className="flex items-start">
-                  <input
-                    id="billing-same"
-                    type="checkbox"
-                    checked={billingAddressSameAsDelivery}
-                    onChange={(e) => setBillingAddressSameAsDelivery(e.target.checked)}
-                    className="mt-1 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                  />
-                  <label htmlFor="billing-same" className="ml-2 block text-sm text-gray-700">
-                    Billing address same as delivery address
-                  </label>
-                </div>
-              </div>
-            )}
-
-            {/* PayPal */}
-            {paymentMethod === 'paypal' && (
-              <div className="text-center py-8">
-                <p className="text-gray-600 mb-4">You will be redirected to PayPal to complete your payment</p>
+          <>
+            <div className="space-y-6">
+              {/* Payment Method Tabs */}
+              <div className="flex flex-wrap gap-2 border-b border-gray-200">
                 <button
-                  type="button"
-                  className="px-6 py-3 bg-yellow-400 text-gray-900 font-semibold rounded-lg hover:bg-yellow-500 transition-colors"
+                  onClick={() => setPaymentMethod('credit_card')}
+                  className={`px-4 py-2 font-medium transition-all ${
+                    paymentMethod === 'credit_card' || paymentMethod === 'debit_card'
+                      ? 'text-blue-600 border-b-2 border-blue-600'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
                 >
-                  Continue with PayPal
+                  Credit/Debit Card
+                </button>
+                <button
+                  onClick={() => setPaymentMethod('paypal')}
+                  className={`px-4 py-2 font-medium transition-all ${
+                    paymentMethod === 'paypal'
+                      ? 'text-blue-600 border-b-2 border-blue-600'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  PayPal
+                </button>
+                <button
+                  onClick={() => setPaymentMethod('pay_on_delivery')}
+                  className={`px-4 py-2 font-medium transition-all ${
+                    paymentMethod === 'pay_on_delivery'
+                      ? 'text-blue-600 border-b-2 border-blue-600'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  Pay on Delivery
                 </button>
               </div>
-            )}
 
-            {/* Pay on Delivery */}
-            {paymentMethod === 'pay_on_delivery' && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <p className="text-sm text-blue-900">
-                  <strong>Pay on Delivery:</strong> You can pay with cash or card when your order arrives.
-                </p>
-                <p className="text-xs text-blue-700 mt-2">
-                  Please have exact change or a card ready for the delivery driver.
-                </p>
-              </div>
-            )}
-          </div>
+              {/* Card Payment Form */}
+              {(paymentMethod === 'credit_card' || paymentMethod === 'debit_card') && (
+                <div className="space-y-4">
+                  <div>
+                    <label htmlFor="card-number" className="block text-sm font-medium text-gray-700 mb-1">
+                      Card Number <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <input
+                        id="card-number"
+                        type="text"
+                        value={cardDetails.card_number}
+                        onChange={(e) => {
+                          const formatted = formatCardNumber(e.target.value.replace(/\D/g, ''));
+                          setCardDetails(prev => ({ ...prev, card_number: formatted }));
+                          setValidationErrors(prev => ({ ...prev, card_number: null }));
+                        }}
+                        onBlur={() => {
+                          if (cardDetails.card_number && !validateCardNumber(cardDetails.card_number.replace(/\s/g, ''))) {
+                            setValidationErrors(prev => ({ 
+                              ...prev, 
+                              card_number: 'Invalid card number' 
+                            }));
+                          }
+                        }}
+                        placeholder="1234 5678 9012 3456"
+                        maxLength={19}
+                        className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-4 transition-all ${
+                          validationErrors.card_number
+                            ? 'border-red-300 focus:border-red-500 focus:ring-red-100'
+                            : 'border-gray-200 focus:border-blue-500 focus:ring-blue-100'
+                        }`}
+                      />
+                      {cardDetails.card_number && (
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                          <span className="text-xs text-gray-500 uppercase">{getCardType(cardDetails.card_number)}</span>
+                        </div>
+                      )}
+                    </div>
+                    {validationErrors.card_number && (
+                      <p className="mt-1 text-sm text-red-600" role="alert">
+                        {validationErrors.card_number}
+                      </p>
+                    )}
+                  </div>
 
-          <button
-            onClick={handleSection4Continue}
-            className="mt-6 w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-4 focus:ring-blue-100"
-          >
-            Continue to Review Order
-          </button>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="card-expiry" className="block text-sm font-medium text-gray-700 mb-1">
+                        Expiry Date <span className="text-red-500">*</span>
+                      </label>
+                      <div className="flex space-x-2">
+                        <select
+                          id="expiry-month"
+                          value={cardDetails.expiry_month}
+                          onChange={(e) => {
+                            setCardDetails(prev => ({ ...prev, expiry_month: e.target.value }));
+                            setValidationErrors(prev => ({ ...prev, card_expiry: null }));
+                          }}
+                          className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                        >
+                          <option value="">MM</option>
+                          {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
+                            <option key={month} value={month.toString().padStart(2, '0')}>
+                              {month.toString().padStart(2, '0')}
+                            </option>
+                          ))}
+                        </select>
+                        <select
+                          id="expiry-year"
+                          value={cardDetails.expiry_year}
+                          onChange={(e) => {
+                            setCardDetails(prev => ({ ...prev, expiry_year: e.target.value }));
+                            setValidationErrors(prev => ({ ...prev, card_expiry: null }));
+                          }}
+                          className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                        >
+                          <option value="">YYYY</option>
+                          {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() + i).map(year => (
+                            <option key={year} value={year}>
+                              {year}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      {validationErrors.card_expiry && (
+                        <p className="mt-1 text-sm text-red-600" role="alert">
+                          {validationErrors.card_expiry}
+                        </p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label htmlFor="card-cvv" className="block text-sm font-medium text-gray-700 mb-1">
+                        CVV <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        id="card-cvv"
+                        type="text"
+                        value={cardDetails.cvv}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, '').slice(0, 4);
+                          setCardDetails(prev => ({ ...prev, cvv: value }));
+                          setValidationErrors(prev => ({ ...prev, card_cvv: null }));
+                        }}
+                        placeholder="123"
+                        maxLength={4}
+                        className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-4 transition-all ${
+                          validationErrors.card_cvv
+                            ? 'border-red-300 focus:border-red-500 focus:ring-red-100'
+                            : 'border-gray-200 focus:border-blue-500 focus:ring-blue-100'
+                        }`}
+                      />
+                      {validationErrors.card_cvv && (
+                        <p className="mt-1 text-sm text-red-600" role="alert">
+                          {validationErrors.card_cvv}
+                        </p>
+                      )}
+                      <p className="mt-1 text-xs text-gray-500">3-4 digit code on back of card</p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label htmlFor="cardholder-name" className="block text-sm font-medium text-gray-700 mb-1">
+                      Cardholder Name <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      id="cardholder-name"
+                      type="text"
+                      value={cardDetails.cardholder_name}
+                      onChange={(e) => {
+                        setCardDetails(prev => ({ ...prev, cardholder_name: e.target.value }));
+                        setValidationErrors(prev => ({ ...prev, payment_method: null }));
+                      }}
+                      placeholder="John Doe"
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    />
+                  </div>
+
+                  <div className="flex items-start">
+                    <input
+                      id="billing-same"
+                      type="checkbox"
+                      checked={billingAddressSameAsDelivery}
+                      onChange={(e) => setBillingAddressSameAsDelivery(e.target.checked)}
+                      className="mt-1 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    />
+                    <label htmlFor="billing-same" className="ml-2 block text-sm text-gray-700">
+                      Billing address same as delivery address
+                    </label>
+                  </div>
+                </div>
+              )}
+
+              {/* PayPal */}
+              {paymentMethod === 'paypal' && (
+                <div className="text-center py-8">
+                  <p className="text-gray-600 mb-4">You will be redirected to PayPal to complete your payment</p>
+                  <button
+                    type="button"
+                    className="px-6 py-3 bg-yellow-400 text-gray-900 font-semibold rounded-lg hover:bg-yellow-500 transition-colors"
+                  >
+                    Continue with PayPal
+                  </button>
+                </div>
+              )}
+
+              {/* Pay on Delivery */}
+              {paymentMethod === 'pay_on_delivery' && (
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <p className="text-sm text-blue-900">
+                    <strong>Pay on Delivery:</strong> You can pay with cash or card when your order arrives.
+                  </p>
+                  <p className="text-xs text-blue-700 mt-2">
+                    Please have exact change or a card ready for the delivery driver.
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <button
+              onClick={handleSection4Continue}
+              className="mt-6 w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-4 focus:ring-blue-100"
+            >
+              Continue to Review Order
+            </button>
+          </>
         )}
       </div>
     );
