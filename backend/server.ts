@@ -629,11 +629,21 @@ app.get('/api/products', async (req, res) => {
     const result = await pool.query(query, values);
 
     res.json({
-      products: result.rows.map(p => ({
-        ...p,
-        availability: p.quantity_on_hand === 0 ? 'out_of_stock' : 
-                      (p.quantity_on_hand <= p.low_stock_threshold ? 'low_stock' : 'in_stock')
-      })),
+      products: result.rows.map(p => {
+        const product = {
+          ...p,
+          price: parseFloat(p.price) || 0,
+          compare_at_price: p.compare_at_price ? parseFloat(p.compare_at_price) : null,
+          cost_per_item: p.cost_per_item ? parseFloat(p.cost_per_item) : null,
+          trade_price: p.trade_price ? parseFloat(p.trade_price) : null,
+          weight: p.weight ? parseFloat(p.weight) : null,
+          rating_average: parseFloat(p.rating_average) || 0,
+          supplier_rating: parseFloat(p.supplier_rating) || 0,
+          availability: p.quantity_on_hand === 0 ? 'out_of_stock' : 
+                        (p.quantity_on_hand <= p.low_stock_threshold ? 'low_stock' : 'in_stock')
+        };
+        return product;
+      }),
       pagination: {
         current_page: pageNum,
         total_pages: Math.ceil(totalItems / limitNum),
@@ -663,6 +673,13 @@ app.get('/api/products/:product_id', async (req, res) => {
     }
 
     const product = result.rows[0];
+    product.price = parseFloat(product.price) || 0;
+    product.compare_at_price = product.compare_at_price ? parseFloat(product.compare_at_price) : null;
+    product.cost_per_item = product.cost_per_item ? parseFloat(product.cost_per_item) : null;
+    product.trade_price = product.trade_price ? parseFloat(product.trade_price) : null;
+    product.weight = product.weight ? parseFloat(product.weight) : null;
+    product.rating_average = parseFloat(product.rating_average) || 0;
+    product.supplier_rating = parseFloat(product.supplier_rating) || 0;
     product.availability = product.quantity_on_hand === 0 ? 'out_of_stock' : 
                           (product.quantity_on_hand <= product.low_stock_threshold ? 'low_stock' : 'in_stock');
 
