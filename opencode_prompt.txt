@@ -1,395 +1,249 @@
-VALIDATION FAILURE - Auth E2E Tests (Attempt 2/100)
 
-The project validation failed at the "Auth E2E Tests" step. You need to analyze the error and fix it.
+You are tasked with generating comprehensive test artifacts for a web application.
+📊 CONTEXT PROVIDED:
 
-## Error Details:
-stderr | src/__tests__/auth.e2e.test.tsx > Auth E2E Flow (Real API) > Invalid Credentials > should show error for invalid login credentials
-⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
-⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
-
-
-⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
-
- FAIL  src/__tests__/auth.e2e.test.tsx > Auth E2E Flow (Real API) > Registration Flow > should register a new user with unique email
-Error: Internal server error
- ❯ register_user src/store/main.tsx:432:17
-    430|           }));
-    431| 
-    432|           throw new Error(errorMessage);
-       |                 ^
-    433|         }
-    434|       },
- ❯ src/__tests__/auth.e2e.test.tsx:52:7
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
-
- FAIL  src/__tests__/auth.e2e.test.tsx > Auth E2E Flow (Real API) > Login Flow > should login successfully with registered credentials via UI
-Error: Internal server error
- ❯ register_user src/store/main.tsx:432:17
-    430|           }));
-    431| 
-    432|           throw new Error(errorMessage);
-       |                 ^
-    433|         }
-    434|       },
- ❯ src/__tests__/auth.e2e.test.tsx:83:7
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
-
- FAIL  src/__tests__/auth.e2e.test.tsx > Auth E2E Flow (Real API) > Logout Flow > should logout successfully after login
-Error: Internal server error
- ❯ register_user src/store/main.tsx:432:17
-    430|           }));
-    431| 
-    432|           throw new Error(errorMessage);
-       |                 ^
-    433|         }
-    434|       },
- ❯ src/__tests__/auth.e2e.test.tsx:164:7
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
-
- FAIL  src/__tests__/auth.e2e.test.tsx > Auth E2E Flow (Real API) > Complete Auth Flow: Register -> Logout -> Login > should complete full auth cycle successfully
-Error: Internal server error
- ❯ register_user src/store/main.tsx:432:17
-    430|           }));
-    431| 
-    432|           throw new Error(errorMessage);
-       |                 ^
-    433|         }
-    434|       },
- ❯ src/__tests__/auth.e2e.test.tsx:204:7
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
-
- FAIL  src/__tests__/auth.e2e.test.tsx > Auth E2E Flow (Real API) > Invalid Credentials > should show error for invalid login credentials
-AssertionError: expected null to be truthy
-
-Ignored nodes: comments, script, style
-[36m<html>[39m
-  [36m<head />[39m
-  [36m<body>[39m
-    [36m<div>[39m
-      [36m<div[39m
-        [33mclass[39m=[32m"min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8"[39m
-      [36m>[39m
-        [36m<div[39m
-          [33mclass[39m=[32m"max-w-md w-full"[39m
-        [36m>[39m
-          [36m<div[39m
-            [33mclass[39m=[32m"bg-white shadow-2xl shadow-gray-200/50 rounded-2xl overflow-hidden"[39m
-          [36m>[39m
-            [36m<div[39m
-              [33mclass[39m=[32m"px-8 pt-8 pb-6 text-center border-b border-gray-100"[39m
-            [36m>[39m
-              [36m<div[39m
-                [33mclass[39m=[32m"w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg"[39m
-              [36m>[39m
-                [36m<span[39m
-                  [33mclass[39m=[32m"text-2xl font-bold text-white"[39m
-                [36m>[39m
-                  [0mBE[0m
-                [36m</span>[39m
-              [36m</div>[39m
-              [36m<h1[39m
-                [33mclass[39m=[32m"text-3xl font-bold text-gray-900 mb-2"[39m
-              [36m>[39m
-                [0mWelcome Back[0m
-              [36m</h1>[39m
-              [36m<p[39m
-                [33mclass[39m=[32m"text-gray-600 leading-relaxed"[39m
-              [36m>[39m
-                [0mSign in to your BuildEasy account[0m
-              [36m</p>[39m
-            [36m</div>[39m
-            [36m<div[39m
-              [33mclass[39m=[32m"px-8 py-6"[39m
-            [36m>[39m
-              [36m<div[39m
-                [33mclass[39m=[32m"space-y-3 mb-6"[39m
-              [36m>[39m
-                [36m<button[39m
-                  [33mclass[39m=[32m"w-full flex items-center justify-center px-4 py-3 border-2 border-gray-200 rounded-lg text-gray-700 font-medium hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"[39m
-                  [33mtype[39m=[32m"button"[39m
-                [36m>[39m
-                  [36m<svg[39m
-                    [33mclass[39m=[32m"w-5 h-5 mr-3"[39m
-                    [33mviewBox[39m=[32m"0 0 24 24"[39m
-                  [36m>[39m
-                    [36m<path[39m
-                      [33md[39m=[32m"M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"[39m
-                      [33mfill[39m=[32m"#4285F4"[39m
-                    [36m/>[39m
-                    [36m<path[39m
-                      [33md[39m=[32m"M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"[39m
-                      [33mfill[39m=[32m"#34A853"[39m
-                    [36m/>[39m
-                    [36m<path[39m
-                      [33md[39m=[32m"M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"[39m
-                      [33mfill[39m=[32m"#FBBC05"[39m
-                    [36m/>[39m
-                    [36m<path[39m
-                      [33md[39m=[32m"M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"[39m
-                      [33mfill[39m=[32m"#EA4335"[39m
-                    [36m/>[39m
-                  [36m</svg>[39m
-                  [0mContinue with Google[0m
-                [36m</button>[39m
-                [36m<button[39m
-                  [33mclass[39m=[32m"w-full flex items-center justify-center px-4 py-3 border-2 border-gray-200 rounded-lg text-gray-700 font-medium hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"[39m
-                  [33mtype[39m=[32m"button"[39m
-                [36m>[39m
-                  [36m<svg[39m
-                    [33mclass[39m=[32m"w-5 h-5 mr-3"[39m
-                    [33mfill[39m=[32m"currentColor"[39m
-                    [33mviewBox[39m=[32m"0 0 24 24"[39m
-                  [36m>[39m
-                    [36m<path[39m
-                      [33md[39m=[32m"M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"[39m
-                    [36m/>[39m
-                  [36m</svg>[39m
-                  [0mContinue with Apple[0m
-                [36m</button>[39m
-                [36m<button[39m
-                  [33mclass[39m=[32m"w-full flex items-center justify-center px-4 py-3 border-2 border-gray-200 rounded-lg text-gray-700 font-medium hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"[39m
-                  [33mtype[39m=[32m"button"[39m
-                [36m>[39m
-                  [36m<svg[39m
-                    [33mclass[39m=[32m"w-5 h-5 mr-3"[39m
-                    [33mfill[39m=[32m"#1877F2"[39m
-                    [33mviewBox[39m=[32m"0 0 24 24"[39m
-                  [36m>[39m
-                    [36m<path[39m
-                      [33md[39m=[32m"M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"[39m
-                    [36m/>[39m
-                  [36m</svg>[39m
-                  [0mContinue with Facebook[0m
-                [36m</button>[39m
-              [36m</div>[39m
-              [36m<div[39m
-                [33mclass[39m=[32m"relative mb-6"[39m
-              [36m>[39m
-                [36m<div[39m
-                  [33mclass[39m=[32m"absolute inset-0 flex items-center"[39m
-                [36m>[39m
-                  [36m<div[39m
-                    [33mclass[39m=[32m"w-full border-t border-gray-200"[39m
-                  [36m/>[39m
-                [36m</div>[39m
-                [36m<div[39m
-                  [33mclass[39m=[32m"relative flex justify-center text-sm"[39m
-                [36m>[39m
-                  [36m<span[39m
-                    [33mclass[39m=[32m"px-4 bg-white text-gray-500 font-medium"[39m
-                  [36m>[39m
-                    [0mOr sign in with email[0m
-                  [36m</span>[3...
-
-[32m- Expected:[39m 
-true
-
-[31m+ Received:[39m 
-null
-
- ❯ waitFor.timeout src/__tests__/auth.e2e.test.tsx:301:60
-    299|         () => {
-    300|           const state = useAppStore.getState();
-    301|           expect(state.authentication_state.error_message).toBeTruthy(…
-       |                                                            ^
-    302|           expect(state.authentication_state.authentication_status.is_a…
-    303|           expect(state.authentication_state.authentication_status.is_l…
- ❯ runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:47:12
- ❯ checkCallback node_modules/@testing-library/dom/dist/wait-for.js:124:77
- ❯ Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:118:16
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
-
- FAIL  src/__tests__/auth.e2e.test.tsx > Auth E2E Flow (Real API) > Store Persistence > should persist auth token in localStorage after registration
-Error: Internal server error
- ❯ register_user src/store/main.tsx:432:17
-    430|           }));
-    431| 
-    432|           throw new Error(errorMessage);
-       |                 ^
-    433|         }
-    434|       },
- ❯ src/__tests__/auth.e2e.test.tsx:324:7
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
-
- FAIL  src/__tests__/auth.e2e.test.tsx > Auth E2E Flow (Real API) > Store Persistence > should clear localStorage after logout
-Error: Internal server error
- ❯ register_user src/store/main.tsx:432:17
-    430|           }));
-    431| 
-    432|           throw new Error(errorMessage);
-       |                 ^
-    433|         }
-    434|       },
- ❯ src/__tests__/auth.e2e.test.tsx:355:7
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+PACKAGE.JSON ANALYSIS:
+Dependencies: concurrently
+Dev Dependencies: @flydotio/dockerfile
+Scripts: dev
 
 
+DATABASE SCHEMA AND SEED DATA (sample):
+-- Create all tables
 
-## Validation Context:
-- Step: Auth E2E Tests
-- Working Directory: /app/vitereact
-- Attempt: 2/100
-- Previous failures for this step: 2
+-- Users table
+CREATE TABLE users (
+    user_id VARCHAR(255) PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    phone VARCHAR(50) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    role VARCHAR(50) NOT NULL DEFAULT 'customer',
+    account_type VARCHAR(50) NOT NULL DEFAULT 'personal',
+    email_verified BOOLEAN NOT NULL DEFAULT false,
+    phone_verified BOOLEAN NOT NULL DEFAULT false,
+    profile_photo_url TEXT,
+    status VARCHAR(50) NOT NULL DEFAULT 'active',
+    last_login VARCHAR(255),
+    created_at VARCHAR(255) NOT NULL,
+    updated_at VARCHAR(255) NOT NULL
+);
 
-## Project Memory Summary:
-- Total validation attempts: 15
-- Common issues encountered: None
-- Known dependencies: @hookform/resolvers, @radix-ui/react-accordion, @radix-ui/react-alert-dialog, @radix-ui/react-aspect-ratio, @radix-ui/react-avatar, @radix-ui/react-checkbox, @radix-ui/react-collapsible, @radix-ui/react-context-menu, @radix-ui/react-dialog, @radix-ui/react-dropdown-menu
-- Missing dependencies: None
+-- Addresses table
+CREATE TABLE addresses (
+    address_id VARCHAR(255) PRIMARY KEY,
+    user_id VARCHAR(255) NOT NULL REFERENCES users(user_id),
+    address_label VARCHAR(255),
+    address_line_1 TEXT NOT NULL,
+    address_line_2 TEXT,
+    city VARCHAR(255) NOT NULL,
+    state VARCHAR(255) NOT NULL,
+    postal_code VARCHAR(50) NOT NULL,
+    country VARCHAR(100) NOT NULL,
+    latitude DECIMAL(10, 8),
+    longitude DECIMAL(11, 8),
+    is_default BOOLEAN NOT NULL DEFAULT false,
+    contact_name VARCHAR(255),
+    contact_phone VARCHAR(50),
+    delivery_instructions TEXT,
+    created_at VARCHAR(255) NOT NULL,
+    updated_at VARCHAR(255) NOT NULL
+);
 
-## Project Structure:
-FULL PROJECT STRUCTURE CONTEXT for Agent:
-=====================================
+-- Business accounts table
+CREATE TABLE business_accounts (
+    business_account_id VARCHAR(255) PRIMARY KEY,
+    user_id VARCHAR(255) NOT NULL REFERENCES users(user_id),
+    company_name VARCHAR(255) NOT NULL,
+    company_registration_number VARCHAR(255),
+    tax_id VARCHAR(255),
+    billing_address_id VARCHAR(255) REFERENCES addresses(address_id),
+    tax_exempt BOOLEAN NOT NULL DEFAULT false,
+    tax_exemption_document_url TEXT,
+    created_at VARCHAR(255) NOT NULL,
+    updated_at VARCHAR(255) NOT NULL
+);
 
-Working Directory: /app/vitereact
-
-PROJECT DIRECTORIES:
-/app
-/app/.git
-/app/.git/branches
-/app/.git/hooks
-/app/.git/info
-/app/.git/refs
-/app/.git/refs/heads
-/app/.git/refs/tags
-/app/.git/refs/remotes
-/app/.git/objects
-/app/.git/objects/pack
-/app/.git/objects/info
-/app/.git/objects/d7
-/app/.git/objects/14
-/app/.git/objects/3a
-/app/.git/objects/d5
-/app/.git/objects/d6
-/app/.git/objects/0e
-/app/.git/objects/68
-/app/.git/objects/1b
-
-
-KEY PROJECT FILES:
-/app/README.md
-/app/backend/initdb.js
-/app/backend/jest.config.ts
-/app/backend/package-lock.json
-/app/backend/package.json
-/app/backend/schema.ts
-/app/backend/server.test.ts
-/app/backend/server.ts
-/app/backend/tsconfig.json
-/app/exports/1763046712280.json
-/app/exports/1763047420596.json
-/app/exports/1763047623798.json
-/app/exports/1763047749984.json
-/app/exports/1763049469371.json
-/app/exports/1763049494632.json
-/app/exports/1763049727257.json
-/app/exports/1763049727673.json
-/app/exports/1763049730669.json
-/app/exports/1763050090324.json
-/app/exports/1763050092341.json
-/app/exports/1763050193186.json
-/app/exports/1763050193533.json
-/app/exports/1763050312948.json
-/app/exports/1763050313006.json
-/app/exports/1763050317280.json
-/app/exports/1763050340775.json
-/app/exports/1763050340786.json
-/app/exports/1763050341873.json
-/app/exports/1763050353556.json
-/app/exports/1763050353591.json
-/app/exports/1763050354051.json
-/app/exports/1763050354163.json
-/app/exports/1763050354803.json
-/app/exports/1763050355557.json
-/app/exports/1763050361920.json
-/app/exports/1763050361923.json
-/app/exports/1763050363190.json
-/app/exports/1763050367372.json
-/app/exports/1763050367409.json
-/app/exports/1763050369296.json
-/app/exports/1763050370030.json
-/app/exports/1763050370218.json
-/app/exports/1763050371342.json
-/app/exports/1763050373797.json
-/app/exports/1763050373876.json
-/app/exports/1763050374869.json
-/app/exports/1763050382933.json
-/app/exports/1763050383370.json
-/app/exports/1763050384643.json
-/app/exports/1763050385335.json
+-- Team members table
+CREATE TABLE team_members (
+    team_member_id VARCHAR(255) PRIMARY KEY,
+    business_account_id VARCHAR(255) NOT NULL REFERENCES business_accounts(business_account_...
 
 
-FRONTEND (vitereact) PACKAGE.JSON:
-  Scripts: dev, build, lint, preview, test, test:watch, test:ui
-  Dependencies: 61 packages
-  DevDependencies: 21 packages
-  Key Dependencies: @hookform/resolvers, @radix-ui/react-accordion, @radix-ui/react-alert-dialog, @radix-ui/react-aspect-ratio, @radix-ui/react-avatar, @radix-ui/react-checkbox, @radix-ui/react-collapsible, @radix-ui/react-context-menu, @radix-ui/react-dialog, @radix-ui/react-dropdown-menu
+BACKEND API ENDPOINTS (extracted from server code):
+app.post('/api/auth/register'
+app.post('/api/auth/login'
+app.post('/api/auth/password-reset/request'
+app.post('/api/auth/password-reset/confirm'
+app.get('/api/users/me'
+app.patch('/api/users/me'
+app.delete('/api/users/me'
+app.get('/api/users/me/addresses'
+app.post('/api/users/me/addresses'
+app.patch('/api/addresses/:address_id'
+app.delete('/api/addresses/:address_id'
+app.get('/api/categories'
+app.get('/api/categories/:category_id'
+app.get('/api/products'
+app.get('/api/products/:product_id'
+app.get('/api/products/:product_id/variants'
+app.get('/api/products/:product_id/images'
+app.get('/api/products/:product_id/reviews'
+app.post('/api/products/:product_id/reviews'
+app.get('/api/users/me/carts'
+app.post('/api/users/me/carts'
+app.get('/api/carts/:cart_id'
+app.get('/api/carts/:cart_id/items'
+app.post('/api/carts/:cart_id/items'
+app.patch('/api/cart-items/:cart_item_id'
+app.delete('/api/cart-items/:cart_item_id'
+app.get('/api/orders'
+app.post('/api/orders'
+app.get('/api/orders/:order_id'
+app.patch('/api/orders/:order_id'
+app.post('/api/orders/:order_id/cancel'
+app.get('/api/orders/:order_id/tracking'
+app.get('/api/suppliers/:supplier_id'
+app.get('/api/suppliers/:supplier_id/products'
+app.post('/api/suppliers/:supplier_id/products'
+app.get('/api/suppliers/:supplier_id/reviews'
+app.post('/api/suppliers/:supplier_id/reviews'
+app.get('/api/conversations'
+app.post('/api/conversations'
+app.get('/api/conversations/:conversation_id/messages'
+app.post('/api/conversations/:conversation_id/messages'
+app.get('/api/notifications'
+app.patch('/api/notifications/:notification_id'
+app.post('/api/notifications/mark-all-read'
+app.get('/api/users/me/wishlists'
+app.post('/api/users/me/wishlists'
+app.get('/api/projects'
+app.post('/api/projects'
+app.get('/api/suppliers/me/orders'
+app.get('/api/suppliers/me/analytics'
+app.post('/api/supplier-applications'
+app.get('/api/admin/dashboard'
+app.get('/api/health'
 
-BACKEND PACKAGE.JSON:
-  Scripts: start, build, dev, test, test:watch, test:coverage
-  Dependencies: 15 packages
-  Key Dependencies: @electric-sql/pglite, @types/bcryptjs, bcryptjs, cors, dotenv, express, jsonwebtoken, morgan, pg, ts-node
+Frontend URL: https://123create-construction-app-and-add-a.launchpulse.ai
+Backend URL: https://123create-construction-app-and-add-a.launchpulse.ai
+🎯 YOUR CRITICAL TASKS - ANALYZE, FIX ISSUES, AND CREATE TEST FILES:
+STEP 2: Create test_users.json
+🔐 INTELLIGENT TEST USER CREATION:
+1. **ANALYZE DATABASE SCHEMA** (from db.sql):
+   - Find user table structure (users, user, accounts, etc.)
+   - Identify role/user_type field and possible values
+   - Detect required fields (name, email, password structure)
+   - Extract existing seed data if available
+2. **ANALYZE BACKEND API** (from server files):
+   - Find registration endpoint (/api/auth/register, /register, etc.)
+   - Find login endpoint (/api/auth/login, /login, etc.)
+   - Determine required payload structure
+   - Identify authentication flow
+3. **CREATE & VERIFY TEST USERS**:
+   - If seed data exists: extract credentials with known test passwords
+   - If no seed data: create users via API with curl commands
+   - Test login for each user to ensure credentials work
+   - Support different roles: admin, user, guest, host, customer etc. based on the database schema and seed data
+4. **GENERATE test_users.json**:
+{
+  "generated_at": "2024-01-20T10:30:00Z",
+  "user_structure": {
+    "table_name": "users",
+    "role_field": "role",
+    "registration_endpoint": "/api/auth/register",
+    "login_endpoint": "/api/auth/login"
+  },
+  "total_users": 4,
+  "verified_users": 4,
+  "users": [
+    {
+      "email": "admin@test.com",
+      "password": "AdminPass123!",
+      "role": "admin",
+      "name": "Admin User",
+      "verified": true,
+      "token": "jwt_token_here"
+    }
+    // ... create for each detected role
+  ],
+  "by_role": {
+    "admin": [{"email": "admin@test.com", "password": "AdminPass123!", "verified": true}],
+    "user": [{"email": "user@test.com", "password": "UserPass123!", "verified": true}]
+    // ... organize by role for easy browser agent access
+  }
+}
+**CRITICAL**: Use actual project structure, not template data!
+STEP 3: Create code_summary.json
+{
+  "tech_stack": ["React", "Vite", "TypeScript", "Express", "PostgreSQL", "Node.js"],
+  "features": [
+    {
+      "name": "User Authentication",
+      "description": "Login, logout, session management",
+      "files": ["src/components/Login.tsx", "src/api/auth.ts"]
+    },
+    {
+      "name": "Dashboard",
+      "description": "Main application dashboard",
+      "files": ["src/components/Dashboard.tsx"]
+    }
+  ],
+  "database_tables": ["users", "projects"],
+  "api_endpoints": ["/api/auth", "/api/users"]
+}
+STEP 4: test_cases.json 
+  "testCases": [
+    {
+      "id": "functional-app-test",
+      "name": "Functional Application Test",
+      "category": "functionality",
+      "priority": "high",
+      "description": "Verify the application has actual functionality beyond basic placeholder",
+      "steps": [
+        "Navigate to application",
+        "Verify multiple interactive elements exist (buttons, forms, links)",
+        "Check for proper navigation structure",
+        "Verify application has real features, not just 'Vite + React' text"
+      ],
+      "expectedOutcome": "Application shows functional features and interactivity",
+      "failureCondition": "If page only shows 'Vite + React' placeholder, this test should FAIL"
+    },
+    {
+      "id": "ui-components-test", 
+      "name": "UI Components Test",
+      "category": "interface",
+      "priority": "high",
+      "description": "Test that UI components are properly implemented",
+      "steps": [
+        "Check for buttons and verify they're clickable",
+        "Look for forms and input fields",
+        "Verify navigation menu exists",
+        "Test responsive design elements"
+      ],
+      "expectedOutcome": "Multiple interactive UI components found and functional"
+    },
+    {
+      "id": "content-quality-test",
+      "name": "Content Quality Test", 
+      "category": "content",
+      "priority": "high",
+      "description": "Verify application has meaningful content",
+      "steps": [
+        "Check page has substantial content beyond placeholder",
+        "Verify proper heading structure",
+        "Look for actual application features",
+        "Ensure professional appearance"
+      ],
+      "expectedOutcome": "Application demonstrates real functionality and professional design"
+    }
+  ]
+}
+CRITICAL REQUIREMENTS:
+1. You MUST FIRST analyze and fix any technical issues in the React application
+2. You MUST create all 3 JSON files: code_summary.json, test_cases.json, and test_users.json
+3. Each file must be valid JSON
+4. The test_cases.json and test_users.json files are especially important - do not skip them
+5. Focus on fixing broken functionality, not adding new features
+Start by checking if the application runs properly, fix any technical issues, then let Stagehand test the existing functionality.
 
-ROOT PACKAGE.JSON:
-  Scripts: dev
-
-BACKEND SCHEMA AVAILABLE:
-  Location: /app/backend/schema.ts
-  Size: 59457 characters
-  Contains Zod schemas for type validation
-
-BACKEND SERVER AVAILABLE:
-  Location: /app/backend/server.ts
-  Size: 71671 characters
-  Contains actual API endpoints and implementations
-
-PROTECTED DIRECTORIES (DO NOT MODIFY):
-  - /app/vitereact/src/components/ui/** (UI library)
-  - /app/node_modules/** (Dependencies)
-  - /app/.git/** (Version control)
-
-
-
-## Previous Validation Failures for Auth E2E Tests:
-- 5:02:12 PM: 
-- 5:08:18 PM: 
-
-## Your Task:
-1. **Analyze the Error**: Understand what specifically went wrong in the Auth E2E Tests step
-2. **Check Previous Attempts**: Consider if this is a recurring issue based on validation history
-3. **Locate the Problem**: Identify which files need to be modified
-4. **Apply Fixes**: Use the available tools to fix the specific issues
-5. **Focus on Root Cause**: Don't just suppress errors, fix the underlying problems
-
-
-
-
-
-## Important Notes:
-- You are working in a Modal Sandbox environment at /app/vitereact
-- Make changes to the actual project files that will be used in the next validation attempt
-- Always check packages are installed correctly, if not, install them, npm install
-- For TypeScript errors: Fix type issues, missing imports, etc.
-- For Build errors: Fix configuration issues, missing dependencies, syntax errors
-- For Lint errors: Fix code style issues, unused variables, missing dependencies, etc.
-- For Install errors: Fix package.json issues, dependency conflicts, etc.
-- For SQL errors: Fix syntax issues, schema problems, foreign key constraints, etc.
-- Use your memory context to avoid repeating failed approaches
-
-after you have fixed the issues, run the following commands to make sure there are no errors left:
-for typescript errors, run: cd /app/vitereact && npx tsc -b in /app/vitereact, it is important to run this command with -b so npx tsc -b in /app/vitereact
-for lint errors run npm run lint in vitereact
-for test errors, run: npm test in the appropriate directory (backend or vitereact)
-for SQL errors, run: node initdb.js in the backend directory to test database initialization
-
-MAKE SURE TO FIX ALL ERRORS! SMALL AND BIG!
-
-
-The validation will retry this step after your fixes. Make sure to address the specific error shown above.

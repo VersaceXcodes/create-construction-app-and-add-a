@@ -1,0 +1,948 @@
+{
+  "generated_at": "2025-01-13T12:00:00Z",
+  "application_name": "BuildEasy Construction Marketplace",
+  "base_url": "https://123create-construction-app-and-add-a.launchpulse.ai",
+  "total_test_cases": 45,
+  "test_categories": [
+    "functionality",
+    "authentication",
+    "navigation",
+    "interface",
+    "content",
+    "forms",
+    "search",
+    "cart",
+    "orders",
+    "user_flows"
+  ],
+  "testCases": [
+    {
+      "id": "functional-app-test",
+      "name": "Functional Application Test",
+      "category": "functionality",
+      "priority": "critical",
+      "description": "Verify the application has actual functionality beyond basic placeholder",
+      "steps": [
+        "Navigate to application homepage",
+        "Verify multiple interactive elements exist (buttons, forms, links)",
+        "Check for proper navigation structure with working links",
+        "Verify application has real features like product listings, categories, search",
+        "Check that the page is not just showing 'Vite + React' placeholder text"
+      ],
+      "expectedOutcome": "Application shows functional construction marketplace with products, categories, and interactive features",
+      "failureCondition": "If page only shows 'Vite + React' placeholder or has no real functionality, this test should FAIL",
+      "test_data": null
+    },
+    {
+      "id": "homepage-loads",
+      "name": "Homepage Loads Successfully",
+      "category": "functionality",
+      "priority": "critical",
+      "description": "Verify homepage loads without errors and displays main content",
+      "steps": [
+        "Navigate to /",
+        "Wait for page to fully load",
+        "Verify no JavaScript errors in console",
+        "Check that main navigation is visible",
+        "Verify hero section or featured content displays"
+      ],
+      "expectedOutcome": "Homepage loads successfully with navigation, hero section, and featured content visible",
+      "failureCondition": "Page fails to load, shows error message, or has blank content",
+      "test_data": null
+    },
+    {
+      "id": "navigation-structure",
+      "name": "Navigation Structure Test",
+      "category": "navigation",
+      "priority": "high",
+      "description": "Test that main navigation exists and is functional",
+      "steps": [
+        "Locate main navigation bar",
+        "Verify all expected menu items are present (Products, Categories, Suppliers, etc.)",
+        "Click each main navigation link",
+        "Verify each link navigates to correct page",
+        "Check for mobile menu responsiveness"
+      ],
+      "expectedOutcome": "Navigation bar contains all main sections and links work correctly",
+      "failureCondition": "Navigation missing, links broken, or navigation doesn't respond to clicks",
+      "test_data": {
+        "expected_nav_items": ["Products", "Categories", "Suppliers", "How It Works", "Become a Supplier"]
+      }
+    },
+    {
+      "id": "product-catalog-display",
+      "name": "Product Catalog Display",
+      "category": "functionality",
+      "priority": "high",
+      "description": "Verify product catalog displays products correctly",
+      "steps": [
+        "Navigate to products page or search results",
+        "Verify product grid/list displays",
+        "Check that product cards show: image, name, price, supplier",
+        "Verify at least 5 products are visible",
+        "Test product card hover states"
+      ],
+      "expectedOutcome": "Product catalog displays with multiple products showing images, names, prices, and supplier information",
+      "failureCondition": "No products display, product cards are broken, or essential information is missing",
+      "test_data": {
+        "expected_products": ["2x4x8 Premium Pine Stud", "18V Cordless Drill/Driver Kit", "Galvanized Deck Screws"]
+      }
+    },
+    {
+      "id": "product-detail-page",
+      "name": "Product Detail Page Functionality",
+      "category": "functionality",
+      "priority": "high",
+      "description": "Test product detail page displays complete product information",
+      "steps": [
+        "Navigate to a specific product detail page",
+        "Verify product image gallery displays",
+        "Check product name, price, description are visible",
+        "Verify 'Add to Cart' button exists",
+        "Check for supplier information",
+        "Look for product specifications and details"
+      ],
+      "expectedOutcome": "Product detail page shows complete product information including images, pricing, specifications, and purchase options",
+      "failureCondition": "Page fails to load, missing critical information, or 'Add to Cart' functionality absent",
+      "test_data": {
+        "test_product_id": "prod_001",
+        "test_url": "/products/prod_001"
+      }
+    },
+    {
+      "id": "search-functionality",
+      "name": "Search Functionality Test",
+      "category": "search",
+      "priority": "high",
+      "description": "Test that search feature works and returns relevant results",
+      "steps": [
+        "Locate search bar in navigation",
+        "Enter search term 'drill'",
+        "Submit search",
+        "Verify search results page displays",
+        "Check that results are relevant to search query",
+        "Verify result count is shown"
+      ],
+      "expectedOutcome": "Search returns relevant products matching the query with result count displayed",
+      "failureCondition": "Search doesn't work, returns no results, or shows irrelevant products",
+      "test_data": {
+        "search_queries": ["drill", "lumber", "paint", "2x4"]
+      }
+    },
+    {
+      "id": "category-browsing",
+      "name": "Category Browsing",
+      "category": "navigation",
+      "priority": "high",
+      "description": "Test browsing products by category",
+      "steps": [
+        "Navigate to categories page or menu",
+        "Verify multiple categories are listed",
+        "Click on a category (e.g., 'Lumber & Wood')",
+        "Verify category page loads with products",
+        "Check that products match selected category",
+        "Test subcategory navigation if available"
+      ],
+      "expectedOutcome": "Categories are listed, clicking a category shows relevant products filtered by that category",
+      "failureCondition": "Categories don't display, navigation broken, or products don't match category",
+      "test_data": {
+        "test_categories": ["Lumber & Wood", "Tools", "Hardware", "Paint & Supplies"]
+      }
+    },
+    {
+      "id": "login-page-display",
+      "name": "Login Page Display",
+      "category": "authentication",
+      "priority": "high",
+      "description": "Verify login page displays correctly",
+      "steps": [
+        "Navigate to /login",
+        "Verify login form is visible",
+        "Check for email/username field",
+        "Check for password field",
+        "Verify 'Login' button exists",
+        "Check for 'Register' or 'Sign Up' link",
+        "Look for 'Forgot Password' link"
+      ],
+      "expectedOutcome": "Login page displays with form fields, login button, and links to registration and password reset",
+      "failureCondition": "Form missing, fields not interactive, or essential links absent",
+      "test_data": null
+    },
+    {
+      "id": "user-login-customer",
+      "name": "Customer Login Flow",
+      "category": "authentication",
+      "priority": "critical",
+      "description": "Test successful login for customer user",
+      "steps": [
+        "Navigate to /login",
+        "Enter customer email: john.contractor@email.com",
+        "Enter password: password123",
+        "Click login button",
+        "Wait for authentication",
+        "Verify redirect to dashboard or homepage",
+        "Check that user is authenticated (profile menu visible)"
+      ],
+      "expectedOutcome": "User logs in successfully and is redirected to appropriate page with authenticated state",
+      "failureCondition": "Login fails, error message appears, or user remains unauthenticated",
+      "test_data": {
+        "email": "john.contractor@email.com",
+        "password": "password123",
+        "role": "customer"
+      }
+    },
+    {
+      "id": "user-login-supplier",
+      "name": "Supplier Login Flow",
+      "category": "authentication",
+      "priority": "critical",
+      "description": "Test successful login for supplier user",
+      "steps": [
+        "Navigate to /login",
+        "Enter supplier email: supplier.acme@email.com",
+        "Enter password: supplier123",
+        "Click login button",
+        "Wait for authentication",
+        "Verify redirect to supplier dashboard",
+        "Check that supplier-specific features are available"
+      ],
+      "expectedOutcome": "Supplier logs in successfully and sees supplier-specific interface",
+      "failureCondition": "Login fails or supplier is not directed to supplier dashboard",
+      "test_data": {
+        "email": "supplier.acme@email.com",
+        "password": "supplier123",
+        "role": "supplier"
+      }
+    },
+    {
+      "id": "user-login-admin",
+      "name": "Admin Login Flow",
+      "category": "authentication",
+      "priority": "high",
+      "description": "Test successful login for admin user",
+      "steps": [
+        "Navigate to /login",
+        "Enter admin email: admin@platform.com",
+        "Enter password: admin123",
+        "Click login button",
+        "Wait for authentication",
+        "Verify redirect to admin dashboard",
+        "Check for admin-specific menu items"
+      ],
+      "expectedOutcome": "Admin logs in successfully and has access to admin features",
+      "failureCondition": "Login fails or admin doesn't have access to admin dashboard",
+      "test_data": {
+        "email": "admin@platform.com",
+        "password": "admin123",
+        "role": "admin"
+      }
+    },
+    {
+      "id": "registration-page-display",
+      "name": "Registration Page Display",
+      "category": "authentication",
+      "priority": "high",
+      "description": "Verify registration page displays correctly",
+      "steps": [
+        "Navigate to /register",
+        "Verify registration form is visible",
+        "Check for required fields: name, email, password, phone",
+        "Verify password confirmation field",
+        "Check for account type selection if applicable",
+        "Verify 'Register' or 'Sign Up' button exists",
+        "Check for link back to login"
+      ],
+      "expectedOutcome": "Registration page displays with all required form fields and submit button",
+      "failureCondition": "Form missing, required fields absent, or form not interactive",
+      "test_data": null
+    },
+    {
+      "id": "invalid-login-attempt",
+      "name": "Invalid Login Attempt",
+      "category": "authentication",
+      "priority": "high",
+      "description": "Test that invalid credentials are rejected",
+      "steps": [
+        "Navigate to /login",
+        "Enter invalid email: invalid@test.com",
+        "Enter invalid password: wrongpassword",
+        "Click login button",
+        "Verify error message appears",
+        "Check that user is not authenticated"
+      ],
+      "expectedOutcome": "Login fails with appropriate error message, user remains unauthenticated",
+      "failureCondition": "Invalid credentials are accepted or no error message shown",
+      "test_data": {
+        "invalid_email": "invalid@test.com",
+        "invalid_password": "wrongpassword"
+      }
+    },
+    {
+      "id": "logout-functionality",
+      "name": "Logout Functionality",
+      "category": "authentication",
+      "priority": "high",
+      "description": "Test that users can log out successfully",
+      "steps": [
+        "Log in as any user",
+        "Locate logout button (usually in profile menu)",
+        "Click logout",
+        "Verify redirect to homepage or login page",
+        "Check that authenticated state is cleared",
+        "Try accessing protected route - should redirect to login"
+      ],
+      "expectedOutcome": "User logs out successfully, session is cleared, and protected routes are inaccessible",
+      "failureCondition": "Logout doesn't work, user remains authenticated, or session persists",
+      "test_data": {
+        "test_user_email": "john.contractor@email.com",
+        "test_user_password": "password123"
+      }
+    },
+    {
+      "id": "add-to-cart",
+      "name": "Add Product to Cart",
+      "category": "cart",
+      "priority": "high",
+      "description": "Test adding a product to shopping cart",
+      "steps": [
+        "Navigate to a product detail page",
+        "Select quantity (if applicable)",
+        "Click 'Add to Cart' button",
+        "Verify success message or notification",
+        "Check that cart icon updates with item count",
+        "Navigate to cart page",
+        "Verify product appears in cart"
+      ],
+      "expectedOutcome": "Product is added to cart, cart count updates, and product appears in cart page",
+      "failureCondition": "Product not added, no confirmation, or cart doesn't update",
+      "test_data": {
+        "test_product_id": "prod_001",
+        "quantity": 5
+      }
+    },
+    {
+      "id": "cart-page-display",
+      "name": "Shopping Cart Page Display",
+      "category": "cart",
+      "priority": "high",
+      "description": "Verify shopping cart page displays correctly",
+      "steps": [
+        "Add item to cart first",
+        "Navigate to cart page",
+        "Verify cart items are listed",
+        "Check that each item shows: image, name, price, quantity",
+        "Verify subtotal is calculated",
+        "Check for 'Update' and 'Remove' options",
+        "Verify 'Proceed to Checkout' button exists"
+      ],
+      "expectedOutcome": "Cart page displays all items with details, pricing, and checkout option",
+      "failureCondition": "Cart page empty when items added, pricing incorrect, or checkout button missing",
+      "test_data": null
+    },
+    {
+      "id": "update-cart-quantity",
+      "name": "Update Cart Item Quantity",
+      "category": "cart",
+      "priority": "medium",
+      "description": "Test updating quantity of items in cart",
+      "steps": [
+        "Navigate to cart with items",
+        "Locate quantity selector for an item",
+        "Change quantity to different value",
+        "Click update or wait for auto-update",
+        "Verify item quantity updates",
+        "Check that subtotal recalculates correctly"
+      ],
+      "expectedOutcome": "Quantity updates successfully and pricing recalculates",
+      "failureCondition": "Quantity doesn't update, pricing incorrect, or update fails",
+      "test_data": {
+        "original_quantity": 5,
+        "new_quantity": 10
+      }
+    },
+    {
+      "id": "remove-from-cart",
+      "name": "Remove Item from Cart",
+      "category": "cart",
+      "priority": "medium",
+      "description": "Test removing an item from shopping cart",
+      "steps": [
+        "Navigate to cart with items",
+        "Locate remove button for an item",
+        "Click remove",
+        "Verify confirmation prompt if applicable",
+        "Confirm removal",
+        "Verify item is removed from cart",
+        "Check that totals update correctly"
+      ],
+      "expectedOutcome": "Item is removed from cart and totals recalculate",
+      "failureCondition": "Item not removed, cart errors, or totals incorrect",
+      "test_data": null
+    },
+    {
+      "id": "checkout-page-access",
+      "name": "Checkout Page Access",
+      "category": "orders",
+      "priority": "high",
+      "description": "Test accessing checkout page",
+      "steps": [
+        "Add items to cart",
+        "Navigate to cart page",
+        "Click 'Proceed to Checkout'",
+        "Verify redirect to checkout page",
+        "Check that checkout form displays",
+        "Verify cart summary is shown"
+      ],
+      "expectedOutcome": "Checkout page loads with form and order summary",
+      "failureCondition": "Cannot access checkout, page errors, or form not displayed",
+      "test_data": null
+    },
+    {
+      "id": "guest-checkout-option",
+      "name": "Guest Checkout Option",
+      "category": "orders",
+      "priority": "medium",
+      "description": "Test that guest checkout is available",
+      "steps": [
+        "Ensure not logged in",
+        "Add item to cart",
+        "Proceed to checkout",
+        "Verify guest checkout option exists",
+        "Check that email field is available for guest",
+        "Verify shipping address form displays"
+      ],
+      "expectedOutcome": "Guest checkout is available with email and address forms",
+      "failureCondition": "Guest checkout not available or form incomplete",
+      "test_data": null
+    },
+    {
+      "id": "supplier-shop-page",
+      "name": "Supplier Shop Page",
+      "category": "functionality",
+      "priority": "medium",
+      "description": "Test viewing a supplier's shop page",
+      "steps": [
+        "Navigate to a supplier shop page",
+        "Verify supplier name and branding",
+        "Check that supplier products are listed",
+        "Verify supplier rating/reviews section",
+        "Check for supplier contact information",
+        "Test 'Follow' button if available"
+      ],
+      "expectedOutcome": "Supplier shop page displays with products, ratings, and information",
+      "failureCondition": "Page doesn't load, products missing, or essential information absent",
+      "test_data": {
+        "test_supplier_slug": "acme-building-supplies",
+        "test_url": "/shop/sup_001"
+      }
+    },
+    {
+      "id": "product-reviews-display",
+      "name": "Product Reviews Display",
+      "category": "content",
+      "priority": "medium",
+      "description": "Test that product reviews display correctly",
+      "steps": [
+        "Navigate to product detail page",
+        "Scroll to reviews section",
+        "Verify reviews are listed",
+        "Check that each review shows: rating, reviewer name, date, text",
+        "Verify average rating is displayed",
+        "Check for 'Write a Review' option if authenticated"
+      ],
+      "expectedOutcome": "Reviews section displays with ratings, reviewer info, and review text",
+      "failureCondition": "Reviews don't display, information missing, or section broken",
+      "test_data": {
+        "test_product_with_reviews": "prod_001"
+      }
+    },
+    {
+      "id": "password-reset-request",
+      "name": "Password Reset Request",
+      "category": "authentication",
+      "priority": "medium",
+      "description": "Test requesting a password reset",
+      "steps": [
+        "Navigate to login page",
+        "Click 'Forgot Password' link",
+        "Verify password reset page loads",
+        "Enter email address",
+        "Click submit",
+        "Verify confirmation message appears"
+      ],
+      "expectedOutcome": "Password reset request is submitted and confirmation message shown",
+      "failureCondition": "Form doesn't work, no confirmation, or page errors",
+      "test_data": {
+        "test_email": "john.contractor@email.com"
+      }
+    },
+    {
+      "id": "responsive-mobile-view",
+      "name": "Responsive Mobile View",
+      "category": "interface",
+      "priority": "medium",
+      "description": "Test that site is responsive on mobile devices",
+      "steps": [
+        "Resize browser to mobile dimensions (375px width)",
+        "Verify layout adapts to mobile",
+        "Check that navigation collapses to hamburger menu",
+        "Test menu opens and closes",
+        "Verify content is readable and not cut off",
+        "Test key interactions work on mobile"
+      ],
+      "expectedOutcome": "Site displays correctly on mobile with responsive layout and functional mobile menu",
+      "failureCondition": "Layout breaks, content overflow, or menu doesn't work",
+      "test_data": {
+        "viewport_width": 375,
+        "viewport_height": 667
+      }
+    },
+    {
+      "id": "footer-links",
+      "name": "Footer Links Functionality",
+      "category": "navigation",
+      "priority": "low",
+      "description": "Test that footer links are present and functional",
+      "steps": [
+        "Scroll to page footer",
+        "Verify footer sections exist",
+        "Check for links to: About, Contact, Terms, Privacy, Help",
+        "Click each footer link",
+        "Verify links navigate to correct pages"
+      ],
+      "expectedOutcome": "Footer displays with all important links that navigate correctly",
+      "failureCondition": "Footer missing, links broken, or pages don't load",
+      "test_data": {
+        "expected_footer_links": ["About Us", "Contact", "Terms of Service", "Privacy Policy", "Help Center"]
+      }
+    },
+    {
+      "id": "about-page-content",
+      "name": "About Page Content Quality",
+      "category": "content",
+      "priority": "low",
+      "description": "Verify About page has meaningful content",
+      "steps": [
+        "Navigate to /about",
+        "Verify page loads",
+        "Check for company information",
+        "Verify content is more than placeholder text",
+        "Look for mission statement or company description"
+      ],
+      "expectedOutcome": "About page displays with actual company information and meaningful content",
+      "failureCondition": "Page is placeholder, has lorem ipsum, or minimal content",
+      "test_data": null
+    },
+    {
+      "id": "contact-page-form",
+      "name": "Contact Page Form",
+      "category": "forms",
+      "priority": "medium",
+      "description": "Test contact form on contact page",
+      "steps": [
+        "Navigate to /contact",
+        "Verify contact form displays",
+        "Check for fields: name, email, subject, message",
+        "Verify submit button exists",
+        "Fill out form with test data",
+        "Click submit",
+        "Verify confirmation or success message"
+      ],
+      "expectedOutcome": "Contact form displays and submits successfully with confirmation",
+      "failureCondition": "Form missing, fields not working, or submission fails",
+      "test_data": {
+        "name": "Test User",
+        "email": "test@example.com",
+        "subject": "Test Inquiry",
+        "message": "This is a test message"
+      }
+    },
+    {
+      "id": "help-center-pages",
+      "name": "Help Center Pages",
+      "category": "content",
+      "priority": "low",
+      "description": "Verify help center has useful content",
+      "steps": [
+        "Navigate to /help",
+        "Verify help center page loads",
+        "Check for FAQ or help topics",
+        "Click on a help topic",
+        "Verify content displays",
+        "Check for search functionality if available"
+      ],
+      "expectedOutcome": "Help center displays with organized topics and helpful content",
+      "failureCondition": "Help center empty, no topics, or content missing",
+      "test_data": null
+    },
+    {
+      "id": "terms-of-service-page",
+      "name": "Terms of Service Page",
+      "category": "content",
+      "priority": "low",
+      "description": "Verify terms of service page exists and has content",
+      "steps": [
+        "Navigate to /terms",
+        "Verify page loads",
+        "Check that legal content is present",
+        "Verify content is more than placeholder",
+        "Check for proper formatting and readability"
+      ],
+      "expectedOutcome": "Terms of service page displays with actual legal content",
+      "failureCondition": "Page missing, placeholder content, or unformatted text",
+      "test_data": null
+    },
+    {
+      "id": "privacy-policy-page",
+      "name": "Privacy Policy Page",
+      "category": "content",
+      "priority": "low",
+      "description": "Verify privacy policy page exists and has content",
+      "steps": [
+        "Navigate to /privacy",
+        "Verify page loads",
+        "Check that privacy policy content is present",
+        "Verify content covers data collection and usage",
+        "Check for proper formatting"
+      ],
+      "expectedOutcome": "Privacy policy page displays with actual privacy information",
+      "failureCondition": "Page missing, placeholder content, or incomplete policy",
+      "test_data": null
+    },
+    {
+      "id": "how-it-works-page",
+      "name": "How It Works Page",
+      "category": "content",
+      "priority": "medium",
+      "description": "Verify How It Works page explains platform features",
+      "steps": [
+        "Navigate to /how-it-works",
+        "Verify page loads",
+        "Check for step-by-step explanation",
+        "Verify visual elements (icons, images) if present",
+        "Check that content explains platform purpose and process"
+      ],
+      "expectedOutcome": "How It Works page displays clear explanation of platform features and process",
+      "failureCondition": "Page missing, unclear content, or just placeholder text",
+      "test_data": null
+    },
+    {
+      "id": "become-supplier-page",
+      "name": "Become a Supplier Page",
+      "category": "content",
+      "priority": "medium",
+      "description": "Verify supplier application page exists",
+      "steps": [
+        "Navigate to /become-a-supplier",
+        "Verify page loads",
+        "Check for application form or information",
+        "Verify benefits/requirements are explained",
+        "Check for call-to-action button"
+      ],
+      "expectedOutcome": "Become a Supplier page displays with application info and form",
+      "failureCondition": "Page missing, no application form, or incomplete information",
+      "test_data": null
+    },
+    {
+      "id": "product-filtering",
+      "name": "Product Filtering",
+      "category": "search",
+      "priority": "medium",
+      "description": "Test product filtering functionality",
+      "steps": [
+        "Navigate to products or search results page",
+        "Locate filter sidebar or options",
+        "Apply a filter (e.g., price range, category, rating)",
+        "Verify results update to match filter",
+        "Apply multiple filters",
+        "Verify combined filtering works",
+        "Clear filters and verify all products return"
+      ],
+      "expectedOutcome": "Filters work correctly and update product results appropriately",
+      "failureCondition": "Filters don't work, results don't update, or filters cause errors",
+      "test_data": {
+        "test_filters": ["price_range", "category", "supplier_rating"]
+      }
+    },
+    {
+      "id": "product-sorting",
+      "name": "Product Sorting",
+      "category": "search",
+      "priority": "medium",
+      "description": "Test product sorting functionality",
+      "steps": [
+        "Navigate to products page",
+        "Locate sort dropdown",
+        "Select 'Price: Low to High'",
+        "Verify products reorder correctly",
+        "Test other sort options: 'Price: High to Low', 'Rating', 'Newest'",
+        "Verify each sort option works correctly"
+      ],
+      "expectedOutcome": "Sorting options work and products reorder according to selected criteria",
+      "failureCondition": "Sorting doesn't work, order incorrect, or options missing",
+      "test_data": {
+        "sort_options": ["price_asc", "price_desc", "rating", "newest"]
+      }
+    },
+    {
+      "id": "pagination",
+      "name": "Product Pagination",
+      "category": "navigation",
+      "priority": "medium",
+      "description": "Test pagination on product listing pages",
+      "steps": [
+        "Navigate to products page with multiple pages",
+        "Verify pagination controls are visible",
+        "Note current page number",
+        "Click 'Next' or page 2",
+        "Verify page updates and new products load",
+        "Test 'Previous' button",
+        "Verify navigation works both directions"
+      ],
+      "expectedOutcome": "Pagination works correctly allowing navigation through product pages",
+      "failureCondition": "Pagination broken, pages don't change, or navigation fails",
+      "test_data": null
+    },
+    {
+      "id": "image-loading",
+      "name": "Product Image Loading",
+      "category": "interface",
+      "priority": "medium",
+      "description": "Verify product images load correctly",
+      "steps": [
+        "Navigate to products page",
+        "Check that product images display",
+        "Verify images are not broken (no broken image icons)",
+        "Click on a product to view detail",
+        "Verify larger images load on detail page",
+        "Test image gallery if available"
+      ],
+      "expectedOutcome": "All product images load correctly without broken links",
+      "failureCondition": "Images don't load, broken image icons, or missing images",
+      "test_data": null
+    },
+    {
+      "id": "error-page-404",
+      "name": "404 Error Page",
+      "category": "functionality",
+      "priority": "low",
+      "description": "Test that 404 page handles invalid URLs",
+      "steps": [
+        "Navigate to non-existent URL (e.g., /this-does-not-exist)",
+        "Verify 404 or error page displays",
+        "Check for helpful message",
+        "Verify link back to homepage exists",
+        "Click homepage link and verify it works"
+      ],
+      "expectedOutcome": "404 page displays with helpful message and navigation back to site",
+      "failureCondition": "Blank page, unhelpful error, or no way to navigate back",
+      "test_data": {
+        "test_url": "/this-page-does-not-exist-123"
+      }
+    },
+    {
+      "id": "protected-route-redirect",
+      "name": "Protected Route Redirect",
+      "category": "authentication",
+      "priority": "high",
+      "description": "Test that unauthenticated users are redirected from protected routes",
+      "steps": [
+        "Ensure not logged in",
+        "Attempt to access protected route (e.g., /account/dashboard)",
+        "Verify redirect to login page",
+        "Check that return URL is preserved",
+        "Log in",
+        "Verify redirect back to originally requested page"
+      ],
+      "expectedOutcome": "Unauthenticated users redirected to login, then back to intended page after login",
+      "failureCondition": "Protected routes accessible without auth, no redirect, or return URL lost",
+      "test_data": {
+        "protected_url": "/account/dashboard"
+      }
+    },
+    {
+      "id": "customer-dashboard-access",
+      "name": "Customer Dashboard Access",
+      "category": "user_flows",
+      "priority": "high",
+      "description": "Test customer can access their dashboard after login",
+      "steps": [
+        "Log in as customer",
+        "Navigate to dashboard",
+        "Verify dashboard displays",
+        "Check for order history section",
+        "Check for account information",
+        "Verify navigation to account sections (orders, wishlist, profile)"
+      ],
+      "expectedOutcome": "Customer dashboard displays with orders, account info, and navigation options",
+      "failureCondition": "Dashboard doesn't load, missing sections, or navigation broken",
+      "test_data": {
+        "test_user": "john.contractor@email.com",
+        "password": "password123"
+      }
+    },
+    {
+      "id": "supplier-dashboard-access",
+      "name": "Supplier Dashboard Access",
+      "category": "user_flows",
+      "priority": "high",
+      "description": "Test supplier can access their dashboard",
+      "steps": [
+        "Log in as supplier",
+        "Verify redirect to supplier dashboard",
+        "Check for product management section",
+        "Check for orders section",
+        "Check for analytics/reports if available",
+        "Verify supplier-specific navigation exists"
+      ],
+      "expectedOutcome": "Supplier dashboard displays with product management, orders, and analytics",
+      "failureCondition": "Dashboard doesn't load, missing supplier features, or access denied",
+      "test_data": {
+        "test_supplier": "supplier.acme@email.com",
+        "password": "supplier123"
+      }
+    },
+    {
+      "id": "admin-dashboard-access",
+      "name": "Admin Dashboard Access",
+      "category": "user_flows",
+      "priority": "high",
+      "description": "Test admin can access admin dashboard",
+      "steps": [
+        "Log in as admin",
+        "Verify redirect to admin dashboard",
+        "Check for platform statistics/metrics",
+        "Check for user management section",
+        "Check for supplier management section",
+        "Verify admin-specific navigation"
+      ],
+      "expectedOutcome": "Admin dashboard displays with platform management tools and statistics",
+      "failureCondition": "Dashboard doesn't load, missing admin features, or access denied",
+      "test_data": {
+        "test_admin": "admin@platform.com",
+        "password": "admin123"
+      }
+    },
+    {
+      "id": "complete-purchase-flow",
+      "name": "Complete Purchase Flow",
+      "category": "user_flows",
+      "priority": "critical",
+      "description": "Test complete end-to-end purchase flow",
+      "steps": [
+        "Log in as customer",
+        "Search for a product",
+        "Add product to cart",
+        "View cart",
+        "Proceed to checkout",
+        "Fill in shipping information",
+        "Select payment method",
+        "Review order",
+        "Place order",
+        "Verify order confirmation page",
+        "Check order appears in order history"
+      ],
+      "expectedOutcome": "Complete purchase flow works from product selection to order confirmation",
+      "failureCondition": "Any step fails, checkout incomplete, or order not recorded",
+      "test_data": {
+        "test_user": "john.contractor@email.com",
+        "password": "password123",
+        "test_product": "prod_001"
+      }
+    },
+    {
+      "id": "wishlist-functionality",
+      "name": "Wishlist Functionality",
+      "category": "functionality",
+      "priority": "low",
+      "description": "Test adding products to wishlist",
+      "steps": [
+        "Log in as customer",
+        "Navigate to a product",
+        "Click 'Add to Wishlist' button/icon",
+        "Verify success notification",
+        "Navigate to wishlist page",
+        "Verify product appears in wishlist",
+        "Test removing item from wishlist"
+      ],
+      "expectedOutcome": "Products can be added to and removed from wishlist",
+      "failureCondition": "Wishlist feature doesn't work, items not saved, or page errors",
+      "test_data": {
+        "test_user": "mike.homeowner@email.com",
+        "password": "password123"
+      }
+    },
+    {
+      "id": "real-time-features",
+      "name": "Real-time Features Test",
+      "category": "functionality",
+      "priority": "low",
+      "description": "Test if any real-time features are functional",
+      "steps": [
+        "Log in as customer",
+        "Check for notification bell or indicator",
+        "Look for real-time order status updates",
+        "Check messaging feature if available",
+        "Verify WebSocket connection if implemented"
+      ],
+      "expectedOutcome": "Real-time features like notifications or messaging work if implemented",
+      "failureCondition": "Real-time features don't work or WebSocket connection fails",
+      "test_data": null
+    },
+    {
+      "id": "performance-page-load",
+      "name": "Page Load Performance",
+      "category": "interface",
+      "priority": "medium",
+      "description": "Test that pages load within acceptable time",
+      "steps": [
+        "Navigate to homepage",
+        "Measure load time",
+        "Navigate to product page",
+        "Measure load time",
+        "Navigate to search results",
+        "Measure load time",
+        "Verify all pages load within 3 seconds"
+      ],
+      "expectedOutcome": "All pages load within 3 seconds on reasonable connection",
+      "failureCondition": "Pages take longer than 5 seconds to load or timeout",
+      "test_data": {
+        "acceptable_load_time": "3000ms",
+        "max_load_time": "5000ms"
+      }
+    },
+    {
+      "id": "accessibility-basics",
+      "name": "Basic Accessibility Check",
+      "category": "interface",
+      "priority": "low",
+      "description": "Test basic accessibility features",
+      "steps": [
+        "Navigate to homepage",
+        "Test keyboard navigation (Tab key)",
+        "Verify focus indicators are visible",
+        "Check that images have alt text",
+        "Verify form labels are properly associated",
+        "Test with screen reader if available"
+      ],
+      "expectedOutcome": "Basic accessibility features work including keyboard navigation and proper labeling",
+      "failureCondition": "Keyboard navigation broken, missing labels, or poor accessibility",
+      "test_data": null
+    }
+  ],
+  "test_execution_notes": {
+    "priority_order": ["critical", "high", "medium", "low"],
+    "recommended_test_sequence": [
+      "functional-app-test",
+      "homepage-loads",
+      "navigation-structure",
+      "product-catalog-display",
+      "user-login-customer",
+      "add-to-cart",
+      "checkout-page-access"
+    ],
+    "browser_testing": "Test in Chrome, Firefox, and Safari if possible",
+    "mobile_testing": "Test responsive design on mobile viewport",
+    "authentication_testing": "Test all three user roles: customer, supplier, admin"
+  }
+}
