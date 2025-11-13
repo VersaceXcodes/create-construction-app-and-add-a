@@ -406,8 +406,9 @@ app.get('/api/products', async (req, res) => {
             paramCount++;
         }
         if (category) {
-            query += ` AND p.category_id = $${paramCount++}`;
+            query += ` AND (p.category_id = $${paramCount} OR p.subcategory_id = $${paramCount})`;
             values.push(category);
+            paramCount++;
         }
         if (subcategory) {
             query += ` AND p.subcategory_id = $${paramCount++}`;
@@ -458,12 +459,15 @@ app.get('/api/products', async (req, res) => {
             created_at: 'p.created_at DESC',
             popularity: 'p.order_count DESC'
         };
-        query += ` ORDER BY ${sortMap[sort_by] || sortMap.created_at}`;
         const pageNum = page;
         const limitNum = limit;
         const offset = (pageNum - 1) * limitNum;
-        const countResult = await pool.query(query.replace('SELECT p.*, s.shop_name, s.rating_average as supplier_rating, s.is_verified as supplier_verified, (SELECT image_url FROM product_images WHERE product_id = p.product_id AND is_primary = true LIMIT 1) as primary_image_url', 'SELECT COUNT(*)'), values);
-        const totalItems = parseInt(countResult.rows[0].count);
+        // Get total count (without ORDER BY)
+        const countQuery = query.replace('SELECT p.*, s.shop_name, s.rating_average as supplier_rating, s.is_verified as supplier_verified, (SELECT image_url FROM product_images WHERE product_id = p.product_id AND is_primary = true LIMIT 1) as primary_image_url', 'SELECT COUNT(*)');
+        const countResult = await pool.query(countQuery, values);
+        const totalItems = countResult.rows && countResult.rows[0] ? parseInt(countResult.rows[0].count) : 0;
+        // Add ORDER BY for the main query
+        query += ` ORDER BY ${sortMap[sort_by] || sortMap.created_at}`;
         query += ` LIMIT $${paramCount++} OFFSET $${paramCount}`;
         values.push(limitNum.toString(), offset.toString());
         const result = await pool.query(query, values);
