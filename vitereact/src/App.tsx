@@ -3,6 +3,10 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useAppStore } from '@/store/main';
 
+// Import layout components
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+
 // Import all unique views
 import UV_Homepage from '@/components/views/UV_Homepage';
 import UV_ProductDetail from '@/components/views/UV_ProductDetail';
@@ -163,6 +167,7 @@ const App: React.FC = () => {
     <Router>
       <QueryClientProvider client={queryClient}>
         <div className="App min-h-screen flex flex-col">
+          <Header />
           <main className="flex-1">
             <Routes>
               {/* ============================================================ */}
@@ -661,6 +666,7 @@ const App: React.FC = () => {
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>
+          <Footer />
         </div>
       </QueryClientProvider>
     </Router>
