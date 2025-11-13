@@ -35,8 +35,8 @@ const Header: React.FC = () => {
     state => state.authentication_state.authentication_status.is_authenticated
   );
   const currentUser = useAppStore(state => state.authentication_state.current_user);
-  const cartItemsCount = useAppStore(state => state.cart_items.length);
-  const logout = useAppStore(state => state.logout);
+  const cartItemsCount = useAppStore(state => state.shopping_cart_state.items.length);
+  const logout = useAppStore(state => state.logout_user);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();

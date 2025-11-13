@@ -450,7 +450,7 @@ const UV_Homepage: React.FC = () => {
                           <div className="flex items-center mt-2">
                             <Star className="w-4 h-4 text-yellow-400 fill-current" />
                             <span className="text-sm text-gray-700 ml-1">
-                              {(parseFloat(product.rating_average) || 0).toFixed(1)}
+                              {(Number(product.rating_average) || 0).toFixed(1)}
                             </span>
                             <span className="text-sm text-gray-500 ml-1">
                               ({product.rating_count})
@@ -639,7 +639,7 @@ const UV_Homepage: React.FC = () => {
                         <div className="flex items-center mt-2">
                           <Star className="w-4 h-4 text-yellow-400 fill-current" />
                           <span className="text-sm text-gray-700 ml-1">
-                            {(parseFloat(product.rating_average) || 0).toFixed(1)}
+                            {(Number(product.rating_average) || 0).toFixed(1)}
                           </span>
                           <span className="text-sm text-gray-500 ml-1">
                             ({product.rating_count})
@@ -737,7 +737,7 @@ const UV_Homepage: React.FC = () => {
                         <div className="flex items-center mt-2">
                           <Star className="w-5 h-5 text-yellow-400 fill-current" />
                           <span className="text-sm font-semibold text-gray-900 ml-1">
-                            {(parseFloat(supplier.rating_average) || 0).toFixed(1)}
+                            {(Number(supplier.rating_average) || 0).toFixed(1)}
                           </span>
                           <span className="text-sm text-gray-500 ml-1">
                             ({supplier.rating_count} reviews)
