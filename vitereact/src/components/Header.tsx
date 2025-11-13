@@ -98,31 +98,35 @@ const Header: React.FC = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
+          <nav className="hidden lg:flex items-center space-x-8" role="navigation" aria-label="Main Navigation">
             <Link
               to="/search"
               className="text-gray-700 hover:text-blue-600 font-medium transition-colors flex items-center space-x-1"
+              data-testid="nav-products"
             >
-              <Package className="h-4 w-4" />
+              <Package className="h-4 w-4" aria-hidden="true" />
               <span>Products</span>
             </Link>
             <Link
               to="/search"
               className="text-gray-700 hover:text-blue-600 font-medium transition-colors flex items-center space-x-1"
+              data-testid="nav-categories"
             >
-              <Grid3x3 className="h-4 w-4" />
+              <Grid3x3 className="h-4 w-4" aria-hidden="true" />
               <span>Categories</span>
             </Link>
             <Link
               to="/search?filter=verified_suppliers"
               className="text-gray-700 hover:text-blue-600 font-medium transition-colors flex items-center space-x-1"
+              data-testid="nav-suppliers"
             >
-              <Users className="h-4 w-4" />
+              <Users className="h-4 w-4" aria-hidden="true" />
               <span>Suppliers</span>
             </Link>
             <Link
               to="/how-it-works"
               className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+              data-testid="nav-how-it-works"
             >
               How It Works
             </Link>
@@ -291,40 +295,44 @@ const Header: React.FC = () => {
             </form>
 
             {/* Mobile Navigation Links */}
-            <div className="space-y-2">
+            <nav className="space-y-2" role="navigation" aria-label="Mobile Navigation">
               <Link
                 to="/search"
                 className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
+                data-testid="mobile-nav-products"
               >
-                <Package className="h-5 w-5" />
+                <Package className="h-5 w-5" aria-hidden="true" />
                 <span className="font-medium">Products</span>
               </Link>
               <Link
                 to="/search"
                 className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
+                data-testid="mobile-nav-categories"
               >
-                <Grid3x3 className="h-5 w-5" />
+                <Grid3x3 className="h-5 w-5" aria-hidden="true" />
                 <span className="font-medium">Categories</span>
               </Link>
               <Link
                 to="/search?filter=verified_suppliers"
                 className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
+                data-testid="mobile-nav-suppliers"
               >
-                <Users className="h-5 w-5" />
+                <Users className="h-5 w-5" aria-hidden="true" />
                 <span className="font-medium">Suppliers</span>
               </Link>
               <Link
                 to="/how-it-works"
                 className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
+                data-testid="mobile-nav-how-it-works"
               >
-                <HelpCircle className="h-5 w-5" />
+                <HelpCircle className="h-5 w-5" aria-hidden="true" />
                 <span className="font-medium">How It Works</span>
               </Link>
-            </div>
+            </nav>
 
             {/* Mobile Auth Buttons */}
             {!isAuthenticated && (
