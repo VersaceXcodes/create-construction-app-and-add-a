@@ -1249,7 +1249,7 @@ export const createReturnInputSchema = z.object({
   photo_urls: z.array(z.string().url()).nullable().optional(),
   quantity: z.number().int().positive(),
   refund_amount: z.number().nonnegative(),
-  return_method: z.enum(['return_label', 'carrier_pickup', 'drop_off').nullable().optional()
+  return_method: z.enum(['return_label', 'carrier_pickup', 'drop_off']).nullable().optional()
 });
 
 export const updateReturnInputSchema = z.object({
@@ -1257,7 +1257,7 @@ export const updateReturnInputSchema = z.object({
   return_shipping_label_url: z.string().url().nullable().optional(),
   return_tracking_number: z.string().max(255).nullable().optional(),
   status: z.enum(['pending', 'approved', 'rejected', 'in_transit', 'received', 'completed', 'canceled']).optional(),
-  supplier_decision: z.enum(['approved', 'rejected', 'partial_approval'].nullable().optional(),
+  supplier_decision: z.enum(['approved', 'rejected', 'partial_approval']).nullable().optional(),
   supplier_notes: z.string().max(2000).nullable().optional(),
   decline_reason: z.string().max(1000).nullable().optional(),
   inspection_notes: z.string().max(2000).nullable().optional()
