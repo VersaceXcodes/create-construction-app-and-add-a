@@ -602,18 +602,19 @@ export const useAppStore = create<AppState>()(
           const cartsResponse = await axios.get(
             `${API_BASE_URL}/api/users/me/carts`,
             { 
-              headers: get_auth_headers(token),
-              params: { is_active: true }
+              headers: get_auth_headers(token)
             }
           );
 
-          const activeCarts = cartsResponse.data;
-          if (!activeCarts || activeCarts.length === 0) {
+          const activeCarts = Array.isArray(cartsResponse.data) ? cartsResponse.data : [];
+          const activeCart = activeCarts.find((c: any) => c.is_active);
+          
+          if (!activeCart) {
             // No active cart, keep empty state
             return;
           }
 
-          const cart = activeCarts[0]; // Use first active cart
+          const cart = activeCart;
           
           // Load cart items
           const itemsResponse = await axios.get(
@@ -682,14 +683,15 @@ export const useAppStore = create<AppState>()(
           const cartsResponse = await axios.get(
             `${API_BASE_URL}/api/users/me/carts`,
             { 
-              headers: get_auth_headers(token),
-              params: { is_active: true }
+              headers: get_auth_headers(token)
             }
           );
 
           let cart_id: string;
+          const activeCarts = Array.isArray(cartsResponse.data) ? cartsResponse.data : [];
+          const activeCart = activeCarts.find((c: any) => c.is_active);
           
-          if (!cartsResponse.data || cartsResponse.data.length === 0) {
+          if (!activeCart) {
             // Create new cart
             const createCartResponse = await axios.post(
               `${API_BASE_URL}/api/users/me/carts`,
@@ -703,7 +705,7 @@ export const useAppStore = create<AppState>()(
             );
             cart_id = createCartResponse.data.cart_id;
           } else {
-            cart_id = cartsResponse.data[0].cart_id;
+            cart_id = activeCart.cart_id;
           }
 
           // Add item to cart
@@ -805,16 +807,18 @@ export const useAppStore = create<AppState>()(
           const cartsResponse = await axios.get(
             `${API_BASE_URL}/api/users/me/carts`,
             { 
-              headers: get_auth_headers(token),
-              params: { is_active: true }
+              headers: get_auth_headers(token)
             }
           );
 
-          if (!cartsResponse.data || cartsResponse.data.length === 0) {
+          const activeCarts = Array.isArray(cartsResponse.data) ? cartsResponse.data : [];
+          const activeCart = activeCarts.find((c: any) => c.is_active);
+          
+          if (!activeCart) {
             throw new Error('No active cart found');
           }
 
-          const cart_id = cartsResponse.data[0].cart_id;
+          const cart_id = activeCart.cart_id;
 
           // Apply promo code (endpoint inferred from requirements)
           const response = await axios.post(

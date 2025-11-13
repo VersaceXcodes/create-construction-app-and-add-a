@@ -458,7 +458,8 @@ app.get('/api/categories', async (req, res) => {
 
     if (is_active !== undefined) {
       query += ` AND is_active = $${paramCount++}`;
-      values.push(is_active === 'true');
+      // Coerce to boolean properly
+      values.push(is_active === 'true' || is_active === true);
     }
 
     query += ' ORDER BY display_order ASC, category_name ASC';
@@ -485,8 +486,11 @@ app.get('/api/categories/:category_id', async (req, res) => {
 app.get('/api/products', async (req, res) => {
   try {
     const { q, category, subcategory, supplier_id, brand, price_min, price_max, availability, 
-            supplier_rating_min, product_rating_min, is_eco_friendly, tags, sort_by = 'created_at', 
-            page = 1, limit = 24 } = req.query;
+            supplier_rating_min, product_rating_min, is_eco_friendly, tags, sort_by = 'created_at' } = req.query;
+    
+    // Coerce query params to proper types with defaults
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 24;
 
     let query = `SELECT p.*, s.shop_name, s.rating_average as supplier_rating, s.is_verified as supplier_verified,
                   (SELECT image_url FROM product_images WHERE product_id = p.product_id AND is_primary = true LIMIT 1) as primary_image_url
@@ -648,7 +652,9 @@ app.get('/api/products/:product_id/images', async (req, res) => {
 
 app.get('/api/products/:product_id/reviews', async (req, res) => {
   try {
-    const { rating, sort_by = 'most_recent', page = 1, limit = 10 } = req.query;
+    const { rating, sort_by = 'most_recent' } = req.query;
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
     
     let query = `SELECT pr.*, u.name as customer_name 
                  FROM product_reviews pr
@@ -901,7 +907,9 @@ app.delete('/api/cart-items/:cart_item_id', authenticateToken, async (req, res) 
 
 app.get('/api/orders', authenticateToken, async (req, res) => {
   try {
-    const { status, date_from, date_to, supplier_id, project_id, sort_by = 'date_desc', page = 1, limit = 20 } = req.query;
+    const { status, date_from, date_to, supplier_id, project_id, sort_by = 'date_desc' } = req.query;
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 20;
 
     let query = 'SELECT o.*, s.shop_name FROM orders o JOIN suppliers s ON o.supplier_id = s.supplier_id WHERE o.customer_id = $1';
     const values = [req.user.user_id];
@@ -1214,7 +1222,9 @@ app.get('/api/suppliers/:supplier_id', async (req, res) => {
 
 app.get('/api/suppliers/:supplier_id/products', async (req, res) => {
   try {
-    const { category, status, search_query, sort_by = 'created_at', page = 1, limit = 24 } = req.query;
+    const { category, status, search_query, sort_by = 'created_at' } = req.query;
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 24;
 
     let query = 'SELECT * FROM products WHERE supplier_id = $1';
     const values = [req.params.supplier_id];
@@ -1451,7 +1461,8 @@ app.post('/api/conversations', authenticateToken, async (req, res) => {
 
 app.get('/api/conversations/:conversation_id/messages', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit = 50 } = req.query;
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 50;
 
     const pageNum = parseInt(page);
     const limitNum = parseInt(limit);
@@ -1523,7 +1534,10 @@ app.post('/api/conversations/:conversation_id/messages', authenticateToken, asyn
 
 app.get('/api/notifications', authenticateToken, async (req, res) => {
   try {
-    const { notification_type, is_read, page = 1, limit = 20 } = req.query;
+    const { notification_type } = req.query;
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 20;
+    const is_read = req.query.is_read;
 
     let query = 'SELECT * FROM notifications WHERE user_id = $1';
     const values = [req.user.user_id];
@@ -1683,7 +1697,8 @@ app.get('/api/suppliers/me/orders', authenticateToken, requireRole(['supplier'])
 
     const supplierId = supplierResult.rows[0].supplier_id;
 
-    const { status, date_from, date_to, page = 1 } = req.query;
+    const { status, date_from, date_to } = req.query;
+    const page = parseInt(req.query.page as string) || 1;
 
     let query = 'SELECT o.*, u.name as customer_name FROM orders o JOIN users u ON o.customer_id = u.user_id WHERE o.supplier_id = $1';
     const values = [supplierId];

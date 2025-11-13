@@ -148,10 +148,11 @@ const App: React.FC = () => {
   );
   const initializeAuth = useAppStore(state => state.initialize_auth);
 
-  // Initialize authentication on app mount
+  // Initialize authentication on app mount - empty deps to run once
   useEffect(() => {
     initializeAuth();
-  }, [initializeAuth]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Show loading spinner during initial auth verification
   if (isLoading) {
