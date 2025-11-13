@@ -12,10 +12,13 @@ const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 );
 
 describe('Auth E2E Flow (Real API)', () => {
-  // Generate unique email for each test run to avoid conflicts
-  const uniqueEmail = `testuser${Date.now()}@example.com`;
+  // Helper to generate unique email for each test
+  const generateUniqueEmail = () => `testuser${Date.now()}${Math.random().toString(36).substring(7)}@example.com`;
+  
+  // Helper to generate unique phone number for each test
+  const generateUniquePhone = () => `+1555${Math.floor(Math.random() * 10000000).toString().padStart(7, '0')}`;
+  
   const testPassword = 'TestPassword123!';
-  const testPhone = '+15551234567';
   const testName = 'Test User';
 
   beforeEach(() => {
@@ -40,13 +43,15 @@ describe('Auth E2E Flow (Real API)', () => {
 
   describe('Registration Flow', () => {
     it('should register a new user with unique email', async () => {
+      const uniqueEmail = generateUniqueEmail();
+      const uniquePhone = generateUniquePhone();
       const { register_user } = useAppStore.getState();
       const user = userEvent.setup();
 
       // Call register API directly through Zustand store
       await register_user({
         email: uniqueEmail,
-        phone: testPhone,
+        phone: uniquePhone,
         password: testPassword,
         name: testName,
         role: 'customer',
@@ -71,11 +76,13 @@ describe('Auth E2E Flow (Real API)', () => {
 
   describe('Login Flow', () => {
     it('should login successfully with registered credentials via UI', async () => {
+      const uniqueEmail = generateUniqueEmail();
+      const uniquePhone = generateUniquePhone();
       // First register the user
       const { register_user } = useAppStore.getState();
       await register_user({
         email: uniqueEmail,
-        phone: testPhone,
+        phone: uniquePhone,
         password: testPassword,
         name: testName,
         role: 'customer',
@@ -150,11 +157,13 @@ describe('Auth E2E Flow (Real API)', () => {
 
   describe('Logout Flow', () => {
     it('should logout successfully after login', async () => {
+      const uniqueEmail = generateUniqueEmail();
+      const uniquePhone = generateUniquePhone();
       // Register and login
       const { register_user } = useAppStore.getState();
       await register_user({
         email: uniqueEmail,
-        phone: testPhone,
+        phone: uniquePhone,
         password: testPassword,
         name: testName,
         role: 'customer',
@@ -186,13 +195,15 @@ describe('Auth E2E Flow (Real API)', () => {
 
   describe('Complete Auth Flow: Register -> Logout -> Login', () => {
     it('should complete full auth cycle successfully', async () => {
+      const uniqueEmail = generateUniqueEmail();
+      const uniquePhone = generateUniquePhone();
       const user = userEvent.setup();
 
       // Step 1: Register
       const { register_user } = useAppStore.getState();
       await register_user({
         email: uniqueEmail,
-        phone: testPhone,
+        phone: uniquePhone,
         password: testPassword,
         name: testName,
         role: 'customer',
@@ -281,14 +292,15 @@ describe('Auth E2E Flow (Real API)', () => {
       await user.click(submitButton);
 
       // Should show loading
-      await waitFor(() => expect(screen.getByText(/logging in/i)).toBeInTheDocument());
+      await waitFor(() => expect(screen.getByText(/logging in/i)).toBeInTheDocument(), { timeout: 5000 });
 
-      // Should show error message
+      // Should show error message in store
       await waitFor(
         () => {
           const state = useAppStore.getState();
           expect(state.authentication_state.error_message).toBeTruthy();
           expect(state.authentication_state.authentication_status.is_authenticated).toBe(false);
+          expect(state.authentication_state.authentication_status.is_loading).toBe(false);
         },
         { timeout: 20000 }
       );
@@ -306,10 +318,12 @@ describe('Auth E2E Flow (Real API)', () => {
 
   describe('Store Persistence', () => {
     it('should persist auth token in localStorage after registration', async () => {
+      const uniqueEmail = generateUniqueEmail();
+      const uniquePhone = generateUniquePhone();
       const { register_user } = useAppStore.getState();
       await register_user({
         email: uniqueEmail,
-        phone: testPhone,
+        phone: uniquePhone,
         password: testPassword,
         name: testName,
         role: 'customer',
@@ -334,11 +348,13 @@ describe('Auth E2E Flow (Real API)', () => {
     }, 30000);
 
     it('should clear localStorage after logout', async () => {
+      const uniqueEmail = generateUniqueEmail();
+      const uniquePhone = generateUniquePhone();
       // Register first
       const { register_user } = useAppStore.getState();
       await register_user({
         email: uniqueEmail,
-        phone: testPhone,
+        phone: uniquePhone,
         password: testPassword,
         name: testName,
         role: 'customer',
