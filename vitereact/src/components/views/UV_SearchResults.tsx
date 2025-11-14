@@ -213,8 +213,8 @@ const UV_SearchResults: React.FC = () => {
     setSearchParams(params);
   };
 
-  const products = (data as any)?.products || [];
-  const pagination = (data as any)?.pagination;
+  const products = data?.products || [];
+  const pagination = data?.pagination;
   const total_results = pagination?.total_items || 0;
 
   // Redirect if no search query
