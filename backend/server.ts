@@ -89,7 +89,15 @@ const port = process.env.PORT || 3000;
 app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:5173', credentials: true }));
 app.use(express.json({ limit: '5mb' }));
 app.use(morgan(':method :url :status :response-time ms - :res[content-length]'));
-app.use(express.static(path.resolve(__dirname, '..', 'public')));
+
+// pick '/app/backend/public' whether running from /backend or /backend/dist
+const isDist = path.basename(__dirname) === 'dist';
+const publicDir = isDist
+  ? path.resolve(__dirname, '..', 'public')   // /app/backend/dist -> /app/backend/public
+  : path.resolve(__dirname, 'public');        // /app/backend -> /app/backend/public
+
+app.use(express.static(publicDir));
+
 
 
 const storagePath = path.join(__dirname, 'storage');
@@ -1976,7 +1984,7 @@ app.get('/api/health', (req, res) => {
 });
 
 app.get(/^(?!\/api).*/, (req, res) => {
-  res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'));
+  res.sendFile(path.join(publicDir, 'index.html'));
 });
 
 export { app, pool };
