@@ -215,7 +215,8 @@ const UV_SearchResults: React.FC = () => {
 
   const products = data?.products || [];
   const pagination = data?.pagination;
-  const total_results = pagination?.total_items || 0;
+  // If pagination.total_items is 0 but we have products, use products.length as fallback
+  const total_results = pagination?.total_items || products.length;
 
   // Redirect if no search query
   useEffect(() => {
@@ -252,13 +253,13 @@ const UV_SearchResults: React.FC = () => {
                     Loading results...
                   </p>
                 )}
-                {!isLoading && total_results > 0 && (
+                {!isLoading && products.length > 0 && (
                   <p className="text-sm text-gray-600 mt-1" data-testid="results-count">
                     <span className="font-semibold">{total_results.toLocaleString()}</span> {total_results === 1 ? 'result' : 'results'} found
                     {' '}(showing {((current_page - 1) * 24) + 1}-{Math.min(current_page * 24, total_results)})
                   </p>
                 )}
-                {!isLoading && total_results === 0 && (
+                {!isLoading && products.length === 0 && (
                   <p className="text-sm text-gray-600 mt-1" data-testid="no-results">
                     0 results found
                   </p>
