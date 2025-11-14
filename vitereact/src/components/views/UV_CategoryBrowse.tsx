@@ -119,6 +119,7 @@ const UV_CategoryBrowse: React.FC = () => {
 
   const sortBy = searchParams.get('sort_by') || 'relevance';
   const currentPage = parseInt(searchParams.get('page') || '1', 10);
+  const viewAll = searchParams.get('view') === 'all';
 
   // ============================================================================
   // React Query: Fetch All Categories (for slug lookup and hierarchy)
@@ -171,7 +172,7 @@ const UV_CategoryBrowse: React.FC = () => {
   }, [currentCategory, allCategories]);
 
   // Determine if showing subcategory grid or products
-  const showSubcategoryGrid = subcategories.length > 0 && !filters.subcategory;
+  const showSubcategoryGrid = subcategories.length > 0 && !filters.subcategory && !viewAll;
 
   // ============================================================================
   // React Query: Fetch Products (only when showing products)
