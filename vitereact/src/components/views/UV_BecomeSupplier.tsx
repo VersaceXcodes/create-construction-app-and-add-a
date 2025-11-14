@@ -303,6 +303,7 @@ const UV_BecomeSupplier: React.FC = () => {
         clearTimeout(scrollThrottleRef.current);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ========================================================================

@@ -2,14 +2,20 @@ module.exports = {
     "preset": "ts-jest",
     "testEnvironment": "node",
     "roots": [
-        "<rootDir>/tests"
+        "<rootDir>"
     ],
     "testMatch": [
         "**/__tests__/**/*.ts",
         "**/?(*.)+(spec|test).ts"
     ],
+    "extensionsToTreatAsEsm": [".ts"],
     "transform": {
-        "^.+\\.ts$": "ts-jest"
+        "^.+\\.ts$": ["ts-jest", {
+                "useESM": true
+            }]
+    },
+    "moduleNameMapper": {
+        "^(\\.{1,2}/.*)\\.js$": "$1"
     },
     "collectCoverageFrom": [
         "server.ts",
@@ -23,7 +29,7 @@ module.exports = {
         "lcov",
         "html"
     ],
-    "coverageThresholds": {
+    "coverageThreshold": {
         "global": {
             "branches": 70,
             "functions": 75,
@@ -31,9 +37,6 @@ module.exports = {
             "statements": 80
         }
     },
-    "setupFilesAfterEnv": [
-        "<rootDir>/tests/setup/testSetup.ts"
-    ],
     "testTimeout": 30000,
     "maxWorkers": 1,
     "verbose": true,

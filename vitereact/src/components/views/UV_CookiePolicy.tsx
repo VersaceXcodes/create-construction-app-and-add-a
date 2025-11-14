@@ -203,6 +203,7 @@ const UV_CookiePolicy: React.FC = () => {
 
   useEffect(() => {
     loadCurrentCookiePreferences();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
   const loadCurrentCookiePreferences = () => {
