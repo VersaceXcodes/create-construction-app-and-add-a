@@ -617,8 +617,14 @@ app.get('/api/products', async (req, res) => {
 
     // Get total count (without ORDER BY)
     const countQuery = query.replace('SELECT p.*, s.shop_name, s.rating_average as supplier_rating, s.is_verified as supplier_verified, (SELECT image_url FROM product_images WHERE product_id = p.product_id AND is_primary = true LIMIT 1) as primary_image_url', 'SELECT COUNT(*)');
+    console.log('[DEBUG] Count query:', countQuery);
+    console.log('[DEBUG] Count values:', values);
     const countResult = await pool.query(countQuery, values);
-    const totalItems = countResult.rows && countResult.rows[0] ? parseInt(countResult.rows[0].count) : 0;
+    console.log('[DEBUG] Count result:', countResult.rows[0]);
+    const totalItems = (countResult.rows && countResult.rows[0] && countResult.rows[0].count) 
+      ? parseInt(countResult.rows[0].count) 
+      : 0;
+    console.log('[DEBUG] Total items:', totalItems);
 
     // Add ORDER BY for the main query
     query += ` ORDER BY ${sortMap[sort_by as string] || sortMap.created_at}`;
