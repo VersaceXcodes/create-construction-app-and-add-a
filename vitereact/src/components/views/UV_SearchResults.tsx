@@ -247,9 +247,20 @@ const UV_SearchResults: React.FC = () => {
                     </svg>
                   </Link>
                 </div>
+                {isLoading && (
+                  <p className="text-sm text-gray-600 mt-1" data-testid="loading-results">
+                    Loading results...
+                  </p>
+                )}
                 {!isLoading && total_results > 0 && (
-                  <p className="text-sm text-gray-600 mt-1">
-                    Showing {((current_page - 1) * 24) + 1}-{Math.min(current_page * 24, total_results)} of {total_results} results
+                  <p className="text-sm text-gray-600 mt-1" data-testid="results-count">
+                    <span className="font-semibold">{total_results.toLocaleString()}</span> {total_results === 1 ? 'result' : 'results'} found
+                    {' '}(showing {((current_page - 1) * 24) + 1}-{Math.min(current_page * 24, total_results)})
+                  </p>
+                )}
+                {!isLoading && total_results === 0 && (
+                  <p className="text-sm text-gray-600 mt-1" data-testid="no-results">
+                    0 results found
                   </p>
                 )}
               </div>
