@@ -533,73 +533,93 @@ app.get('/api/products', async (req, res) => {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 24;
 
-    let query = `SELECT p.*, s.shop_name, s.rating_average as supplier_rating, s.is_verified as supplier_verified,
-                  (SELECT image_url FROM product_images WHERE product_id = p.product_id AND is_primary = true LIMIT 1) as primary_image_url
-                 FROM products p
-                 JOIN suppliers s ON p.supplier_id = s.supplier_id
-                 WHERE p.status = 'active' AND s.status = 'active'`;
-    
-    const values = [];
-    let paramCount = 1;
+    // Build WHERE clause conditions
+    let whereConditions = ['p.status = $1', 's.status = $2'];
+    const values = ['active', 'active'];
+    let paramCount = 3;
 
     if (q) {
-      query += ` AND (p.product_name ILIKE $${paramCount} OR p.description ILIKE $${paramCount})`;
+      whereConditions.push(`(p.product_name ILIKE $${paramCount} OR p.description ILIKE $${paramCount})`);
       values.push(`%${q}%`);
       paramCount++;
     }
 
     if (category) {
-      query += ` AND (p.category_id = $${paramCount} OR p.subcategory_id = $${paramCount})`;
-      values.push(category);
-      paramCount++;
+      // Find all subcategories of the given category (to support hierarchical browsing)
+      const subcatResult = await pool.query(
+        `WITH RECURSIVE category_tree AS (
+          SELECT category_id FROM categories WHERE category_id = $1
+          UNION
+          SELECT c.category_id FROM categories c
+          INNER JOIN category_tree ct ON c.parent_category_id = ct.category_id
+        )
+        SELECT category_id FROM category_tree`,
+        [category]
+      );
+      const categoryIds = subcatResult.rows.map(r => r.category_id);
+      
+      if (categoryIds.length > 0) {
+        whereConditions.push(`(p.category_id = ANY($${paramCount}) OR p.subcategory_id = ANY($${paramCount}))`);
+        values.push(categoryIds);
+        paramCount++;
+      }
     }
 
     if (subcategory) {
-      query += ` AND p.subcategory_id = $${paramCount++}`;
+      whereConditions.push(`p.subcategory_id = $${paramCount}`);
       values.push(subcategory);
+      paramCount++;
     }
 
     if (supplier_id) {
-      query += ` AND p.supplier_id = $${paramCount++}`;
+      whereConditions.push(`p.supplier_id = $${paramCount}`);
       values.push(supplier_id);
+      paramCount++;
     }
 
     if (brand) {
-      query += ` AND p.brand = $${paramCount++}`;
+      whereConditions.push(`p.brand = $${paramCount}`);
       values.push(brand);
+      paramCount++;
     }
 
     if (price_min) {
-      query += ` AND p.price >= $${paramCount++}`;
+      whereConditions.push(`p.price >= $${paramCount}`);
       values.push(parseFloat(price_min as string));
+      paramCount++;
     }
 
     if (price_max) {
-      query += ` AND p.price <= $${paramCount++}`;
+      whereConditions.push(`p.price <= $${paramCount}`);
       values.push(parseFloat(price_max as string));
+      paramCount++;
     }
 
     if (availability === 'in_stock') {
-      query += ' AND p.quantity_on_hand > 0';
+      whereConditions.push('p.quantity_on_hand > 0');
     } else if (availability === 'out_of_stock') {
-      query += ' AND p.quantity_on_hand = 0';
+      whereConditions.push('p.quantity_on_hand = 0');
     } else if (availability === 'low_stock') {
-      query += ' AND p.quantity_on_hand > 0 AND p.quantity_on_hand <= p.low_stock_threshold';
+      whereConditions.push('p.quantity_on_hand > 0 AND p.quantity_on_hand <= p.low_stock_threshold');
     }
 
     if (supplier_rating_min) {
-      query += ` AND s.rating_average >= $${paramCount++}`;
+      whereConditions.push(`s.rating_average >= $${paramCount}`);
       values.push(parseFloat(supplier_rating_min as string));
+      paramCount++;
     }
 
     if (product_rating_min) {
-      query += ` AND p.rating_average >= $${paramCount++}`;
+      whereConditions.push(`p.rating_average >= $${paramCount}`);
       values.push(parseFloat(product_rating_min as string));
+      paramCount++;
     }
 
     if (is_eco_friendly === 'true') {
-      query += ' AND p.is_eco_friendly = true';
+      whereConditions.push('p.is_eco_friendly = true');
     }
+
+    const whereClause = whereConditions.join(' AND ');
 
     const sortMap: Record<string, string> = {
       relevance: 'p.product_name ASC',
@@ -615,8 +635,10 @@ app.get('/api/products', async (req, res) => {
     const limitNum = limit;
     const offset = (pageNum - 1) * limitNum;
 
-    // Get total count (without ORDER BY)
-    const countQuery = query.replace('SELECT p.*, s.shop_name, s.rating_average as supplier_rating, s.is_verified as supplier_verified, (SELECT image_url FROM product_images WHERE product_id = p.product_id AND is_primary = true LIMIT 1) as primary_image_url', 'SELECT COUNT(*)');
+    // Get total count with proper WHERE clause
+    const countQuery = `SELECT COUNT(*) FROM products p
+                       JOIN suppliers s ON p.supplier_id = s.supplier_id
+                       WHERE ${whereClause}`;
     console.log('[DEBUG] Count query:', countQuery);
     console.log('[DEBUG] Count values:', values);
     const countResult = await pool.query(countQuery, values);
@@ -626,13 +648,18 @@ app.get('/api/products', async (req, res) => {
       : 0;
     console.log('[DEBUG] Total items:', totalItems);
 
-    // Add ORDER BY for the main query
-    query += ` ORDER BY ${sortMap[sort_by as string] || sortMap.created_at}`;
-
-    query += ` LIMIT $${paramCount++} OFFSET $${paramCount}`;
+    // Build main query with same WHERE clause
+    const mainQuery = `SELECT p.*, s.shop_name, s.rating_average as supplier_rating, s.is_verified as supplier_verified,
+                       (SELECT image_url FROM product_images WHERE product_id = p.product_id AND is_primary = true LIMIT 1) as primary_image_url
+                       FROM products p
+                       JOIN suppliers s ON p.supplier_id = s.supplier_id
+                       WHERE ${whereClause}
+                       ORDER BY ${sortMap[sort_by as string] || sortMap.created_at}
+                       LIMIT $${paramCount} OFFSET $${paramCount + 1}`;
+    
     values.push(limitNum, offset);
 
-    const result = await pool.query(query, values);
+    const result = await pool.query(mainQuery, values);
 
     res.json({
       products: result.rows.map(p => {
